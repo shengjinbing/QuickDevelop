@@ -1,0 +1,36 @@
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+task loggerSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.sourceFiles
+}
+
+artifacts {
+    archives loggerSourcesJar
+}
+
+task loggerUpload(dependsOn:[uploadArchives]){
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            pom.project {
+                packaging = 'aar'
+                groupId = GROUP
+                artifactId = POM_ARTIFACT_ID
+                version = VERSION_NAME
+            }
+
+            repository(url: rootProject.RELEASE_REPOSITORY_URL) {
+                authentication(userName: rootProject.USERNAME, password: rootProject.PASSWORD)
+            }
+
+            snapshotRepository(url: rootProject.SNAPSHOT_REPOSITORY_URL) {
+                authentication(userName: rootProject.USERNAME, password: rootProject.PASSWORD)
+            }
+        }
+    }
+}
