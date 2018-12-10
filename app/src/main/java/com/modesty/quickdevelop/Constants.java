@@ -54,7 +54,7 @@ public class Constants {
     /*******************Auction End******************/
 
     public static final String UPLOAD = "file/upload";
-    public static final String STAR_SEARCH = " /common/searchList";
+    public static final String STAR_SEARCH = "/common/searchList";
     public static final String LOGIN_LOGINCODE = "/common/sendLoginCode";
 
     int REQUEST_CODE_GALLERY = 1;

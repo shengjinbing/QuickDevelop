@@ -17,7 +17,7 @@ android {
             //debug版本提供环境切换功能所以不在此处配置url，详情参考ServerConst类，release版本才配置这三个参数
             buildConfigField "String", "BASE_URL", "\"https://api.ekchange.com\""
         }
-        debug{
+        debug {
             buildConfigField "String", "BASE_URL", "\"https://api.ekchange.com\""
         }
     }
@@ -38,28 +38,28 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //view
-    compile rootProject.ext.dependencies["butterknife"]
+    implementation rootProject.ext.dependencies["butterknife"]
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     //tools
-    compile rootProject.ext.dependencies["dagger2"]
+    implementation rootProject.ext.dependencies["dagger2"]
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
-    compile rootProject.ext.dependencies["eventbus"]
-    compile rootProject.ext.dependencies["gson"]
+    implementation rootProject.ext.dependencies["eventbus"]
+    implementation rootProject.ext.dependencies["gson"]
     //network
-    compile rootProject.ext.dependencies["okhttp3"]
-    compile rootProject.ext.dependencies["okhttp3-log-interceptor"]
-    compile rootProject.ext.dependencies["retrofit"]
-    compile rootProject.ext.dependencies["retrofit-converter-gson"]
-    compile rootProject.ext.dependencies["converter-scalars"]
-    compile rootProject.ext.dependencies["retrofit-adapter-rxjava2"]
+    implementation rootProject.ext.dependencies["okhttp3"]
+    implementation rootProject.ext.dependencies["okhttp3-log-interceptor"]
+    implementation rootProject.ext.dependencies["retrofit"]
+    implementation rootProject.ext.dependencies["retrofit-converter-gson"]
+    implementation rootProject.ext.dependencies["converter-scalars"]
+    implementation rootProject.ext.dependencies["retrofit-adapter-rxjava2"]
     //rx2
-    compile rootProject.ext.dependencies["rxandroid2"]
-    compile rootProject.ext.dependencies["rxjava2"]
-    compile rootProject.ext.dependencies["rxlifecycle2"]
-    compile rootProject.ext.dependencies["rxlifecycle2-components"]
-    compile rootProject.ext.dependencies["rxpermissions2"]
-    compile rootProject.ext.dependencies["rxbinding2"]
-    compile rootProject.ext.dependencies["rxcache2"]
+    implementation rootProject.ext.dependencies["rxandroid2"]
+    implementation rootProject.ext.dependencies["rxjava2"]
+    implementation rootProject.ext.dependencies["rxlifecycle2"]
+    implementation rootProject.ext.dependencies["rxlifecycle2-components"]
+    implementation rootProject.ext.dependencies["rxpermissions2"]
+    implementation rootProject.ext.dependencies["rxbinding2"]
+    implementation rootProject.ext.dependencies["rxcache2"]
 
     implementation 'com.yanzhenjie:recyclerview-swipe:1.2.0'
     implementation 'com.modesty.logger:loggerlib:1.0.0'

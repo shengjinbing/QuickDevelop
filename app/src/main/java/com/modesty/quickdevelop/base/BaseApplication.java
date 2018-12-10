@@ -4,6 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 
+import com.modesty.logger.simplelog.LogLevel;
+import com.modesty.logger.simplelog.Logger;
+import com.modesty.quickdevelop.network.NetConfig;
+
 import java.io.File;
 
 /**
@@ -16,6 +20,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         context = this;
+        Logger.init("MODESTY_LOGG", LogLevel.FULL);
+        NetConfig.instance().setLoggable(true);
         super.onCreate();
     }
 

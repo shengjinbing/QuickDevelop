@@ -4,11 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.modesty.quickdevelop.MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:onClick="viewmain"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="viewmain"
+        android:gravity="center"
+        android:background="#cf9292"
+        />
+    <TextView
+        android:onClick="okhttpmain"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="okhttpmain"
+        android:gravity="center"
+        android:background="#cf9292"
+        />
+    <TextView
+        android:onClick="rxjavamain"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="rxjavamain"
+        android:gravity="center"
+        android:background="#cf9292"
+        />
+
+
 
 </LinearLayout>

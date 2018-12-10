@@ -1,13 +1,15 @@
 package com.modesty.quickdevelop;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
-import com.modesty.logger.simplelog.Logger;
-import com.modesty.quickdevelop.network.ServiceFactory;
-import com.modesty.quickdevelop.network.rx.HttpResultSubscriber;
-import com.modesty.quickdevelop.network.rx.TransFormUtils;
+import com.modesty.quickdevelop.ui.activitys.OkHttpActivity;
+import com.modesty.quickdevelop.ui.activitys.RxJavaActivity;
+import com.modesty.quickdevelop.ui.activitys.ViewActivity;
 
 import org.reactivestreams.Subscription;
 
@@ -35,10 +37,34 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Logger.e("21212121");
-        /*ServiceFactory.newApiService().getLoginCode("13161931057")
-                .compose(TransFormUtils.applySchedulers())
-                .subscribe();
-    }*/
     }
+
+    /**
+     * RecyclerView和ListView
+     *
+     * @param view
+     */
+    public void viewmain(View view) {
+        Intent intent = new Intent(this, ViewActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Okhttp
+     *
+     * @param view
+     */
+    public void okhttpmain(View view) {
+        startActivity(new Intent(this, OkHttpActivity.class));
+    }
+    /**
+     * rxJava
+     *
+     * @param view
+     */
+    public void rxjavamain(View view) {
+        startActivity(new Intent(this, RxJavaActivity.class));
+    }
+
+
 }
