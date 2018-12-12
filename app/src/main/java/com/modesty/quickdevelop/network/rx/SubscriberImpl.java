@@ -46,9 +46,9 @@ public abstract class SubscriberImpl<T extends BaseData> extends SubscriberEx<T>
     public void onError(Throwable e) {
         super.onError(e);
         Logger.e(e, "SubscriberImpl---onError occurs");
-        if(e instanceof NetworkUnavailableException){
+        if (e instanceof NetworkUnavailableException) {
             onNetworkLost();
-        }else{
+        } else {
             //onFailure(BizNetConstants.CODE_REQUEST_ERROR, ResourcesHelper.getString(BaseApp.getAppContext(), R.string.network_error));
         }
     }
@@ -61,18 +61,21 @@ public abstract class SubscriberImpl<T extends BaseData> extends SubscriberEx<T>
             //onFailure(BizNetConstants.CODE_REQUEST_ERROR, ResourcesHelper.getString(BaseApp.getAppContext(), R.string.network_error));
             return;
         }
-        switch (o.errno){
+        switch (o.code) {
+            case 0:
+                onSuccess(o);
+                break;
             default:
-                onFailure(o.errno, o.errmsg);
+                onFailure(o.code, o.message);
                 break;
         }
     }
 
-    protected void onFailure(int code, String message){}
+    protected abstract void onFailure(int code, String message);
 
-    protected void onSuccess(T o){}
+    protected abstract void onSuccess(T o);
 
-    protected void onNetworkLost(){
+    protected void onNetworkLost() {
         Toast.makeText(BaseApplication.getAppContext(), "请求异常，请重试！", Toast.LENGTH_SHORT).show();
     }
 

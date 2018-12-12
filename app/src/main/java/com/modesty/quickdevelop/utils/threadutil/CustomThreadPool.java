@@ -4,15 +4,12 @@ import java.util.concurrent.*;
 
 /**
  * 任务提交给线程池之后的处理策略
+ *1、如果当前线程数<corePoolSize，如果是则创建新的线程执行该任务
+ *2、如果当前线程数>=corePoolSize，则将任务存入BlockingQueue<Runnable>
+ *3、如果阻塞队列已满，且当前线程数<maximumPoolSize，则新建线程执行该任务。
+ *4、如果阻塞队列已满，且当前线程数>=maximumPoolSize，则抛出异常RejectedExecutionException，告诉调用者无法再接受任务了。
  *
- * 如果当前线程池中的线程数目小于corePoolSize，则每来一个任务，就会创建执行这个任务；
- * 如果当前线程池中的线程数目>=corePoolSize，则每来一个任务，会尝试将其添加到任务缓存队列当中
- * 若添加成功，则该任务会等待空闲线程将其取出去执行；
- * 若添加失败（一般来说是任务缓存队列已满），则会尝试创建新的线程去执行这个任务；
- * 如果当前线程池中的线程数目达到maximumPoolSize，则会采取任
- * 务拒绝策略进行处理；
- * 如果线程池中的线程数量大于 corePoolSize时，如果某线程空闲时间超过keepAliveTime，线程将被终止，
- * 直至线程池中的线程数目不大于corePoolSize；如果允许为核心池中的线程设置存活时间，那么核心池中的线程空闲时间超过keepAliveTime，线程也会被终止。
+ * 线程池刚创建是空的，出的除非调用了prestartAllCoreThreads()或者prestartCoreThread()方法来预创建corePoolSize个线程或者一个线程
  */
 public class CustomThreadPool {
 
@@ -51,7 +48,7 @@ public class CustomThreadPool {
                             int maximumPoolSize,
                             long keepAliveTime) {
         mThreadPoolExecutor = new ThreadPoolExecutor(corePoolSize,
-                maximumPoolSize,//核心池的大小
+                maximumPoolSize,//核心池的大小,最多创建多少线程，当线程池中的线程数目达到corePoolSize后，就会把到达的任务放到缓存队列当中
                 keepAliveTime,//线程池最大线程数
                 unit,//保持时间
                 workQueue,//任务队列

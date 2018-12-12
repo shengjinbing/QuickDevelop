@@ -23,7 +23,11 @@
         <activity android:name=".ui.activitys.RecyclerViewActivity" />
         <activity android:name=".ui.activitys.ListViewActivity" />
         <activity android:name=".ui.activitys.RxJavaActivity" />
-        <activity android:name=".ui.activitys.OkHttpActivity"></activity>
+        <activity android:name=".ui.activitys.OkHttpActivity" />
+        <activity android:name=".ui.activitys.RxjavaChanageActivity" />
+        <activity android:name=".ui.activitys.RxjavaConcatActivity" />
+        <activity android:name=".ui.activitys.FunctionActivity" />
+        <activity android:name=".ui.activitys.RxjavaResourceActivity"></activity>
     </application>
 
 </manifest>

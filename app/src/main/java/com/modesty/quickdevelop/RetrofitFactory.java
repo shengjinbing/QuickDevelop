@@ -2,6 +2,7 @@ package com.modesty.quickdevelop;
 
 import android.support.v4.util.ArrayMap;
 
+import com.modesty.quickdevelop.network.provider.OkHttpFactory;
 import com.modesty.quickdevelop.network.provider.OkHttpProvider;
 
 import java.util.Map;
@@ -26,7 +27,7 @@ public class RetrofitFactory {
 
         if (target == null) {
             target = new Retrofit.Builder()
-                    .client(OkHttpProvider.getDefaultOkHttpClient())
+                    .client(OkHttpFactory.getInstance())
                     .baseUrl(baseUrl)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(ScalarsConverterFactory.create())

@@ -10,8 +10,8 @@ import java.io.Serializable;
  */
 
 public class BaseData implements Serializable, Cloneable {
-    public int errno ;
-    public String errmsg;
+    public int code ;
+    public String message;
 
     @Override
     public BaseData clone() {

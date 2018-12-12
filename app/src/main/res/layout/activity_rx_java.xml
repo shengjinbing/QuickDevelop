@@ -10,12 +10,121 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="rxjava"
+            android:text="rxjava源码分析" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="chanage"
+            android:text="变换操作符" />
+        <TextView
+            android:onClick="concat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="组合合并操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="function"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="功能性操作符操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
         <TextView
             android:onClick="normal"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="normal"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="just"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="just操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="fromArray"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="fromArray操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="fromIterable"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="fromIterable操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="defer"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="defer操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="timer"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="timer操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="interval"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="interval操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="intervalRange"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="intervalRange操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="range"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="range操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="rangeLong"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="rangeLong操作符"
+            android:gravity="center"
+            android:background="#cf9292"
+            />
+        <TextView
+            android:onClick="intervalLoop"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="实现一个网络轮询"
             android:gravity="center"
             android:background="#cf9292"
             />

@@ -4,11 +4,13 @@ import com.modesty.quickdevelop.Constants;
 import com.modesty.quickdevelop.bean.ActionListBean;
 import com.modesty.quickdevelop.bean.HomeBannerBean;
 import com.modesty.quickdevelop.bean.StarListBean;
+import com.modesty.quickdevelop.bean.StarListData;
 import com.modesty.quickdevelop.network.response.HttpResponse;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -34,4 +36,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(Constants.STAR_SEARCH)
     Flowable<HttpResponse<List<StarListBean>>> getSeachList(@Field("name") String name);
+
+    @FormUrlEncoded
+    @POST(Constants.STAR_SEARCH)
+    Flowable<StarListData> getSeachList1(@Field("name") String name);
 }
