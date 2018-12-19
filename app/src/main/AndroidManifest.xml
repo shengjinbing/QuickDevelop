@@ -3,7 +3,7 @@
     package="com.modesty.quickdevelop">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
@@ -12,22 +12,69 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activitys.ViewActivity" />
-        <activity android:name=".ui.activitys.RecyclerViewActivity" />
-        <activity android:name=".ui.activitys.ListViewActivity" />
-        <activity android:name=".ui.activitys.RxJavaActivity" />
-        <activity android:name=".ui.activitys.OkHttpActivity" />
-        <activity android:name=".ui.activitys.RxjavaChanageActivity" />
-        <activity android:name=".ui.activitys.RxjavaConcatActivity" />
-        <activity android:name=".ui.activitys.FunctionActivity" />
-        <activity android:name=".ui.activitys.RxjavaResourceActivity"></activity>
+        <activity
+            android:name=".ui.activitys.ViewActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.RecyclerViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.ListViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.RxJavaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.OkHttpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.RxjavaChanageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.RxjavaConcatActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.FunctionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.RxjavaResourceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.VolleyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.FragmentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.CoordinatorLayoutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.CollapsingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.BehaviorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.DispatchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.ScrollActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activitys.HandlerActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activitys.WindowMSActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

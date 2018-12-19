@@ -23,4 +23,28 @@ public class ViewActivity extends AppCompatActivity {
     public void listview(View view) {
         startActivity(new Intent(this,ListViewActivity.class));
     }
+
+    public void coordinatorLayout(View view) {
+        startActivity(new Intent(this,CoordinatorLayoutActivity.class));
+    }
+
+    public void collapsing(View view) {
+        startActivity(new Intent(this,CollapsingActivity.class));
+    }
+
+    public void behavior(View view) {
+        startActivity(new Intent(this,BehaviorActivity.class));
+    }
+
+    public void touchevent(View view) {
+        startActivity(new Intent(this,DispatchActivity.class));
+    }
+
+    public void scroll(View view) {
+        startActivity(new Intent(this,ScrollActivity.class));
+    }
+
+    public void Window(View view) {
+        startActivity(new Intent(this,WindowMSActivity.class));
+    }
 }

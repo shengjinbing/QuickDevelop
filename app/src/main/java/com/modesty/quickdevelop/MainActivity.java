@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.modesty.quickdevelop.ui.activitys.FragmentActivity;
+import com.modesty.quickdevelop.ui.activitys.HandlerActivity;
 import com.modesty.quickdevelop.ui.activitys.OkHttpActivity;
 import com.modesty.quickdevelop.ui.activitys.RxJavaActivity;
 import com.modesty.quickdevelop.ui.activitys.ViewActivity;
+import com.modesty.quickdevelop.ui.activitys.VolleyActivity;
+import com.modesty.quickdevelop.volley.VolleyManage;
 
 import org.reactivestreams.Subscription;
 
@@ -67,4 +71,15 @@ public class MainActivity extends Activity {
     }
 
 
+    public void volley(View view) {
+        startActivity(new Intent(this, VolleyActivity.class));
+    }
+
+    public void fragment(View view) {
+        startActivity(new Intent(this, FragmentActivity.class));
+    }
+
+    public void Handler(View view) {
+        startActivity(new Intent(this, HandlerActivity.class));
+    }
 }

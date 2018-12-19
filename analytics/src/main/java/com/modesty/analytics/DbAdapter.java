@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import java.io.File;
 
 /**
- * SQLite database adapter.
+ * SQLite database com.modesty.quickdevelop.adapter.
  *
  * <p>Not thread-safe. Instances of this class should only be used
  * by a single thread.

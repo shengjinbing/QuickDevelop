@@ -6,20 +6,67 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.modesty.quickdevelop.ui.activitys.ViewActivity">
-<TextView
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#cf9292"
+        android:gravity="center"
+        android:onClick="Window"
+        android:text="Window" />
+    <TextView
+        android:onClick="scroll"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:background="#cf9292"
+        android:text="滑动冲突分析"/>
+    <TextView
+        android:onClick="touchevent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:background="#cf9292"
+        android:text="时间分发机制的分析"/>
+    <TextView
     android:onClick="recyclerview"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="50dp"
     android:gravity="center"
-    android:textColor="#f00"
     android:textSize="20sp"
+    android:background="#cf9292"
     android:text="recyclerview"/>
+
     <TextView
         android:onClick="listview"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:gravity="center"
-        android:textColor="#f00"
         android:textSize="20sp"
+        android:background="#cf9292"
         android:text="listview"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#cf9292"
+        android:gravity="center"
+        android:onClick="coordinatorLayout"
+        android:text="CoordinatorLayout+AppBarLayout" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#cf9292"
+        android:gravity="center"
+        android:onClick="collapsing"
+        android:text="CoordinatorLayout+CollapsingToolbarLayout" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#cf9292"
+        android:gravity="center"
+        android:onClick="behavior"
+        android:text="behavior" />
 </LinearLayout>

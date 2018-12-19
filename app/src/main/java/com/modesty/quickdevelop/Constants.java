@@ -59,4 +59,6 @@ public class Constants {
 
     int REQUEST_CODE_GALLERY = 1;
     int REQUEST_CODE_CAMERA = 2;
+
+    public static final String FRAGMENTTAG = "FragmentActivity_LOG";
 }

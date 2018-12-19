@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="nav_item_type" type="id" />
+    <item name="nav_item_smart_guide" type="id" />
+    <item name="nav_item_car" type="id" />
+    <item name="nav_item_services" type="id" />
+    <item name="nav_item_personal" type="id" />
+    <item name="status_component_pressed" type="id" />
+    <item name="statusbarutil_fake_status_bar_view" type="id"/>
+    <item name="statusbarutil_translucent_view" type="id"/>
+</resources>

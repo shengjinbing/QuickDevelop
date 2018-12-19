@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">QuickDevelop</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="str_nav_item_smart_guide">出行</string>
+    <string name="str_nav_item_car">爱车</string>
+    <string name="str_nav_item_services">服务</string>
+    <string name="str_nav_item_personal">我的</string>
 </resources>

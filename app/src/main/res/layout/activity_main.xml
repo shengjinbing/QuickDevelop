@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,31 +7,58 @@
     android:orientation="vertical"
     tools:context="com.modesty.quickdevelop.MainActivity">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#cf9292"
+        android:gravity="center"
         android:onClick="viewmain"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="viewmain"
-        android:gravity="center"
-        android:background="#cf9292"
-        />
-    <TextView
-        android:onClick="okhttpmain"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="okhttpmain"
-        android:gravity="center"
-        android:background="#cf9292"
-        />
-    <TextView
-        android:onClick="rxjavamain"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="rxjavamain"
-        android:gravity="center"
-        android:background="#cf9292"
-        />
+        android:text="viewmain" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="Handler"
+            android:text="Handler" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="fragment"
+            android:text="fragment" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="okhttpmain"
+            android:text="okhttpmain" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="rxjavamain"
+            android:text="rxjavamain" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="volley"
+            android:text="volley" />
+
+    </LinearLayout>
 
 
-
-</LinearLayout>
+</ScrollView>
