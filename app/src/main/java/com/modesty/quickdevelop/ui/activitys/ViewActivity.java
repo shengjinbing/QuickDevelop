@@ -47,4 +47,12 @@ public class ViewActivity extends AppCompatActivity {
     public void Window(View view) {
         startActivity(new Intent(this,WindowMSActivity.class));
     }
+
+    public void GlideImage(View view) {
+        startActivity(new Intent(this,ImageActivity.class));
+    }
+
+    public void Bitmap(View view) {
+        startActivity(new Intent(this,BitmapActivity.class));
+    }
 }

@@ -11,6 +11,20 @@
         android:layout_height="50dp"
         android:background="#cf9292"
         android:gravity="center"
+        android:onClick="Bitmap"
+        android:text="Bitmap" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#cf9292"
+        android:gravity="center"
+        android:onClick="GlideImage"
+        android:text="GlideImage" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#cf9292"
+        android:gravity="center"
         android:onClick="Window"
         android:text="Window" />
     <TextView

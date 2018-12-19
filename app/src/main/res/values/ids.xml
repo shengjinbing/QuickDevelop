@@ -8,4 +8,5 @@
     <item name="status_component_pressed" type="id" />
     <item name="statusbarutil_fake_status_bar_view" type="id"/>
     <item name="statusbarutil_translucent_view" type="id"/>
+    <item name="imageloader_uri" type="id"/>
 </resources>
