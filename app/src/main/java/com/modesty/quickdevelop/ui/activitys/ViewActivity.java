@@ -55,4 +55,8 @@ public class ViewActivity extends AppCompatActivity {
     public void Bitmap(View view) {
         startActivity(new Intent(this,BitmapActivity.class));
     }
+
+    public void optimization(View view) {
+        startActivity(new Intent(this,OptimizationActivity.class));
+    }
 }

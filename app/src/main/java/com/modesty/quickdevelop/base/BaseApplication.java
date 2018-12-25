@@ -7,6 +7,7 @@ import android.os.Environment;
 import com.modesty.logger.simplelog.LogLevel;
 import com.modesty.logger.simplelog.Logger;
 import com.modesty.quickdevelop.network.NetConfig;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 
@@ -19,10 +20,19 @@ public class BaseApplication extends Application {
     public static Application context;
     @Override
     public void onCreate() {
+        super.onCreate();
         context = this;
         Logger.init("MODESTY_LOGG", LogLevel.FULL);
         NetConfig.instance().setLoggable(true);
-        super.onCreate();
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+        // Normal app init code...
+
     }
 
     public static Application getAppContext(){

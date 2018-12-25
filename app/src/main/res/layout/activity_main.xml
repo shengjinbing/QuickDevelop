@@ -11,7 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="encrypt"
+            android:text="encrypt" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="collection"
+            android:text="Collection" />
         <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"

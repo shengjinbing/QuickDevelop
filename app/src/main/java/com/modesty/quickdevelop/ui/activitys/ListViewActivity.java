@@ -61,22 +61,22 @@ public class ListViewActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = null;
-            if (convertView == null){
-                Log.d("BBBBB","创建了"+position+"个");
-                view = LayoutInflater.from(mContext).inflate(R.layout.item_listview, null);//实例化一个对象
-                TextView name = (TextView)view.findViewById(R.id.name);
-                name.setText(data.get(position));
-                view.setTag(view);
-            }else {
-                Log.d("BBBBB","复用了"+position+"个");
-                view = (View) convertView.getTag();
-            }
-
-            return view;
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = null;
+        if (convertView == null){
+            Log.d("BBBBB","创建了"+position+"个");
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_listview, null);//实例化一个对象
+            TextView name = (TextView)view.findViewById(R.id.name);
+            name.setText(data.get(position));
+            view.setTag(view);
+        }else {
+            Log.d("BBBBB","复用了"+position+"个");
+            view = (View) convertView.getTag();
         }
+
+        return view;
     }
+}
     /************************************************/
    /* 一、RecycleBin缓存机制
 

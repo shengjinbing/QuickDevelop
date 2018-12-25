@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.modesty.quickdevelop.ui.activitys.CollectionActivity;
+import com.modesty.quickdevelop.ui.activitys.EncryptActivity;
 import com.modesty.quickdevelop.ui.activitys.FragmentActivity;
 import com.modesty.quickdevelop.ui.activitys.HandlerActivity;
 import com.modesty.quickdevelop.ui.activitys.OkHttpActivity;
@@ -81,5 +83,13 @@ public class MainActivity extends Activity {
 
     public void Handler(View view) {
         startActivity(new Intent(this, HandlerActivity.class));
+    }
+
+    public void collection(View view) {
+        startActivity(new Intent(this, CollectionActivity.class));
+    }
+
+    public void encrypt(View view) {
+        startActivity(new Intent(this, EncryptActivity.class));
     }
 }

@@ -16,7 +16,6 @@ public class CustomGlideModule extends AppGlideModule {
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
         Bitmap.Config config = Bitmap.Config.ARGB_8888;
-        builder.setDiskCache()
         super.applyOptions(context, builder);
     }
 }

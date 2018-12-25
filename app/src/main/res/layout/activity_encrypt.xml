@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.modesty.quickdevelop.ui.activitys.EncryptActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/et_accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="加密："
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="散列算法(签名算法)"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/md5"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="md5"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/sha1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="sha1"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/hmac"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="hmac"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/base"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="base64"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:text="对称性加密算法"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/aes"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="aes"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/des"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="des"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/des3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="3des"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:text="对称性加密算法"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/rsa"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="rsa"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/dsa"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="dsa"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/ecc"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="ecc"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_encrypt"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_encrypt_length"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="解密："
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/decryptionaes"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="aes"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/decryptiondes"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="des"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/decryptiondes3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="3des"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/decryptionrsa"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="rsa"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/decryptiondsa"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="dsa"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/decryptionecc"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="ecc"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/decryptionbase"
+                android:layout_width="wrap_content"
+                android:text="baser64"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_decryption"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_decryption_length"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</ScrollView>

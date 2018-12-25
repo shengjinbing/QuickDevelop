@@ -78,7 +78,10 @@
             android:name=".ui.activitys.WindowMSActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activitys.ImageActivity" />
-        <activity android:name=".ui.activitys.BitmapActivity"></activity>
+        <activity android:name=".ui.activitys.BitmapActivity" />
+        <activity android:name=".ui.activitys.OptimizationActivity" />
+        <activity android:name=".ui.activitys.CollectionActivity" />
+        <activity android:name=".ui.activitys.EncryptActivity"></activity>
     </application>
 
 </manifest>
