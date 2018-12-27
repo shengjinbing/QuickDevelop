@@ -81,7 +81,8 @@
         <activity android:name=".ui.activitys.BitmapActivity" />
         <activity android:name=".ui.activitys.OptimizationActivity" />
         <activity android:name=".ui.activitys.CollectionActivity" />
-        <activity android:name=".ui.activitys.EncryptActivity"></activity>
+        <activity android:name=".ui.activitys.EncryptActivity" />
+        <activity android:name=".ui.activitys.AnimationActivity"></activity>
     </application>
 
 </manifest>

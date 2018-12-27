@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="together">
+    <!--together表示 动画中的子动画同时播放，sequentially表示动画集合中的子动画按照前后顺序依次播放-->
+
+    <!---->
+    <objectAnimator/>
+    <!--ValueAnimator-->
+    <animator/>
+    <set/>
+</set>

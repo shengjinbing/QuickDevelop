@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.modesty.quickdevelop.ui.activitys.AnimationActivity;
 import com.modesty.quickdevelop.ui.activitys.CollectionActivity;
 import com.modesty.quickdevelop.ui.activitys.EncryptActivity;
 import com.modesty.quickdevelop.ui.activitys.FragmentActivity;
@@ -91,5 +92,9 @@ public class MainActivity extends Activity {
 
     public void encrypt(View view) {
         startActivity(new Intent(this, EncryptActivity.class));
+    }
+
+    public void animation(View view) {
+        startActivity(new Intent(this, AnimationActivity.class));
     }
 }

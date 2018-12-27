@@ -16,6 +16,13 @@
             android:layout_height="50dp"
             android:background="#cf9292"
             android:gravity="center"
+            android:onClick="animation"
+            android:text="animation" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
             android:onClick="encrypt"
             android:text="encrypt" />
         <TextView

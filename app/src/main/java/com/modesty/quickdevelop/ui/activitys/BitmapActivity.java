@@ -8,6 +8,9 @@ import android.widget.TextView;
 import com.modesty.quickdevelop.R;
 import com.modesty.quickdevelop.utils.image.ImageCompressUtil;
 
+/**
+ * 大图片加载BitmapRegionDecoder
+ */
 public class BitmapActivity extends AppCompatActivity {
 
     @Override

@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 27
+    compileSdkVersion 27//不会被打包的APK文件中
     defaultConfig {
         applicationId "com.modesty.quickdevelop"
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 27//表示使用哪个API版本
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
