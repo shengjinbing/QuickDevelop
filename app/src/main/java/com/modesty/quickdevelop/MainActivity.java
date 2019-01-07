@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.modesty.quickdevelop.ui.activitys.AdapterActivity;
 import com.modesty.quickdevelop.ui.activitys.AnimationActivity;
 import com.modesty.quickdevelop.ui.activitys.CollectionActivity;
 import com.modesty.quickdevelop.ui.activitys.EncryptActivity;
@@ -16,6 +17,7 @@ import com.modesty.quickdevelop.ui.activitys.OkHttpActivity;
 import com.modesty.quickdevelop.ui.activitys.RxJavaActivity;
 import com.modesty.quickdevelop.ui.activitys.ViewActivity;
 import com.modesty.quickdevelop.ui.activitys.VolleyActivity;
+import com.modesty.quickdevelop.ui.activitys.WebViewActivity;
 import com.modesty.quickdevelop.volley.VolleyManage;
 
 import org.reactivestreams.Subscription;
@@ -96,5 +98,13 @@ public class MainActivity extends Activity {
 
     public void animation(View view) {
         startActivity(new Intent(this, AnimationActivity.class));
+    }
+
+    public void webview(View view) {
+        startActivity(new Intent(this, WebViewActivity.class));
+    }
+
+    public void adapter(View view) {
+        startActivity(new Intent(this, AdapterActivity.class));
     }
 }

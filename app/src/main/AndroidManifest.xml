@@ -22,6 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- android:taskAffinity="指定任务栈" -->
         <activity
             android:name=".ui.activitys.ViewActivity"
             android:launchMode="standard"
@@ -82,7 +83,9 @@
         <activity android:name=".ui.activitys.OptimizationActivity" />
         <activity android:name=".ui.activitys.CollectionActivity" />
         <activity android:name=".ui.activitys.EncryptActivity" />
-        <activity android:name=".ui.activitys.AnimationActivity"></activity>
+        <activity android:name=".ui.activitys.AnimationActivity" />
+        <activity android:name=".ui.activitys.WebViewActivity" />
+        <activity android:name=".ui.activitys.AdapterActivity"></activity>
     </application>
 
 </manifest>

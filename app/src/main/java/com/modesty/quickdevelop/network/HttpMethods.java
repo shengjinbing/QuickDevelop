@@ -46,8 +46,8 @@ public class HttpMethods {
                     .client(okHttpClient)
                     .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(ScalarsConverterFactory.create())
-                    .addConverterFactory(gsonConverterFactory)
-                    .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                    .addConverterFactory(gsonConverterFactory) //设置数据解析器
+                    .addCallAdapterFactory(rxJavaCallAdapterFactory)// 支持RxJava平台
                     .build();
 
     }

@@ -42,12 +42,12 @@ import java.util.List;
  */
 public class FragmentActivity extends AppCompatActivity implements NavBar.OnNavItemClickCallback, FragmentFour.OnFragmentInteractionListener {
   /*  Fragment、FragmentManager、FragmentTransaction 关系
-    Fragment
+    1、Fragment
     其实是对 View 的封装，它持有 view, containerView, fragmentManager, childFragmentManager 等信息
-    FragmentManager
+    2、FragmentManager
     是一个抽象类，它定义了对一个 Activity/Fragment 中 添加进来的 Fragment 列表、Fragment 回退栈的操作、管理方法
             还定义了获取事务对象的方法具体实现在 FragmentImpl 中
-    FragmentTransaction
+    3、FragmentTransaction
     定义了对 Fragment 添加、替换、隐藏等操作，还有四种提交方法
     具体实现是在 BackStackRecord 中*/
     private static final int MAX_COUNT = 4;

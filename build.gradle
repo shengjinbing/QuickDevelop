@@ -23,7 +23,7 @@ allprojects {
             url 'https://maven.google.com/'
             name 'Google'
         }
-        maven { url "http://localhost:8081/repository/testhost/" }
+        maven { url "http://localhost:8081/repository/quick/" }
     }
 }
 
