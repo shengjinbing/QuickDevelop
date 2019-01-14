@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.modesty.quickdevelop.ui.activitys.RecyclerViewActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv"
+    tools:context=".ui.activitys.RefreshRecyclerViewActivity">
+    <com.modesty.quickdevelop.views.BaseRefreshRecyclerView
+        android:id="@+id/rcv_test"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+    </com.modesty.quickdevelop.views.BaseRefreshRecyclerView>
+
 </android.support.constraint.ConstraintLayout>

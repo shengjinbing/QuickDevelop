@@ -11,6 +11,7 @@ import com.modesty.quickdevelop.R;
 import com.modesty.quickdevelop.network.provider.OkHttpFactory;
 import com.modesty.quickdevelop.network.provider.OkHttpProvider;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -19,9 +20,11 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.Handshake;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -29,6 +32,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.internal.Util;
 import okio.BufferedSink;
 
@@ -36,6 +40,11 @@ import okio.BufferedSink;
  * OKhttp框架流程
  * 基本的执行流程如下：
  * OKhttpClient->Request->RealCall->Dispatcher->interceptors(RetryAndFollow->Bridge->Cache->Connect->CallServer)
+ *
+ * 1.新建的连接connection会存放到一个缓存池connectionpool中。网络连接完成后不会立即释放，而是存活一段时间。网络连接存活状态下，如果有相同的目标连接，则复用该连接，用它来进行写入写出流操作。
+ * 2.统计每个connection上发起网络请求的次数，若次数为0，则一段时间后释放该连接。
+ * 3.每个网络请求对应一个stream，connection，connectionpool等数据，将它封装为StreamAllocation对象。
+ *
  */
 public class OkHttpActivity extends AppCompatActivity {
 
@@ -71,6 +80,7 @@ public class OkHttpActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
          /*
          OkHttpClient构造函数中创建Builder（）
     public Builder() {
@@ -182,7 +192,59 @@ public class OkHttpActivity extends AppCompatActivity {
     }
     }
     */
-    }
+
+
+  /*      public final class Response implements Closeable {
+            //网络请求的信息
+            private final Request request;
+
+            //网路协议，OkHttp3支持"http/1.0","http/1.1","h2"和"spdy/3.1"
+            private final Protocol protocol;
+
+            //返回状态码，包括404(Not found),200(OK),504(Gateway timeout)...
+            private final int code;
+
+            //状态信息，与状态码对应
+            private final String message;
+
+            //TLS(传输层安全协议)的握手信息（包含协议版本，密码套件(https://en.wikipedia.org/wiki/Cipher_suite)，证书列表
+            private final Handshake handshake;
+
+            //相应的头信息，格式与请求的头信息相同。
+            private final Headers headers;
+
+            //数据内容在ResponseBody中
+            private final ResponseBody body;
+
+            //网络返回的原声数据(如果未使用网络，则为null)
+            private final Response networkResponse;
+
+            //从cache中读取的网络原生数据
+            private final Response cacheResponse;
+
+            //网络重定向后的，存储的上一次网络请求返回的数据。
+            private final Response priorResponse;
+
+            //发起请求的时间轴
+            private final long sentRequestAtMillis;
+
+            //收到返回数据时的时间轴
+            private final long receivedResponseAtMillis;
+
+            //缓存控制指令，由服务端返回数据的中的Header信息指定，或者客户端发器请求的Header信息指定。key："Cache-Control"
+            //详见<a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9">RFC 2616,14.9</a>
+            private volatile CacheControl cacheControl; // Lazily initialized.
+
+            //各种附值函数和Builder类型          ...
+        }*/
+
+
+
+
+
+
+
+
 
     /**
      * 异步

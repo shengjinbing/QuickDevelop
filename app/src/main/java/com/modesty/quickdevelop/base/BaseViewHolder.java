@@ -5,7 +5,7 @@ import android.util.SparseArray;
 import android.view.View;
 
 /**
- * Created by 天哥哥 on 2017/1/27 0003.
+ *
  */
 
 public class BaseViewHolder extends RecyclerView.ViewHolder {

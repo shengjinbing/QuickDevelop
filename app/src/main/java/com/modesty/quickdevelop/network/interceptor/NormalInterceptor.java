@@ -28,6 +28,16 @@ import okhttp3.Response;
  * 4.max-stale :即使缓存已过期，也可先展示出来。有时候过期的response比没有response更好，
  * 设置最长过期时间来允许过期的response响应： int maxStale = 60 * 60 * 24 * 28; //tolerate 4-weeks
  * stale “Cache-Control”：”max-stale=” + maxStale。
+ * <p>
+ * <p>
+ * <p>
+ * 1.不需要关心是否重定向或者失败重连
+ * 2应用拦截器只会调用一次，即使数据来源于缓存
+ * 3.只考虑应用的初始意图，不去考虑Okhhtp注入的Header比如：if-None-Match,
+ *   意思就是不管其他外在因素只考虑最终的返回结果
+ * 4.根据第二张图我们可以看出，自定义的应用拦截器是第一个开始执行的拦截器，所以这句话的意思就是，
+ *   应用拦截器可以决定是否执行其他的拦截器，通过Chain.proceed().
+ * 5.和上一句的意思差不多，可以执行多次调用其他拦截器，通过Chain.proceed().
  */
 
 public class NormalInterceptor implements Interceptor {

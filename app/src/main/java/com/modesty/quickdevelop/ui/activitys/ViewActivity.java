@@ -17,7 +17,7 @@ public class ViewActivity extends AppCompatActivity {
     }
 
     public void recyclerview(View view) {
-       startActivity(new Intent(this,RecyclerViewActivity.class));
+       startActivity(new Intent(this,RVActivity.class));
     }
 
     public void listview(View view) {

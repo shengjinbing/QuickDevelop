@@ -9,7 +9,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * 第一种拦截器addNetworkInterceptor，无论有无网络我们都先获取缓存的数据。
+ * 1.第一种拦截器addNetworkInterceptor，无论有无网络我们都先获取缓存的数据。
+ * 2.网络拦截器可以操作重定向和失败重连的返回值
+ * 3.根据第一张图，我们可以以看出，这句换的意思是，取缓存中的数据就不会去还行Chain.proceed()
+ *   所以就不能执行网络拦截器
+ * 4.意思是通过网络拦截器可以观察到所有通过网络传输的数据
+ * 5.根据第二张图我们可以看出，请求服务连接的拦截器先于网络拦截器执行，所以在进行网络拦截器执行时，
+ *   就可以看到Request中服务器请求连接信息，因为应用拦截器是获取不到对应的连接信息的。
  * Created by Administrator on 2017/6/23 0023.
  */
 
@@ -24,7 +30,6 @@ import okhttp3.Response;
 public class NetworkInterceptor implements Interceptor {
 
 
-
     /**
      * 一、无论有无网路都添加缓存。
      * 目前的情况是我们这个要addNetworkInterceptor
@@ -33,12 +38,12 @@ public class NetworkInterceptor implements Interceptor {
      */
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Log.d("BBBBB",chain.request().toString()+"1111111111222222456");
+        Log.d("BBBBB", chain.request().toString() + "1111111111222222456");
         Request request = chain.request();
         Response response = chain.proceed(request);
         String cachetime = request.header("Cache-Time");
-        int maxAge = 3200*24;//这里设置时间是缓存保留时间
-        Log.d("BBBBB",cachetime+"9999999999999");
+        int maxAge = 3200 * 24;//这里设置时间是缓存保留时间
+        Log.d("BBBBB", cachetime + "9999999999999");
         return response.newBuilder()
                 .removeHeader("Pragma")// 清除头信息，因为服务器如果不支持，会返回一些干扰信息，不清除下面无法生效
                 .removeHeader("Cache-Control")

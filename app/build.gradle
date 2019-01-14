@@ -9,9 +9,21 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    /*
+  如何对APK瘦身?
+  1)使用混淆
+  2)开启shrinkResourse(shrink-收缩),会将没有用到的图片变成一个像素点
+  3)删除无用的语言资源(删除国际化文件)
+  4)对于非透明的大图,使用JPG(没有透明度信息),代替PNG格式
+  5)使用tinypng进行图片压缩
+  6)使用webp图片格式,进一步压缩图片资源
+  7)使用第三方包时把用到的代码加到项目中来,避免引用整一个第三方库
+  */
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //debug版本提供环境切换功能所以不在此处配置url，详情参考ServerConst类，release版本才配置这三个参数
             buildConfigField "String", "BASE_URL", "\"https://api.ekchange.com\""

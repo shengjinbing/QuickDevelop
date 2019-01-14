@@ -85,7 +85,10 @@
         <activity android:name=".ui.activitys.EncryptActivity" />
         <activity android:name=".ui.activitys.AnimationActivity" />
         <activity android:name=".ui.activitys.WebViewActivity" />
-        <activity android:name=".ui.activitys.AdapterActivity"></activity>
+        <activity android:name=".ui.activitys.AdapterActivity" />
+        <activity android:name=".ui.activitys.RVActivity" />
+        <activity android:name=".ui.activitys.MultiItemRvActivity" />
+        <activity android:name=".ui.activitys.RefreshRecyclerViewActivity"></activity>
     </application>
 
 </manifest>
