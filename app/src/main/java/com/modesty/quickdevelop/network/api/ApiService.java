@@ -8,6 +8,8 @@ import com.modesty.quickdevelop.bean.StarListData;
 import com.modesty.quickdevelop.bean.User;
 import com.modesty.quickdevelop.network.response.HttpResponse;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -184,5 +186,17 @@ public interface ApiService {
 
     Call<ResponseBody> call4 = service.testFileUpload2(fileUpload2Args, filePart); //单独处理文件
     ResponseBodyPrinter.printResponseBody(call4);*/
+
+
+  //批量上传图片
+    /*public Flowable<UploadsBean> uploadFiles(File... files) {
+        //组装partMap对象
+        LogUtils.d("BBBBB", files.length + "文件长度");
+        Map<String, RequestBody> partMap = new HashMap<>();
+        for (File file : files) {
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image*//*"), file);
+            partMap.put("files\";filename=\"" + file.getName() + "\"", fileBody);
+        }
+    }*/
 
 

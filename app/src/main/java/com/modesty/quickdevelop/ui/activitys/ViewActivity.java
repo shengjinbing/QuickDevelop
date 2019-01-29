@@ -59,4 +59,9 @@ public class ViewActivity extends AppCompatActivity {
     public void optimization(View view) {
         startActivity(new Intent(this,OptimizationActivity.class));
     }
+
+    public void customView(View view) {
+        startActivity(new Intent(this,CustomViewActivity.class));
+
+    }
 }

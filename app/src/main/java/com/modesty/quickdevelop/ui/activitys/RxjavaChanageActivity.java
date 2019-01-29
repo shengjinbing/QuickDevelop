@@ -1,5 +1,6 @@
 package com.modesty.quickdevelop.ui.activitys;
 
+import android.arch.lifecycle.Lifecycle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,11 @@ import com.modesty.quickdevelop.network.ServiceFactory;
 import com.modesty.quickdevelop.network.response.HttpResponse;
 import com.modesty.quickdevelop.network.rx.BaseObjectSubscriber;
 import com.modesty.quickdevelop.network.rx.RxUtils;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
@@ -30,7 +36,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
-public class RxjavaChanageActivity extends AppCompatActivity {
+public class RxjavaChanageActivity extends RxAppCompatActivity {
     public static final String TAG = "RxjavaChanage_LOG";
 
     @Override
@@ -40,9 +46,41 @@ public class RxjavaChanageActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 1.RxLifecycle加上生命周期绑定,需要继承RxAppCompatActivity和RxFragment等
+     * 2.AutoDispose比RxLifecycle好的地方在于它不需要你的Activity或Fragment继承指定的类。只要你的Activity
+     * 或Fragment的父类实现了LifecycleOwner这个接口即可。通过源码发现，support.v7包中的AppCompatActivity
+     * 最终继承自SupportActivity，SupportActivity实现了LifecycleOwner接口。support.v4包中的Fragment也
+     * 实现了LifecycleOwner接口。而我们目前的项目中为了保证兼容性，都是要依赖Android Support v7这个包的。这样
+     * 一来我们就可以优雅的通过AutoDispose解决RxJava产生的内存泄漏问题了
+     *
+     *
+     * RxLifecycle源码分析
+     * 1.BehaviorSubject有何作用
+     * public final class BehaviorSubject<T> extends Subject<T> {
+     *     ...
+     * }
+     * public abstract class Subject<T> extends Observable<T> implements Observer<T> {
+     *     ...
+     * }
+     * BehaviorSubject继承Subject，Subject集成Observable实现Observer，Subject的官方介绍：Subject可以看成是
+     * 一个桥梁或者代理，在某些ReactiveX实现中（如RxJava），它同时充当了Observer和Observable的角色。因为它是一个
+     * Observer，它可以订阅一个或多个Observable；又因为它是一个Observable，它可以转发它收到(Observe)的数据，也可
+     * 以发射新的数据。也就是Subject既可以作为被观察者，也可以作为观察者。
+     * 2.网络请求Observable对象使用TakeUntil操作符关联BehaviorSubject对象，BehaviorSubject对象发射了数据，
+     * 然后网络请求Observable则丢失数据，即不在调用观察者Observer，BehaviorSubject过滤了ActivityEvent事件，
+     * 只有事件为ActivityEvent.DESTROY时，BehaviorSubject才发射，所以当Activity关闭时，BehaviorSubject发射
+     * ActivityEvent.DESTROY事件，网络请求Observable丢失数据，不在调用观察者Observer，整个网络请求和Activity生命周期绑定完成
+
+     *
+     * @param view
+     */
     public void normalNet(View view) {
-        ServiceFactory.newApiService().getSeachList("张立")
+        BaseObjectSubscriber<List<StarListBean>> baseObjectSubscriber = ServiceFactory.newApiService().getSeachList("张立")
                 .compose(RxUtils.rxSchedulerHelper())
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                .as(AutoDispose.autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribeWith(new BaseObjectSubscriber<List<StarListBean>>() {
                     @Override
                     public void onSuccess(List<StarListBean> starListBeans) {
@@ -201,10 +239,11 @@ public class RxjavaChanageActivity extends AppCompatActivity {
                     public void onSubscribe(Disposable d) {
 
                     }
+
                     @Override
                     public void onNext(List<Integer> stringList) {
                         //
-                        Log.d(TAG, " 缓存区里的事件数量 = " +  stringList.size());
+                        Log.d(TAG, " 缓存区里的事件数量 = " + stringList.size());
                         for (Integer value : stringList) {
                             Log.d(TAG, " 事件 = " + value);
                         }
@@ -212,7 +251,7 @@ public class RxjavaChanageActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "对Error事件作出响应" );
+                        Log.d(TAG, "对Error事件作出响应");
                     }
 
                     @Override

@@ -10,6 +10,11 @@ import android.widget.TextView;
 import com.modesty.quickdevelop.R;
 import com.modesty.quickdevelop.ui.view.CustomTextView;
 
+/**
+ * 1.onClick会发生的前提是当前的View是可以点击的，并且收到down和up事件（百度面试被问）
+ * 2.setOnClickListener会是clickable变为true（clickable和longClickable）
+ * 3.requestDisallowInterceptTouchEvent方法可以在子元素中干预父元素的事件分发过程，但是只适应ACTION_DOWN以外的诗句
+ */
 public class DispatchActivity extends AppCompatActivity {
 
     public static final String TAG = "DISPATCHACTIVITY_LOG";
@@ -35,7 +40,7 @@ public class DispatchActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Log.d(DispatchActivity.TAG,"onTouch");
-                return true;
+                return false;
             }
         });
         textView.setOnClickListener(new View.OnClickListener() {

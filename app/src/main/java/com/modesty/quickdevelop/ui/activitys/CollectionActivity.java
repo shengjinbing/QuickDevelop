@@ -6,19 +6,31 @@ import android.os.Message;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
 import android.util.SparseLongArray;
+import android.view.View;
 
 import com.modesty.quickdevelop.R;
+import com.modesty.quickdevelop.bean.User;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * 测试EvnetBus相关
+ */
 public class CollectionActivity extends AppCompatActivity {
+    public static final String TAG = "COLLECTION_LOG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +40,16 @@ public class CollectionActivity extends AppCompatActivity {
         arraymap();
         sparseArray();
         pair();
+        copyOnWriteArrayList();
+        EventBus.getDefault().register(this);
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -61,6 +83,15 @@ public class CollectionActivity extends AppCompatActivity {
         array.keyAt(1);
         array.valueAt(1);
 
+    }
+
+    /**
+     * 1.内存占有问题:很明显，两个数组同时驻扎在内存中，如果实际应用中，数据比较多，而且比较大的情况下，占用内存会比较大，针对这个其实可以用ConcurrentHashMap来代替。
+     *
+     * 2.数据一致性:CopyOnWrite容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的的数据，马上能读到，请不要使用CopyOnWrite容器
+     */
+    private void copyOnWriteArrayList() {
+        CopyOnWriteArrayList copyOnWriteArrayList = new CopyOnWriteArrayList();
     }
 
     /**
@@ -110,4 +141,37 @@ public class CollectionActivity extends AppCompatActivity {
         Map<String, String> map = new ArrayMap<>();
 
     }
+
+
+    /**
+     * 1.EventBus双重枷锁的单列模式
+     * @param view
+     */
+    public void send(View view) {
+        User user = new User();
+        user.setAge(12);
+        user.setName("张三");
+        EventBus.getDefault().post(user);
+    }
+
+    /**
+     * 1.threadMode方法执行在什么线程。
+     * 2.sticky event，中文名为粘性事件。普通事件是先注册，然后发送事件才能收到；而粘性事件，在发送事件之后再订阅该事件
+     *   也能收到。此外，粘性事件会保存在内存中，每次进入都会去内存中查找获取最新的粘性事件，除非你手动解除注册。
+     * 3.priority优先级默认为0。
+     * 4.BACKGROUND和ASYNC有什么区别呢？
+     *   BACKGROUND中的任务是一个接着一个的去调用，而ASYNC则会即时异步运行，具体
+     * 5.采用双重校验并加锁的单例模式生成EventBus实例
+     * 6.private static final Map<Class<?>, List<SubscriberMethod>> METHOD_CACHE = new ConcurrentHashMap<>();
+     *   使用map数据结构缓存所以的订阅方法。
+     * 7.通过反射的方式，将方法名，threadMode，优先级，是否为sticky方法封装为SubscriberMethod对象，添加到subscriberMethods列表中。
+     * 8.方法的命名并没有任何要求，只是加上@Subscribe注解即可！同时事件的命名也没有任何要求！
+     * 9.接下来，就是添加newSubscription，它属于Subscription类，里面包含着subscriber和subscriberMethod等信息，
+     *   同时这里有一个优先级的判断，说明它是按照优先级添加的。优先级越高，会插到在当前List靠前面的位置；
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true,priority = 10)
+    public void getEventBus(User user){
+        Log.d(TAG,user.toString());
+    }
+
 }

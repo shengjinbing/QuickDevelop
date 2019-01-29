@@ -70,6 +70,10 @@ import java.util.Map;
         return sInstance;
     }
 
+    /**
+     * 发送数据
+     * @param eventDescription
+     */
     void eventsMessage(final JSONObject eventDescription) {
         final Message m = Message.obtain();
         m.what = ENQUEUE_EVENTS;

@@ -102,6 +102,15 @@ public class RecyclerViewActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        //自定义缓存
+        mRv.setViewCacheExtension(new RecyclerView.ViewCacheExtension(){
+
+            @Override
+            public View getViewForPositionAndType(RecyclerView.Recycler recycler, int position, int type) {
+                return null;
+            }
+        });
     }
 
 

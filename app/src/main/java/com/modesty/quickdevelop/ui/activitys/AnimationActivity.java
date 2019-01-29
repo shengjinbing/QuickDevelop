@@ -22,6 +22,7 @@ import java.security.PrivateKey;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 动画可以分3中：
@@ -147,5 +148,8 @@ public class AnimationActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

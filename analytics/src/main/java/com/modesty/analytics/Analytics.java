@@ -172,6 +172,11 @@ public class Analytics {
         AnalyticsConfig.getInstance(mContext).shouldLog(shouldLog);
     }
 
+    /**
+     * 开始追踪
+     * @param eventName
+     * @param properties
+     */
     @Keep
     public void track(String eventName, Map<String, Object> properties) {
         if(!hasInitialized()) {

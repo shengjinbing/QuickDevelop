@@ -16,6 +16,13 @@
             android:layout_height="50dp"
             android:background="#cf9292"
             android:gravity="center"
+            android:onClick="mvp"
+            android:text="mvp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
             android:onClick="adapter"
             android:text="今日头条等适配方案" />
         <TextView

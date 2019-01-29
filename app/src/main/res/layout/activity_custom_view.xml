@@ -4,12 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.modesty.quickdevelop.ui.activitys.CollectionActivity">
-  <Button
-      android:onClick="send"
-      android:text="发送EventBus事件"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content" />
+    tools:context=".ui.activitys.CustomViewActivity">
+    <com.modesty.quickdevelop.views.TestViewGroupView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.modesty.quickdevelop.views.TestViewGroupView>
 
 </LinearLayout>

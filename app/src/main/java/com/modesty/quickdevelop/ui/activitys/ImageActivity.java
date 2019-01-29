@@ -23,6 +23,7 @@ import com.bumptech.glide.request.target.Target;
 import com.modesty.logger.simplelog.Logger;
 import com.modesty.quickdevelop.R;
 import com.modesty.quickdevelop.utils.image.ImageOperateUtil;
+import com.modesty.quickdevelop.utils.image.glide.GlideApp;
 
 /**
  * 1.注解(V4新特性)和自定义方法:Glide使用了annotation processor来生成API，
@@ -40,6 +41,10 @@ import com.modesty.quickdevelop.utils.image.ImageOperateUtil;
  * Transformations 变换
  * Caching Strategies 缓存策略
  * 组件特定参数：编码质量，解码参数等
+ * 3.因为 Glide 的 with() 方法不光接受 Context，还接受 Activity 和 Fragment。此外，with() 方法还能自动地从你放
+ *   入的各种东西里面提取出 Context，供它自己使用.
+ * 4.glide磁盘缓存ImageView大小的图片，也可以自己调整.diskCacheStrategy(DiskCacheStrategy.ALL)
+ * 5.Glide可以加载GIF动态图，而Picasso不能。
  */
 public class ImageActivity extends AppCompatActivity {
     private ImageView mImageView;
@@ -54,6 +59,29 @@ public class ImageActivity extends AppCompatActivity {
         mImageView1 = (ImageView) findViewById(R.id.image1);
         initRequestOptions();
         initView();
+        initGlide();
+        initPicasso();
+    }
+
+
+    /**
+     * glide相关
+     */
+    private void initGlide() {
+        GlideApp.with(this)
+                .asBitmap()
+                .load(R.drawable.toolbar_bg)
+                .centerCrop()
+                .miniThumb()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(new CustomImageViewTarget(mImageView));
+    }
+
+    /**
+     * Picasso相关
+     */
+    private void initPicasso() {
+
     }
 
     private void initRequestOptions() {
@@ -67,15 +95,11 @@ public class ImageActivity extends AppCompatActivity {
 
     private void initView() {
 
-      /*  GlideApp.with(this)
-                .asBitmap()
-                .load(R.drawable.toolbar_bg)
-                .centerCrop()
-                .into(new CustomImageViewTarget(mImageView));*/
+
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.toolbar_bg);
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
-        mImageView.setImageBitmap(ImageOperateUtil.reverseBitmap(bitmap,1));
+        mImageView.setImageBitmap(ImageOperateUtil.gerZoomRotateBitmap(bitmap,30));
     }
 
     public class CustomImageViewTarget extends ImageViewTarget<Bitmap> {
