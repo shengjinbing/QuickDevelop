@@ -90,7 +90,10 @@
         <activity android:name=".ui.activitys.MultiItemRvActivity" />
         <activity android:name=".ui.activitys.RefreshRecyclerViewActivity" />
         <activity android:name=".ui.activitys.CustomViewActivity" />
-        <activity android:name=".ui.activitys.MVPActivity"></activity>
+        <activity android:name=".ui.activitys.MVPActivity" />
+        <activity android:name=".ui.activitys.WindowManagerTestActivity" />
+        <activity android:name=".ui.activitys.ButterKnifeActivity" />
+        <activity android:name=".ui.activitys.MvpDagger2Activity"></activity>
     </application>
 
 </manifest>

@@ -15,11 +15,11 @@ import okhttp3.internal.tls.OkHostnameVerifier;
 
 /**
  * <p>
- * This is a configuration class provided for clients.For better extension and customization,client can set customized parameters of network
+ * This is MVPActivityModelImpl configuration class provided for clients.For better extension and customization,client can set customized parameters of network
  * based on their own application. However you should set these parameters before you get the global instance
  * of {@link okhttp3.OkHttpClient} by {@link OkHttpFactory} for the first time.<p/>
  * <p>
- * Some of the parameters have default values, so there is not a must to use this class.<p/>
+ * Some of the parameters have default values, so there is not MVPActivityModelImpl must to use this class.<p/>
  *
  * @author wangzhiyuan
  * @since 2018/1/3

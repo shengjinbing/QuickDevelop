@@ -1,4 +1,4 @@
-package com.modesty.quickdevelop.contract;
+package com.modesty.quickdevelop.mvp.contract.home;
 
 import com.modesty.quickdevelop.base.BaseContract;
 
@@ -13,6 +13,12 @@ public class MVPActivityContract {
 
     public interface Model {
     }
+
+   
+
+   
+
+
 
 
 }

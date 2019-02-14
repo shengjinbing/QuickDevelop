@@ -114,9 +114,9 @@ public class ImageLoader {
     }
 
     /**
-     * build a new instance of ImageLoader
+     * build MVPActivityModelImpl new instance of ImageLoader
      * @param context
-     * @return a new instance of ImageLoader
+     * @return MVPActivityModelImpl new instance of ImageLoader
      */
     public static ImageLoader build(Context context) {
         return new ImageLoader(context);

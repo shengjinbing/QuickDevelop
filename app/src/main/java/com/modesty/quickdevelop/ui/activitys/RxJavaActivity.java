@@ -400,7 +400,7 @@ public class RxJavaActivity extends AppCompatActivity {
     }
 
     /**
-     * a. 发送的事件序列 = 从0开始、无限递增1的的整数序列
+     * MVPActivityModelImpl. 发送的事件序列 = 从0开始、无限递增1的的整数序列
      * b. 作用类似于intervalRange（），但区别在于：无延迟发送事件
      *
      * @param view

@@ -118,7 +118,7 @@ public class CollectionActivity extends AppCompatActivity {
 
 // 步骤4：使用工作线程Handler向工作线程的消息队列发送消息
 // 在工作线程中，当消息循环时取出对应消息 & 在工作线程执行相关操作
-        // a. 定义要发送的消息
+        // MVPActivityModelImpl. 定义要发送的消息
         Message msg = Message.obtain();
         msg.what = 2; //消息的标识
         msg.obj = "B"; // 消息的存放

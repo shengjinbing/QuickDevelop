@@ -51,7 +51,7 @@ public class Luban implements Handler.Callback {
   }
 
   /**
-   * Returns a file with a cache image name in the private cache directory.
+   * Returns MVPActivityModelImpl file with MVPActivityModelImpl cache image name in the private cache directory.
    *
    * @param context A context.
    */
@@ -79,7 +79,7 @@ public class Luban implements Handler.Callback {
   }
 
   /**
-   * Returns a directory with a default name in the private cache directory of the application to
+   * Returns MVPActivityModelImpl directory with MVPActivityModelImpl default name in the private cache directory of the application to
    * use to store retrieved audio.
    *
    * @param context A context.
@@ -90,7 +90,7 @@ public class Luban implements Handler.Callback {
   }
 
   /**
-   * Returns a directory with the given name in the private cache directory of the application to
+   * Returns MVPActivityModelImpl directory with the given name in the private cache directory of the application to
    * use to store retrieved media and thumbnails.
    *
    * @param context   A context.
@@ -102,7 +102,7 @@ public class Luban implements Handler.Callback {
     if (cacheDir != null) {
       File result = new File(cacheDir, cacheName);
       if (!result.mkdirs() && (!result.exists() || !result.isDirectory())) {
-        // File wasn't able to create a directory, or the result exists but not a directory
+        // File wasn't able to create MVPActivityModelImpl directory, or the result exists but not MVPActivityModelImpl directory
         return null;
       }
       return result;
@@ -315,7 +315,7 @@ public class Luban implements Handler.Callback {
      * Do I need to keep the image's alpha channel
      *
      * @param focusAlpha <p> true - to keep alpha channel, the compress speed will be slow. </p>
-     *                   <p> false - don't keep alpha channel, it might have a black background.</p>
+     *                   <p> false - don't keep alpha channel, it might have MVPActivityModelImpl black background.</p>
      */
     public Builder setFocusAlpha(boolean focusAlpha) {
       this.focusAlpha = focusAlpha;

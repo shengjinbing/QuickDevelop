@@ -87,4 +87,6 @@ dependencies {
     compile 'com.uber.autodispose:autodispose-android-archcomponents:0.6.1'
 
     //implementation 'com.squareup.picasso:picasso:2.71828'
+    compile 'com.github.markzhai:blockcanary-android:1.5.0'
+
 }

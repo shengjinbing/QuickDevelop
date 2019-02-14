@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain MVPActivityModelImpl copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -55,12 +55,12 @@ import java.util.concurrent.TimeUnit;
  * https://android.googlesource.com/platform/libcore/+/android-4.1.1_r1/luni/src/main/java/libcore/io/DiskLruCache.java
  ******************************************************************************
  *
- * A cache that uses a bounded amount of space on a filesystem. Each cache
- * entry has a string key and a fixed number of values. Values are byte
+ * A cache that uses MVPActivityModelImpl bounded amount of space on MVPActivityModelImpl filesystem. Each cache
+ * entry has MVPActivityModelImpl string key and MVPActivityModelImpl fixed number of values. Values are byte
  * sequences, accessible as streams or files. Each value must be between {@code
  * 0} and {@code Integer.MAX_VALUE} bytes in length.
  *
- * <p>The cache stores its data in a directory on the filesystem. This
+ * <p>The cache stores its data in MVPActivityModelImpl directory on the filesystem. This
  * directory must be exclusive to the cache; the cache may delete or overwrite
  * files from its directory. It is an error for multiple processes to use the
  * same cache directory at the same time.
@@ -70,30 +70,30 @@ import java.util.concurrent.TimeUnit;
  * remove entries in the background until the limit is satisfied. The limit is
  * not strict: the cache may temporarily exceed it while waiting for files to be
  * deleted. The limit does not include filesystem overhead or the cache
- * journal so space-sensitive applications should set a conservative limit.
+ * journal so space-sensitive applications should set MVPActivityModelImpl conservative limit.
  *
  * <p>Clients call {@link #edit} to create or update the values of an entry. An
- * entry may have only one editor at one time; if a value is not available to be
+ * entry may have only one editor at one time; if MVPActivityModelImpl value is not available to be
  * edited then {@link #edit} will return null.
  * <ul>
  *     <li>When an entry is being <strong>created</strong> it is necessary to
- *         supply a full set of values; the empty value should be used as a
+ *         supply MVPActivityModelImpl full set of values; the empty value should be used as MVPActivityModelImpl
  *         placeholder if necessary.
  *     <li>When an entry is being <strong>edited</strong>, it is not necessary
  *         to supply data for every value; values default to their previous
  *         value.
  * </ul>
- * Every {@link #edit} call must be matched by a call to {@link Editor#commit}
- * or {@link Editor#abort}. Committing is atomic: a read observes the full set
- * of values as they were before or after the commit, but never a mix of values.
+ * Every {@link #edit} call must be matched by MVPActivityModelImpl call to {@link Editor#commit}
+ * or {@link Editor#abort}. Committing is atomic: MVPActivityModelImpl read observes the full set
+ * of values as they were before or after the commit, but never MVPActivityModelImpl mix of values.
  *
- * <p>Clients call {@link #get} to read a snapshot of an entry. The read will
+ * <p>Clients call {@link #get} to read MVPActivityModelImpl snapshot of an entry. The read will
  * observe the value at the time that {@link #get} was called. Updates and
  * removals after the call do not impact ongoing reads.
  *
  * <p>This class is tolerant of some I/O errors. If files are missing from the
  * filesystem, the corresponding entries will be dropped from the cache. If
- * an error occurs while writing a cache value, the edit will fail silently.
+ * an error occurs while writing MVPActivityModelImpl cache value, the edit will fail silently.
  * Callers should handle other problems by catching {@code IOException} and
  * responding appropriately.
  */
@@ -112,7 +112,7 @@ public final class DiskLruCache implements Closeable {
     private static final int IO_BUFFER_SIZE = 8 * 1024;
 
     /*
-     * This cache uses a journal file named "journal". A typical journal file
+     * This cache uses MVPActivityModelImpl journal file named "journal". A typical journal file
      * looks like this:
      *     libcore.io.DiskLruCache
      *     1
@@ -130,16 +130,16 @@ public final class DiskLruCache implements Closeable {
      *
      * The first five lines of the journal form its header. They are the
      * constant string "libcore.io.DiskLruCache", the disk cache's version,
-     * the application's version, the value count, and a blank line.
+     * the application's version, the value count, and MVPActivityModelImpl blank line.
      *
-     * Each of the subsequent lines in the file is a record of the state of a
-     * cache entry. Each line contains space-separated values: a state, a key,
+     * Each of the subsequent lines in the file is MVPActivityModelImpl record of the state of MVPActivityModelImpl
+     * cache entry. Each line contains space-separated values: MVPActivityModelImpl state, MVPActivityModelImpl key,
      * and optional state-specific values.
      *   o DIRTY lines track that an entry is actively being created or updated.
-     *     Every successful DIRTY action should be followed by a CLEAN or REMOVE
-     *     action. DIRTY lines without a matching CLEAN or REMOVE indicate that
+     *     Every successful DIRTY action should be followed by MVPActivityModelImpl CLEAN or REMOVE
+     *     action. DIRTY lines without MVPActivityModelImpl matching CLEAN or REMOVE indicate that
      *     temporary files may need to be deleted.
-     *   o CLEAN lines track a cache entry that has been successfully published
+     *   o CLEAN lines track MVPActivityModelImpl cache entry that has been successfully published
      *     and may be read. A publish line is followed by the lengths of each of
      *     its values.
      *   o READ lines track accesses for LRU.
@@ -165,7 +165,7 @@ public final class DiskLruCache implements Closeable {
 
     /**
      * To differentiate between old and current snapshots, each entry is given
-     * a sequence number each time an edit is committed. A snapshot is stale if
+     * MVPActivityModelImpl sequence number each time an edit is committed. A snapshot is stale if
      * its sequence number is not equal to its entry's sequence number.
      */
     private long nextSequenceNumber = 0;
@@ -189,7 +189,7 @@ public final class DiskLruCache implements Closeable {
     }
 
     /**
-     * Returns the remainder of 'reader' as a string, closing it when done.
+     * Returns the remainder of 'reader' as MVPActivityModelImpl string, closing it when done.
      */
     public static String readFully(Reader reader) throws IOException {
         try {
@@ -254,7 +254,7 @@ public final class DiskLruCache implements Closeable {
     public static void deleteContents(File dir) throws IOException {
         File[] files = dir.listFiles();
         if (files == null) {
-            throw new IllegalArgumentException("not a directory: " + dir);
+            throw new IllegalArgumentException("not MVPActivityModelImpl directory: " + dir);
         }
         for (File file : files) {
             if (file.isDirectory()) {
@@ -266,7 +266,7 @@ public final class DiskLruCache implements Closeable {
         }
     }
 
-    /** This cache uses a single background thread to evict entries. */
+    /** This cache uses MVPActivityModelImpl single background thread to evict entries. */
     private final ExecutorService executorService = new ThreadPoolExecutor(0, 1,
             60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
     private final Callable<Void> cleanupCallable = new Callable<Void>() {
@@ -296,10 +296,10 @@ public final class DiskLruCache implements Closeable {
     }
 
     /**
-     * Opens the cache in {@code directory}, creating a cache if none exists
+     * Opens the cache in {@code directory}, creating MVPActivityModelImpl cache if none exists
      * there.
      *
-     * @param directory a writable directory
+     * @param directory MVPActivityModelImpl writable directory
      * @param appVersion
      * @param valueCount the number of values per cache entry. Must be positive.
      * @param maxSize the maximum number of bytes this cache should use to store
@@ -330,7 +330,7 @@ public final class DiskLruCache implements Closeable {
             }
         }
 
-        // create a new empty cache
+        // create MVPActivityModelImpl new empty cache
         directory.mkdirs();
         cache = new DiskLruCache(directory, appVersion, valueCount, maxSize);
         cache.rebuildJournal();
@@ -398,7 +398,7 @@ public final class DiskLruCache implements Closeable {
     }
 
     /**
-     * Computes the initial size and collects garbage as a part of opening the
+     * Computes the initial size and collects garbage as MVPActivityModelImpl part of opening the
      * cache. Dirty entries are assumed to be inconsistent and will be deleted.
      */
     private void processJournal() throws IOException {
@@ -421,7 +421,7 @@ public final class DiskLruCache implements Closeable {
     }
 
     /**
-     * Creates a new journal that omits redundant information. This replaces the
+     * Creates MVPActivityModelImpl new journal that omits redundant information. This replaces the
      * current journal if it exists.
      */
     private synchronized void rebuildJournal() throws IOException {
@@ -467,8 +467,8 @@ public final class DiskLruCache implements Closeable {
     }
 
     /**
-     * Returns a snapshot of the entry named {@code key}, or null if it doesn't
-     * exist is not currently readable. If a value is returned, it is moved to
+     * Returns MVPActivityModelImpl snapshot of the entry named {@code key}, or null if it doesn't
+     * exist is not currently readable. If MVPActivityModelImpl value is returned, it is moved to
      * the head of the LRU queue.
      */
     public synchronized Snapshot get(String key) throws IOException {
@@ -484,7 +484,7 @@ public final class DiskLruCache implements Closeable {
         }
 
         /*
-         * Open all streams eagerly to guarantee that we see a single published
+         * Open all streams eagerly to guarantee that we see MVPActivityModelImpl single published
          * snapshot. If we opened streams lazily then the streams could come
          * from different edits.
          */
@@ -494,7 +494,7 @@ public final class DiskLruCache implements Closeable {
                 ins[i] = new FileInputStream(entry.getCleanFile(i));
             }
         } catch (FileNotFoundException e) {
-            // a file must have been deleted manually!
+            // MVPActivityModelImpl file must have been deleted manually!
             return null;
         }
 
@@ -556,7 +556,7 @@ public final class DiskLruCache implements Closeable {
 
     /**
      * Returns the number of bytes currently being used to store the values in
-     * this cache. This may be greater than the max size if a background
+     * this cache. This may be greater than the max size if MVPActivityModelImpl background
      * deletion is pending.
      */
     public synchronized long size() {
@@ -569,7 +569,7 @@ public final class DiskLruCache implements Closeable {
             throw new IllegalStateException();
         }
 
-        // if this edit is creating the entry for the first time, every index must have a value
+        // if this edit is creating the entry for the first time, every index must have MVPActivityModelImpl value
         if (success && !entry.readable) {
             for (int i = 0; i < valueCount; i++) {
                 if (!entry.getDirtyFile(i).exists()) {
@@ -798,7 +798,7 @@ public final class DiskLruCache implements Closeable {
         }
 
         /**
-         * Returns the last committed value as a string, or null if no value
+         * Returns the last committed value as MVPActivityModelImpl string, or null if no value
          * has been committed.
          */
         public String getString(int index) throws IOException {
@@ -807,7 +807,7 @@ public final class DiskLruCache implements Closeable {
         }
 
         /**
-         * Returns a new unbuffered output stream to write the value at
+         * Returns MVPActivityModelImpl new unbuffered output stream to write the value at
          * {@code index}. If the underlying output stream encounters errors
          * when writing to the filesystem, this edit will be aborted when
          * {@link #commit} is called. The returned output stream does not throw

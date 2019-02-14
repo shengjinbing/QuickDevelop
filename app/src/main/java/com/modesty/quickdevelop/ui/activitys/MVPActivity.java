@@ -1,15 +1,12 @@
 package com.modesty.quickdevelop.ui.activitys;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.modesty.quickdevelop.R;
-import com.modesty.quickdevelop.contract.MVPActivityContract;
-import com.modesty.quickdevelop.mvp.AbstractMvpActivitiy;
-import com.modesty.quickdevelop.mvp.BaseMvpView;
-import com.modesty.quickdevelop.mvp.CreatePresenter;
-import com.modesty.quickdevelop.mvp.RequestPresenter;
-import com.modesty.quickdevelop.mvp.RequestView;
+import com.modesty.quickdevelop.mvp1.AbstractMvpActivitiy;
+import com.modesty.quickdevelop.mvp1.CreatePresenter;
+import com.modesty.quickdevelop.mvp1.RequestPresenter;
+import com.modesty.quickdevelop.mvp1.RequestView;
 
 //声明需要创建的Presenter
 @CreatePresenter(RequestPresenter.class)

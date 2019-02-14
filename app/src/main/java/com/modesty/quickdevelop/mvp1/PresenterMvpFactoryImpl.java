@@ -1,6 +1,4 @@
-package com.modesty.quickdevelop.mvp;
-
-import com.modesty.quickdevelop.base.BaseContract;
+package com.modesty.quickdevelop.mvp1;
 
 public class  PresenterMvpFactoryImpl<V extends BaseMvpView, P extends BaseMvpPresenter<V>>
         implements PresenterMvpFactory<V, P> {

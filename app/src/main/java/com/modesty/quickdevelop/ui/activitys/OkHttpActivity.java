@@ -167,7 +167,7 @@ public class OkHttpActivity extends AppCompatActivity {
      通过 OkHttpClient.Builder#addNetworkInterceptor(Interceptor) 传入；
 
       Response getResponseWithInterceptorChain() throws IOException {
-    // Build a full stack of interceptors.
+    // Build MVPActivityModelImpl full stack of interceptors.
     List<Interceptor> interceptors = new ArrayList<>(); //这是一个List，是有序的
     interceptors.addAll(client.interceptors());//首先添加的是用户添加的全局拦截器
     interceptors.add(retryAndFollowUpInterceptor); //错误、重定向拦截器
@@ -232,7 +232,7 @@ public class OkHttpActivity extends AppCompatActivity {
             private final long receivedResponseAtMillis;
 
             //缓存控制指令，由服务端返回数据的中的Header信息指定，或者客户端发器请求的Header信息指定。key："Cache-Control"
-            //详见<a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9">RFC 2616,14.9</a>
+            //详见<MVPActivityModelImpl href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9">RFC 2616,14.9</MVPActivityModelImpl>
             private volatile CacheControl cacheControl; // Lazily initialized.
 
             //各种附值函数和Builder类型          ...

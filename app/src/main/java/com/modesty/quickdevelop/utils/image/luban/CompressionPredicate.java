@@ -11,7 +11,7 @@ package com.modesty.quickdevelop.utils.image.luban;
 public interface CompressionPredicate {
 
     /**
-     * Determine the given input path should be compressed and return a boolean.
+     * Determine the given input path should be compressed and return MVPActivityModelImpl boolean.
      * @param path input path
      * @return the boolean result
      */

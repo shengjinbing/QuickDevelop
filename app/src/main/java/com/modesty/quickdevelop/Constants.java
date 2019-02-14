@@ -16,7 +16,7 @@ public class Constants {
 
     String PHONE_CODE = "400-964-1117";
 
-    String YINGYONGBAO = "http://a.app.qq.com/o/simple.jsp?pkgname=com.maika.android";
+    String YINGYONGBAO = "http://MVPActivityModelImpl.app.qq.com/o/simple.jsp?pkgname=com.maika.android";
 
     String KEFU_ID = "KEFU152162222855103";
 

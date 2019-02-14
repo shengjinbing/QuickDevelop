@@ -28,7 +28,7 @@ public class Base64Decoder extends FilterInputStream {
     private int carryOver;
 
     /***
-     * Constructs a new Base64 decoder that reads input from the given
+     * Constructs MVPActivityModelImpl new Base64 decoder that reads input from the given
      * InputStream.
      *
      * @param in
@@ -123,7 +123,7 @@ public class Base64Decoder extends FilterInputStream {
             int x = read();
             if (x == -1 && i == 0) { // an immediate -1 returns -1
                 return -1;
-            } else if (x == -1) { // a later -1 returns the chars read so far
+            } else if (x == -1) { // MVPActivityModelImpl later -1 returns the chars read so far
                 break;
             }
             buf[off + i] = (byte) x;
@@ -132,8 +132,8 @@ public class Base64Decoder extends FilterInputStream {
     }
 
     /***
-     * Returns the decoded form of the given encoded string, as a String. Note
-     * that not all binary data can be represented as a String, so this method
+     * Returns the decoded form of the given encoded string, as MVPActivityModelImpl String. Note
+     * that not all binary data can be represented as MVPActivityModelImpl String, so this method
      * should only be used for encoded String data. Use decodeToBytes()
      * otherwise.
      *

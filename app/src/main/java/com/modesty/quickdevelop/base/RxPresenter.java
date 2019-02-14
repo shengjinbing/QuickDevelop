@@ -62,8 +62,9 @@ public class RxPresenter<T extends BaseContract.BaseView> implements BaseContrac
     }
 
     protected <T> AutoDisposeConverter<T> bindLifecycle() {
-        if (null == lifecycleOwner)
+        if (null == lifecycleOwner) {
             throw new NullPointerException("lifecycleOwner == null");
+        }
         return RxLifecycleUtils.bindLifecycle(lifecycleOwner);
     }
 

@@ -19,7 +19,7 @@ public class Base64Encoder extends FilterOutputStream {
     private boolean isWrapBreak = true;
 
     /***
-     * Constructs a new Base64 encoder that writes output to the given
+     * Constructs MVPActivityModelImpl new Base64 encoder that writes output to the given
      * OutputStream.
      *
      * @param out
@@ -30,7 +30,7 @@ public class Base64Encoder extends FilterOutputStream {
     }
 
     /***
-     * Constructs a new Base64 encoder that writes output to the given
+     * Constructs MVPActivityModelImpl new Base64 encoder that writes output to the given
      * OutputStream.
      *
      * @param out

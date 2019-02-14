@@ -7,6 +7,7 @@ import android.util.Log;
 import com.modesty.quickdevelop.NetUtils;
 import com.modesty.quickdevelop.SpUtils;
 import com.modesty.quickdevelop.base.BaseApplication;
+import com.modesty.quickdevelop.base.BaseContract;
 import com.modesty.quickdevelop.network.exception.ApiException;
 import com.modesty.quickdevelop.network.response.HttpResponse;
 
@@ -21,16 +22,16 @@ import retrofit2.HttpException;
 
 public abstract class BaseObjectSubscriber<T> extends ResourceSubscriber<HttpResponse<T>> {
     private String mMsg;
+    private BaseContract.BaseView mView;
 
     public BaseObjectSubscriber() {
     }
 
+    public BaseObjectSubscriber(BaseContract.BaseView view) {
+        this.mView = view;
+    }
 
-    public abstract void onSuccess(T t);
-
-    public abstract void onFailure(String code, String message);
-
-    public void onTokenFail(){
+    public void onTokenFail() {
 
     }
 
@@ -45,10 +46,6 @@ public abstract class BaseObjectSubscriber<T> extends ResourceSubscriber<HttpRes
     }
 
     @Override
-    public void onComplete() {
-    }
-
-    @Override
     public void onNext(HttpResponse<T> response) {
         if (response.code.equals("0000")) {
             if (response.data == null) {
@@ -60,25 +57,32 @@ public abstract class BaseObjectSubscriber<T> extends ResourceSubscriber<HttpRes
             if (response.result != null) {
                 onSuccess(response.result);
             }
-        }else {
+        } else {
             //可以不处理任何东西
             onFailure(response.code, response.message);
         }
     }
 
+    public abstract void onSuccess(T t);
+
+    public abstract void onFailure(String code, String message);
 
     @Override
     public void onError(Throwable e) {
         if (mMsg != null && !TextUtils.isEmpty(mMsg)) {
-            Log.d("BBBBB",mMsg);
+            Log.d("BBBBB", mMsg);
         } else if (e instanceof ApiException) {
-            Log.d("BBBBB",e.toString());
+            Log.d("BBBBB", e.toString());
         } else if (e instanceof SocketTimeoutException) {
-            Log.d("BBBBB","服务器响应超时ヽ(≧Д≦)ノ");
+            Log.d("BBBBB", "服务器响应超时ヽ(≧Д≦)ノ");
         } else if (e instanceof HttpException) {
-            Log.d("BBBBB","数据加载失败ヽ(≧Д≦)ノ");
+            Log.d("BBBBB", "数据加载失败ヽ(≧Д≦)ノ");
         } else {
-            Log.d("BBBBB","未知错误ヽ(≧Д≦)ノ");
+            Log.d("BBBBB", "未知错误ヽ(≧Д≦)ノ");
         }
+    }
+
+    @Override
+    public void onComplete() {
     }
 }

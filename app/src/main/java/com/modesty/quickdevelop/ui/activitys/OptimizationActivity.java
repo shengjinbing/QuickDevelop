@@ -36,6 +36,28 @@ import com.squareup.leakcanary.LeakCanary;
  * 10)线程包括AsyncTask的使用,Activity退出后线程还在运行(线程在死循环),并且在线程中使用了Activity或view对象(解决方法:不要直接写死循环,可以设置一个布尔类型的TAG,当activity推出的时候,设置TAG为False)
  * 11)Handler对象的使用,Activity退出后Handler还是有消息需要处理(解决方法:在退出activity之后,移除消息)
  * 12)WebView造成的内存泄漏(在onDestory中销毁)
+ *
+ *
+ *
+ *
+ *
+ *
+ * APP启动优化
+ * 一、应用的启动方式
+ * 1、冷启动：当启动应用时，后台没有该应用的进程，这时系统会首先会创建一个新的进程分配给该应用，这种启动方式就是冷启动。
+ * 2、热启动：当启动应用时，后台已有该应用的进程，比如按下home键，这种在已有进程的情况下，这种启动会从已有的进程中来启动
+ *    应用，这种启动方式叫热启动。
+ * 3、温启动 ：当启动应用时，后台已有该应用的进程，但是启动的入口Activity被干掉了，比如按了back键，应用虽然退出了，但是
+ *    该应用的进程是依然会保留在后台，这种启动方式叫温启动。
+ *
+ * 二、adb shell am start -W [PackageName]/[PackageName.MainActivity]
+ * 1、ThisTime:一般和TotalTime时间一样，除非在应用启动时开了一个透明的Activity预先处理一些事再显示出主Activity，这样将比TotalTime小。
+ * 2、TotalTime:应用的启动时间，包括创建进程+Application初始化+Activity初始化到界面显示。
+ * 3、WaitTime:一般比TotalTime大点，包括系统影响的耗时
+ *
+ * 三、getWindow().getDecorView().post()的懒加载机制在窗口完成以后进行加载，这里面的run方法是在onResume之后运行的
+ * 四、WindowManager会先加载APP里的主题样式里的窗口背景（windowBackground）作为预览元素，然后才去真正的加载布局。如
+ *    果加载windowBackground时间过长，而默认的背景又是黑色或者白色，这样会给用户造成一种错觉，APP不流畅，影响用户体验。
  */
 public class OptimizationActivity extends AppCompatActivity {
     private static Context context;

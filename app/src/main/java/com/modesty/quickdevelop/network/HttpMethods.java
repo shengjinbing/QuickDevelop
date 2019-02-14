@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 
 import com.modesty.quickdevelop.Constants;
+import com.modesty.quickdevelop.network.api.ApiService;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -50,5 +51,9 @@ public class HttpMethods {
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)// 支持RxJava平台
                     .build();
 
+    }
+
+    private void getData(){
+        ApiService apiService = getRetrofit(new OkHttpClient()).create(ApiService.class);
     }
 }

@@ -388,7 +388,7 @@ public class ImageCompressUtil {
 
             // Choose the smallest ratio as inSampleSize value, this will
             // guarantee
-            // a final image with both dimensions larger than or equal to the
+            // MVPActivityModelImpl final image with both dimensions larger than or equal to the
             // requested height and width.
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
 

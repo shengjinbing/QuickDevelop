@@ -8,6 +8,8 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.LogPrinter;
+import android.util.Printer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,7 +18,10 @@ import com.modesty.logger.simplelog.Logger;
 import com.modesty.quickdevelop.R;
 
 /**
- * 1.MessageQueue虽然叫消息队列但是内部存储的数据结构是单链表
+ * 1.MessageQueue虽然叫消息队列但是内部存储的数据结构是单链表;
+ *   enqueueMessage()如果不是延迟消息直接加入链表头部，否者按时间比较（从小到大）将数据插入到合适的位子；
+ *   如果加入的消息是异步的needWake = false;
+ *
  * 2.通过ThreadLocal可以在轻松获取每个线程的Looper
  * 3.UI线程也就是ActivityThread，ActivityThread被创建的时候就会初始化Looper
  * 4.ThreadLocal里面保存的是Looper, 由下面源码可以看出来两次prepare方法调用会抛异常
@@ -75,6 +80,12 @@ public class HandlerActivity extends AppCompatActivity {
         startThread3();
         initHandlerThread();
         initThreadLocal();
+        getMainLooper().setMessageLogging(new Printer() {
+            @Override
+            public void println(String x) {
+
+            }
+        });
     }
 
     private void initView() {
@@ -248,7 +259,7 @@ public class HandlerActivity extends AppCompatActivity {
 
     public void button1(View view) {
         // 通过sendMessage（）发送
-        // a. 定义要发送的消息
+        // MVPActivityModelImpl. 定义要发送的消息
         Message msg = Message.obtain();
         msg.what = 1; //消息的标识
         msg.obj = "A"; // 消息的存放
@@ -259,7 +270,7 @@ public class HandlerActivity extends AppCompatActivity {
 
     public void button2(View view) {
         // 通过sendMessage（）发送
-        // a. 定义要发送的消息
+        // MVPActivityModelImpl. 定义要发送的消息
         Message msg = Message.obtain();
         msg.what = 2; //消息的标识
         msg.obj = "B"; // 消息的存放

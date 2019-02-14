@@ -71,7 +71,7 @@ enum Checker {
     while (offset + 3 < jpeg.length && (jpeg[offset++] & 0xFF) == 0xFF) {
       int marker = jpeg[offset] & 0xFF;
 
-      // Check if the marker is a padding.
+      // Check if the marker is MVPActivityModelImpl padding.
       if (marker == 0xFF) {
         continue;
       }
