@@ -143,6 +143,7 @@ public class DisplayUtils {
     public static void setCustomDensity(Activity activity, final Application application) {
         DisplayMetrics displayMetrics = application.getResources().getDisplayMetrics();
         if (sNoncompatDensity == 0) {
+            //density 的意思就是 1 dp 占当前设备多少像素。
             sNoncompatDensity = displayMetrics.density;
             sNoncompatScaledDensity = displayMetrics.scaledDensity;
             // 监听在系统设置中切换字体

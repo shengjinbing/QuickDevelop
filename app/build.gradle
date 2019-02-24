@@ -46,6 +46,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
+    // Optional -- Mockito framework（可选，用于模拟一些依赖对象，以达到隔离依赖的效果）
+    testImplementation 'org.mockito:mockito-core:2.19.0'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //view
@@ -85,8 +87,7 @@ dependencies {
     //implementation project(':logger')
     compile 'com.uber.autodispose:autodispose:0.6.1'
     compile 'com.uber.autodispose:autodispose-android-archcomponents:0.6.1'
-
     //implementation 'com.squareup.picasso:picasso:2.71828'
     compile 'com.github.markzhai:blockcanary-android:1.5.0'
-
+    implementation project(':utils')
 }

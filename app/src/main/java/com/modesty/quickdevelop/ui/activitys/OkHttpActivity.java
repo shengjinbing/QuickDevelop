@@ -45,6 +45,12 @@ import okio.BufferedSink;
  * 2.统计每个connection上发起网络请求的次数，若次数为0，则一段时间后释放该连接。
  * 3.每个网络请求对应一个stream，connection，connectionpool等数据，将它封装为StreamAllocation对象。
  *
+ * 1.支持Http2/SPDY,对一台机器的所有请求共享同一个socket。
+ * 2.默认启用长连接，使用连接池管理（内置连接池，支持连接复用，减少延迟 ），支持Cache(目前仅支持GET请求的缓存)。
+ * 3.路由节点管理，提升访问速度。
+ * 4.透明的Gzip处理，节省网络流量。
+ * 5.灵活的拦截器，行为类似Java EE的Filter或者函数编程中的Map。
+ *
  */
 public class OkHttpActivity extends AppCompatActivity {
 

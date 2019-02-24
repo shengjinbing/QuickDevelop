@@ -19,10 +19,31 @@ enum Checker {
   private static final String TAG = "Luban";
 
   private static List<String> format = new ArrayList<>();
+  /**
+   * .jpg和.jpeg
+   * 1.透明性：它不支持透明性
+   * 2.动画：它不支持动画
+   * 3.有损压缩
+   */
   private static final String JPG = ".jpg";
   private static final String JPEG = ".jpeg";
+  /**
+   * 1、类型：Png这种图片格式包括了许多类，但是在实践的大致中可以分为256色的png和全色的png，你完全可以用256色的png代替gif，用全色的png代替jpeg。
+   * 2、透明性：png是完全支持alpha透明的（透明、半透明、不透明）
+   * 3、动画：它不支持动画
+   */
   private static final String PNG = ".png";
+  /**
+   * 加载速度更快，图片的体积只有jpg的2/3，美中不足的是，webp是一种有损压缩，而且目前支持这种图片格式的
+   */
   private static final String WEBP = ".webp";
+  /**
+   * 1、透明性：gif是一种布尔透明类型，即它可以使全透明，也可是全不透明，但是它并没有半透明的（alpha透明）。
+   * 2、动画：gif格式支持动画。
+   * 3、无损耗性：gif是一种无损耗的图像格式，这也意味着你可以对gif图片做任何操作也不会使得图像质量产生损耗。
+   * 4、水平扫描：gif是使用一种叫做LZW的算法进行压缩的，当压缩gif的过程中，像素是由上到下水平压缩的，这也意味着同等条件下，横向的gif图片比竖向的gif更加小。例如500*10的图片比10*500的图片更加小。
+   * 5、间隔渐进显示：gif支持可选择性的间隔渐进显示。
+   */
   private static final String GIF = ".gif";
 
   private final byte[] JPEG_SIGNATURE = new byte[]{(byte) 0xFF, (byte) 0xD8, (byte) 0xFF};

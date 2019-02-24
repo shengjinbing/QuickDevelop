@@ -192,7 +192,9 @@ public class Luban implements Handler.Callback {
 
   @Override
   public boolean handleMessage(Message msg) {
-    if (mCompressListener == null) return false;
+    if (mCompressListener == null) {
+      return false;
+    }
 
     switch (msg.what) {
       case MSG_COMPRESS_START:

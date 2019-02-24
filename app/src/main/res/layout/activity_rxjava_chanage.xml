@@ -36,6 +36,13 @@
         android:layout_height="50dp"
         android:text="ConcatMap变换操作符"
         android:gravity="center"
+        android:background="#cf9292"/>
+    <TextView
+        android:onClick="flatMapIterable"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="flatMapIterable变换操作符"
+        android:gravity="center"
         android:background="#cf9292"
         />
     <TextView

@@ -93,7 +93,8 @@
         <activity android:name=".ui.activitys.MVPActivity" />
         <activity android:name=".ui.activitys.WindowManagerTestActivity" />
         <activity android:name=".ui.activitys.ButterKnifeActivity" />
-        <activity android:name=".ui.activitys.MvpDagger2Activity"></activity>
+        <activity android:name=".ui.activitys.MvpDagger2Activity" />
+        <activity android:name=".ui.activitys.BigImageActivity"></activity>
     </application>
 
 </manifest>

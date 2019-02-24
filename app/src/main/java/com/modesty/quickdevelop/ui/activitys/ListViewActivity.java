@@ -20,6 +20,13 @@ import java.util.List;
  * 1.RecycleBin机制，这个机制也是ListView能够实现成百上千条数据都不会OOM最重要的一个原因。
  * 其实RecycleBin的代码并不多，只有300行左右，它是写在AbsListView中的一个内部类
  *
+ * 2.谷歌官方不推荐我们使用ScrollView嵌套ListView。ScrollView的高度是由它的子View决定的，
+ * 而且它的子View的测量模式为MeasureSpec.EXACTLY模式。
+ *
+ * 3.第一种方法重写ListView中的onMeasure()方法直接MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE>>2,MeasureSpec.AT_MOST));
+ * 4.第二种方式手动去计算ListView中每个Item的高度，然后将这个高度传给ListView,让ScrollView知道自己的子布局有多高，
+ *   这样的话ListView就会正常显示了，这个方法在ListView.setAdapter()后调用即可。
+ *
  */
 public class ListViewActivity extends AppCompatActivity {
 

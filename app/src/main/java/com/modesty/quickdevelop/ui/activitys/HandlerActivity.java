@@ -17,6 +17,10 @@ import android.widget.TextView;
 import com.modesty.logger.simplelog.Logger;
 import com.modesty.quickdevelop.R;
 
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+
 /**
  * 1.MessageQueue虽然叫消息队列但是内部存储的数据结构是单链表;
  *   enqueueMessage()如果不是延迟消息直接加入链表头部，否者按时间比较（从小到大）将数据插入到合适的位子；
@@ -53,9 +57,51 @@ import com.modesty.quickdevelop.R;
  * 4.Looper处理完这个消息再次调用next()方法，MessageQueue继续读取消息链表，第二个消息A还没到时间，计算一下剩余时间（假如还剩9秒）继续阻塞；
  * <p>
  * 5.直到阻塞时间到或者下一次有Message进队；
+ *
+ *
+ *
+ *  * ***************重要的4中引用消息循环和阻塞*********************
+ *  1.软引用可用来实现内存敏感的高速缓存。软引用可以和一个引用队列（ReferenceQueue）联合使用，如果软引用所引用的对象被垃圾回收，
+ *    Java虚拟机就会把这个软引用加入到与之关联的引用队列中。
  */
 public class HandlerActivity extends AppCompatActivity {
     public static final String TAG = "HANDLER_LOG";
+
+
+
+    //在Activity关闭的地方将线程停止以及把Handler的消息队列的所有消息对象移除
+    //Handler改为静态类
+    private static class MyHandler extends Handler{
+        //在最常见的Handler持有一个Activity的引用,Handler作为一个耗时的异步线程处理,如果在处理过程中把Activity关闭了
+        // 因为Handler还持有Activity的引用,而一个异步线程持有Handler引用,那么就将导致内存泄漏
+        private WeakReference<HandlerActivity> reference;
+
+        private ReferenceQueue mQueue = new ReferenceQueue();
+
+        public MyHandler(HandlerActivity activity) {
+            reference = new WeakReference<HandlerActivity>(activity,mQueue);
+            Reference reference = mQueue.poll();
+            if (reference != null){
+                //利用这个方法，我们可以检查哪个WeakReference所软引用的对象已经被回收（SolfReference一样的用法）
+            }
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    HandlerActivity weakReferenceActivity = (HandlerActivity) reference.get();
+                    if (weakReferenceActivity != null) {
+                        System.out.print("WeakReferenceActivity");
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
+
 
     private static Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -281,5 +327,12 @@ public class HandlerActivity extends AppCompatActivity {
 
     public void button3(View view) {
         mHandlerThread.quit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //
+        handler.removeCallbacksAndMessages(null);
     }
 }

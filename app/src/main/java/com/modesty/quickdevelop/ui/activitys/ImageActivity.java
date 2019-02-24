@@ -94,9 +94,6 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     private void initView() {
-
-
-
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.toolbar_bg);
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
         mImageView.setImageBitmap(ImageOperateUtil.gerZoomRotateBitmap(bitmap,30));

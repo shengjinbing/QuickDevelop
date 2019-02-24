@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.modesty.quickdevelop.R;
+import com.modesty.quickdevelop.utils.permissiongen.internal.Utils;
+import com.modesty.utils.DisplayUtils;
 
 /**
  * 1.屏幕尺寸：含义：手机对角线的物理尺寸
@@ -37,6 +39,8 @@ public class AdapterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //必须setContentView之前调用
+        DisplayUtils.setCustomDensity(this,getApplication());
         setContentView(R.layout.activity_adapter);
     }
 

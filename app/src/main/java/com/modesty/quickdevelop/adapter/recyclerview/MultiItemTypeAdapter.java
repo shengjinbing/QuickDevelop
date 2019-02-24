@@ -31,7 +31,9 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (!useItemViewDelegateManager()) return super.getItemViewType(position);
+        if (!useItemViewDelegateManager()) {
+            return super.getItemViewType(position);
+        }
         return mItemViewDelegateManager.getItemViewType(mDatas.get(position), position);
     }
 
@@ -60,7 +62,9 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
 
     protected void setListener(final ViewGroup parent, final ViewHolder viewHolder, int viewType) {
-        if (!isEnabled(viewType)) return;
+        if (!isEnabled(viewType)) {
+            return;
+        }
         viewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

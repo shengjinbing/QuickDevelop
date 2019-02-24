@@ -1,6 +1,7 @@
 package com.modesty.quickdevelop.ui.activitys;
 
 import android.annotation.TargetApi;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -153,7 +154,18 @@ public class WebViewActivity extends AppCompatActivity {
             */
            @Override
            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+               view.getUrl();
                return super.shouldOverrideUrlLoading(view, request);
+           }
+
+           @Override
+           public void onPageStarted(WebView view, String url, Bitmap favicon) {
+               super.onPageStarted(view, url, favicon);
+           }
+
+           @Override
+           public void onPageFinished(WebView view, String url) {
+               super.onPageFinished(view, url);
            }
        });
 
@@ -166,6 +178,7 @@ public class WebViewActivity extends AppCompatActivity {
            public void onProgressChanged(WebView view, int newProgress) {
                super.onProgressChanged(view, newProgress);
            }
+
        });
     }
 

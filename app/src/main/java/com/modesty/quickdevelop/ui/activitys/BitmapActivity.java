@@ -1,7 +1,9 @@
 package com.modesty.quickdevelop.ui.activitys;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,7 +34,9 @@ public class BitmapActivity extends AppCompatActivity {
         ImageView image1 = (ImageView) findViewById(R.id.image1);
         TextView tv1 = (TextView) findViewById(R.id.tv);
 
+    }
 
-
+    public void loadBigImage(View view) {
+        startActivity(new Intent(this,BigImageActivity.class));
     }
 }

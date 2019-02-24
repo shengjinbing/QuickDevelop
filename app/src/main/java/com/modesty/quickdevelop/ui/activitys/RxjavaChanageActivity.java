@@ -53,15 +53,15 @@ public class RxjavaChanageActivity extends RxAppCompatActivity {
      * 最终继承自SupportActivity，SupportActivity实现了LifecycleOwner接口。support.v4包中的Fragment也
      * 实现了LifecycleOwner接口。而我们目前的项目中为了保证兼容性，都是要依赖Android Support v7这个包的。这样
      * 一来我们就可以优雅的通过AutoDispose解决RxJava产生的内存泄漏问题了
-     *
-     *
+     * <p>
+     * <p>
      * RxLifecycle源码分析
      * 1.BehaviorSubject有何作用
      * public final class BehaviorSubject<T> extends Subject<T> {
-     *     ...
+     * ...
      * }
      * public abstract class Subject<T> extends Observable<T> implements Observer<T> {
-     *     ...
+     * ...
      * }
      * BehaviorSubject继承Subject，Subject集成Observable实现Observer，Subject的官方介绍：Subject可以看成是
      * 一个桥梁或者代理，在某些ReactiveX实现中（如RxJava），它同时充当了Observer和Observable的角色。因为它是一个
@@ -71,7 +71,6 @@ public class RxjavaChanageActivity extends RxAppCompatActivity {
      * 然后网络请求Observable则丢失数据，即不在调用观察者Observer，BehaviorSubject过滤了ActivityEvent事件，
      * 只有事件为ActivityEvent.DESTROY时，BehaviorSubject才发射，所以当Activity关闭时，BehaviorSubject发射
      * ActivityEvent.DESTROY事件，网络请求Observable丢失数据，不在调用观察者Observer，整个网络请求和Activity生命周期绑定完成
-
      *
      * @param view
      */
@@ -193,7 +192,8 @@ public class RxjavaChanageActivity extends RxAppCompatActivity {
     }
 
     /**
-     * 新合并生成的事件序列顺序是有序的，即 严格按照旧序列发送事件的顺序
+     * 1.新合并生成的事件序列顺序是有序的，即 严格按照旧序列发送事件的顺序
+     * 2.concatMap：【有序】与 flatMap 的 区别在于，拆分 & 重新合并生成的事件序列 的顺序与被观察者旧序列生产的顺序一致
      *
      * @param view
      */
@@ -259,6 +259,36 @@ public class RxjavaChanageActivity extends RxAppCompatActivity {
                         Log.d(TAG, "对Complete事件作出响应");
                     }
                 });
+
+    }
+
+    public void flatMapIterable(View view) {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                emitter.onNext(1);
+                emitter.onNext(2);
+                emitter.onNext(3);
+            }
+
+            // 采用concatMap（）变换操作符
+        }).flatMapIterable(new Function<Integer, Iterable<String>>() {
+            @Override
+            public Iterable<String> apply(Integer integer) throws Exception {
+                final List<String> list = new ArrayList<>();
+                for (int i = 0; i < 3; i++) {
+                    list.add("我是事件 " + integer + "拆分后的子事件" + i);
+                    // 通过concatMap中将被观察者生产的事件序列先进行拆分，再将每个事件转换为一个新的发送三个String事件
+                    // 最终合并，再发送给被观察者
+                }
+                return list;
+            }
+        }).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                Log.d(TAG, s);
+            }
+        });
 
     }
 }

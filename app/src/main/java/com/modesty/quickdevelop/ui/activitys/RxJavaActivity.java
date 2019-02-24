@@ -59,7 +59,7 @@ public class RxJavaActivity extends AppCompatActivity {
     }
 
     public void rxjava(View view) {
-        startActivity(new Intent(this,RxjavaChanageActivity.class));
+        startActivity(new Intent(this,RxjavaResourceActivity.class));
     }
     public void chanage(View view) {
         startActivity(new Intent(this,RxjavaChanageActivity.class));
