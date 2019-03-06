@@ -258,7 +258,7 @@ public class OkHttpActivity extends AppCompatActivity {
      * @param view
      */
     public void GETyibu(View view) {
-        String url = "https://wwww.baidu.com";
+        String url = "https://appdev7.hexindai.com/v5/integral?goods_id=96";
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
