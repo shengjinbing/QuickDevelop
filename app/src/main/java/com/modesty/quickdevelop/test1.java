@@ -5,4 +5,5 @@ package com.modesty.quickdevelop;
  */
 public class test1 {
     private String name;
+    private String age;
 }
