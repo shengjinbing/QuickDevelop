@@ -7,8 +7,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apt_annotation.BindViewC;
 import com.modesty.quickdevelop.R;
 
+import activitys.activitysViewBinding;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -17,14 +19,21 @@ public class ButterKnifeActivity extends AppCompatActivity {
 
     @BindView(R.id.bk_tv)
     TextView mBkTv;
-    @BindView(R.id.bk_btn)
-    Button mBkBtn;
+    @BindViewC(R.id.bk_btn)
+    public Button mBkBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_butter_knife);
         ButterKnife.bind(this);
+        activitysViewBinding.bind(this);
+        mBkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"再点我",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -33,9 +42,6 @@ public class ButterKnifeActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.bk_tv:
                 mBkTv.setText("哈哈哈，我变了");
-                break;
-            case R.id.bk_btn:
-                Toast.makeText(getApplicationContext(),"再点我",Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
