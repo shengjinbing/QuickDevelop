@@ -1,6 +1,7 @@
-package com.modesty.quickdevelop.ui.view;
+package com.modesty.quickdevelop.ui.view.behaviors;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -148,5 +149,36 @@ public class MyBehavior extends CoordinatorLayout.Behavior<View> {
 
         return false;
 //        return super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY);
+    }
+
+    /**
+     * 要监听的子 View在快速滑动中
+     * @param coordinatorLayout
+     * @param child
+     * @param target
+     * @param velocityX
+     * @param velocityY
+     * @param consumed
+     * @return
+     */
+    @Override
+    public boolean onNestedFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, float velocityX, float velocityY, boolean consumed) {
+        return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
+    }
+
+
+    /**
+     * 要监听的子View即将快速滑动
+     * @param coordinatorLayout
+     * @param child
+     * @param target
+     * @param dx
+     * @param dy
+     * @param consumed
+     * @param type
+     */
+    @Override
+    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+        super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
     }
 }

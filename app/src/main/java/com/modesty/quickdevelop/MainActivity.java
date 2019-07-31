@@ -2,6 +2,7 @@ package com.modesty.quickdevelop;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Trace;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.modesty.quickdevelop.ui.activitys.CollectionActivity;
 import com.modesty.quickdevelop.ui.activitys.EncryptActivity;
 import com.modesty.quickdevelop.ui.activitys.FragmentActivity;
 import com.modesty.quickdevelop.ui.activitys.HandlerActivity;
+import com.modesty.quickdevelop.ui.activitys.LottieActivity;
 import com.modesty.quickdevelop.ui.activitys.MvpDagger2Activity;
 import com.modesty.quickdevelop.ui.activitys.OkHttpActivity;
 import com.modesty.quickdevelop.ui.activitys.RxJavaActivity;
@@ -52,8 +54,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-    }
+        Trace.beginSection("aa");
+        }
 
 
     /**
@@ -154,5 +156,9 @@ public class MainActivity extends Activity {
 
     public void ButterKnife(View view) {
         startActivity(new Intent(this, ButterKnifeActivity.class));
+    }
+
+    public void lottie(View view) {
+        startActivity(new Intent(this, LottieActivity.class));
     }
 }

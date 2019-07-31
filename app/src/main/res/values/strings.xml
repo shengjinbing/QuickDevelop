@@ -14,4 +14,8 @@
     <string name="xlistview_header_hint_ready">release to refresh</string>
     <string name="xlistview_header_hint_loading">loading...</string>
     <string name="xlistview_header_hint_have_bottom_line">I hava the bottom line</string>
+
+    <string name="behavior_sample_title">com.modesty.quickdevelop.ui.view.behaviors.SampleTitleBehavior</string>
+    <string name="behavior_sample_header">com.modesty.quickdevelop.ui.view.behaviors.SampleHeaderBehavior</string>
+    <string name="behavior_recyclerview">com.modesty.quickdevelop.ui.view.behaviors.RecyclerViewBehavior</string>
 </resources>

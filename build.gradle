@@ -13,6 +13,7 @@ buildscript {
         //加上这两行
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.0'
     }
 }
 
@@ -32,4 +33,9 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    roomVersion = '1.0.0'
+    archLifecycleVersion = '1.1.0'
 }

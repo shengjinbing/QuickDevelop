@@ -16,6 +16,13 @@
             android:layout_height="50dp"
             android:background="#cf9292"
             android:gravity="center"
+            android:onClick="lottie"
+            android:text="lottie" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
             android:onClick="ButterKnife"
             android:text="ButterKnife" />
         <TextView

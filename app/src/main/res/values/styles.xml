@@ -9,4 +9,14 @@
         <!--<item name="android:windowBackground">@drawable/meizi</item>-->
     </style>
 
+    <style name="WelcomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="WelcomeThemeBg" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/meizi</item>
+    </style>
 </resources>

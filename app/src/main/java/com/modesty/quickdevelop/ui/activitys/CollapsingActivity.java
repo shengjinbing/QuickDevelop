@@ -35,9 +35,9 @@ public class CollapsingActivity extends AppCompatActivity {
      */
     private void initView() {
         mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        mCollapsingToolbarLayout.setTitle("你好啊");
+        //mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        //mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        //mCollapsingToolbarLayout.setTitle("你好啊");
         //mCollapsingToolbarLayout.setContentScrim(Drawable)//改变toolbar背景
     }
 

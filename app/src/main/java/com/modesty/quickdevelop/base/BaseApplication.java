@@ -3,6 +3,8 @@ package com.modesty.quickdevelop.base;
 import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
+import android.os.Trace;
+import android.util.Log;
 
 import com.github.moduth.blockcanary.BlockCanary;
 import com.github.moduth.blockcanary.BlockCanaryContext;
@@ -14,7 +16,9 @@ import com.modesty.quickdevelop.di.component.DaggerAppComponent;
 import com.modesty.quickdevelop.di.module.ApiModule;
 import com.modesty.quickdevelop.di.module.AppModule;
 import com.modesty.quickdevelop.network.NetConfig;
+import com.modesty.quickdevelop.utils.TraceUtil;
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.mmkv.MMKV;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -32,6 +36,10 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        String rootdir = MMKV.initialize(this);
+        Log.d("BBBBB",rootdir);
+
+        TraceUtil.i("BaseApplication:onCreate()");
         instance = this;
         context = this;
         //配置日志
@@ -52,6 +60,7 @@ public class BaseApplication extends Application {
 
         //配置dagger2
         initComponent();
+        TraceUtil.o();
 
     }
 

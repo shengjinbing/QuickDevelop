@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.apt_annotation.BindViewC;
 import com.modesty.quickdevelop.R;
 
-import activitys.activitysViewBinding;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,7 +26,7 @@ public class ButterKnifeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_butter_knife);
         ButterKnife.bind(this);
-        activitysViewBinding.bind(this);
+        ButterKnifeActivityViewBinding.bind(this);
         mBkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -14,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait">
+            android:name=".ui.activitys.splash.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/WelcomeThemeBg">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -94,7 +95,11 @@
         <activity android:name=".ui.activitys.WindowManagerTestActivity" />
         <activity android:name=".ui.activitys.ButterKnifeActivity" />
         <activity android:name=".ui.activitys.MvpDagger2Activity" />
-        <activity android:name=".ui.activitys.BigImageActivity"></activity>
+        <activity android:name=".ui.activitys.BigImageActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ui.activitys.LottieActivity" />
+        <activity android:name=".ui.activitys.NestedScrollingActivity" />
+        <activity android:name=".ui.activitys.Behavior1Activity"></activity>
     </application>
 
 </manifest>

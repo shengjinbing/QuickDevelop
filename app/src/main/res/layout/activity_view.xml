@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.modesty.quickdevelop.ui.activitys.ViewActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -97,4 +101,21 @@
         android:gravity="center"
         android:onClick="behavior"
         android:text="behavior" />
-</LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#cf9292"
+        android:gravity="center"
+        android:onClick="behavior1"
+        android:text="behavior1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#cf9292"
+        android:gravity="center"
+        android:onClick="NestedScrolling"
+        android:text="NestedScrolling" />
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

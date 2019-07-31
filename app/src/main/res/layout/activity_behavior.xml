@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="for test"
-        app:layout_behavior="com.modesty.quickdevelop.ui.view.MyBehavior"/>
+        app:layout_behavior="com.modesty.quickdevelop.ui.view.behaviors.MyBehavior"/>
 
     <Button
         android:id="@+id/btn"

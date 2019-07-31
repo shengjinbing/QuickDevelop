@@ -64,4 +64,13 @@ public class ViewActivity extends AppCompatActivity {
         startActivity(new Intent(this,CustomViewActivity.class));
 
     }
+
+    public void NestedScrolling(View view) {
+        startActivity(new Intent(this,NestedScrollingActivity.class));
+    }
+
+    public void behavior1(View view) {
+        startActivity(new Intent(this,Behavior1Activity.class));
+
+    }
 }
