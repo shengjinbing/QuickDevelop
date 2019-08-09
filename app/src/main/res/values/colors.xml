@@ -6,4 +6,7 @@
     <color name="color_page_bkg">#161921</color>
     <color name="nav_item_name_color">#4BFFFFFF</color>
     <color name="nav_item_name_color_selected">#fff</color>
+
+    <color name="met_underlineColor">#3F51B5</color>
+    <color name="met_focus_underlineColor">#DFCA17</color>
 </resources>

@@ -3,4 +3,28 @@
     <declare-styleable name="CircleView">
         <attr name="circle_color" format="color"></attr>
     </declare-styleable>
+
+
+    <declare-styleable name="MaterialEditText">
+        <!-- baseColor underline -->
+        <attr name="met_baseColor" format="color" />
+        <!-- Hide underline -->
+        <attr name="met_hideUnderline" format="boolean" />
+        <!-- Hide focus underline -->
+        <attr name="met_focu_hideUnderline" format="boolean" />
+        <!-- Underline's color -->
+        <attr name="met_underlineColor" format="color" />
+        <!-- focus Underline's color -->
+        <attr name="met_focus_underlineColor" format="color" />
+        <!-- Clear button -->
+        <attr name="met_clearButton" format="boolean" />
+        <!-- Clear icon -->
+        <attr name="met_iconClearButton" format="reference" />
+        <!-- Underline's height -->
+        <attr name="met_underline_height" format="dimension" />
+        <!-- focus Underline's height -->
+        <attr name="met_focus_underline_height" format="dimension" />
+        <!-- clear button padding -->
+        <attr name="met_clearButton_padding" format="dimension" />
+    </declare-styleable>
 </resources>
