@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Trace;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.modesty.quickdevelop.bean.User;
@@ -25,6 +24,8 @@ import com.modesty.quickdevelop.ui.activitys.VolleyActivity;
 import com.modesty.quickdevelop.ui.activitys.WebViewActivity;
 import com.modesty.quickdevelop.ui.activitys.WindowManagerTestActivity;
 import com.modesty.quickdevelop.volley.VolleyManage;
+import com.tencent.mars.Mars;
+import com.tencent.mars.xlog.Log;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -160,5 +161,14 @@ public class MainActivity extends Activity {
 
     public void lottie(View view) {
         startActivity(new Intent(this, LottieActivity.class));
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.appenderClose();
+        Mars.onDestroy();
+
     }
 }

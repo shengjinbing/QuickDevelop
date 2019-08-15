@@ -101,6 +101,11 @@ dependencies {
     implementation 'com.airbnb.android:lottie:2.7.0'
     //优于sp得存储
     implementation 'com.tencent:mmkv:1.0.22'
+    //微信基于Chromium的Cornet改进的网络库
+    implementation 'com.tencent.mars:mars-core:1.2.2'
+
+    //七牛
+    implementation 'com.qiniu:happy-dns:0.2.13'
 }
 configurations.all {
     resolutionStrategy {
