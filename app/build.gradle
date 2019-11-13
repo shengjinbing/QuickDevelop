@@ -11,7 +11,22 @@ android {
 
 
     }
+    signingConfigs {
+        release {
+            storeFile file(rootProject.ext.singConfigs.stroeFile)
+            storePassword rootProject.ext.singConfigs.storePassword
+            keyAlias rootProject.ext.singConfigs.keyAlias
+            keyPassword rootProject.ext.singConfigs.keyPassword
+        }
+        debug {
+        }
+    }
 
+    packagingOptions {//加上这写代码
+        pickFirst 'lib/armeabi/libc++_shared.so'
+        pickFirst 'lib/x86/libc++_shared.so'
+
+    }
     /*
   如何对APK瘦身?
   1)使用混淆
@@ -27,6 +42,7 @@ android {
             minifyEnabled false
             shrinkResources false
             zipAlignEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //debug版本提供环境切换功能所以不在此处配置url，详情参考ServerConst类，release版本才配置这三个参数
             buildConfigField "String", "BASE_URL", "\"https://api.ekchange.com\""
@@ -106,9 +122,16 @@ dependencies {
 
     //七牛
     implementation 'com.qiniu:happy-dns:0.2.13'
+
+    // 若使用annotation需要单独引用,对于tinker的其他库都无需再引用
+    //compileOnly("com.tinkerpatch.tinker:tinker-android-anno:1.9.13.3")
+    implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.13.3")
 }
 configurations.all {
     resolutionStrategy {
         force 'com.android.support:appcompat-v7:27.1.1'
     }
 }
+
+apply from: "tinkerpatch.gradle"
+

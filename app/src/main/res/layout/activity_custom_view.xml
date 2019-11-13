@@ -17,6 +17,7 @@
         android:layout_marginLeft="20dp"
         android:text="世界第三鲁大师"/>
     <com.modesty.quickdevelop.views.MaterialEditText
+        android:id="@+id/me"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginRight="20dp"
@@ -24,6 +25,7 @@
         android:paddingLeft="0dp"
         android:hint="请输入邮箱验证码"
         android:maxLines="1"
+        android:maxLength="13"
         android:textColorHint="#ccc"
         android:textColor="#333"
         android:textSize="16dp"
@@ -44,5 +46,11 @@
         android:paddingRight="0dp"
         android:hint="请输入邮箱验证码"/>
 
+    <ViewFlipper
+        android:id="@+id/fl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inAnimation="@anim/anim_in"
+        android:outAnimation="@anim/anim_out"/>
 
 </LinearLayout>

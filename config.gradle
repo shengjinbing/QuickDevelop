@@ -8,6 +8,12 @@ ext {
                versionCode             : 1,
                versionName             : "1.0"
     ]
+    singConfigs = [
+            stroeFile    : 'quick.keystore',
+            storePassword: '123456',
+            keyAlias     : 'key0',
+            keyPassword  : '123456'
+    ]
 
      version = [
                    androidSupportSdkVersion: "26.1.0",
