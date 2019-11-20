@@ -28,6 +28,9 @@ import butterknife.ButterKnife;
  * 3.enterAlwaysCollapsed: 当你的视图已经设置minHeight属性又使用此标志时，你的视图只能已最小高度进入，只有当滚动视图到达顶部时才扩大到完整高度。
  * 4.exitUntilCollapsed: 滚动退出屏幕，最后折叠在顶端。
  *
+ * CollapsingToolbarLayout中子View的layout_collapseMode属性
+ *
+ *
  * CoordinatorLayout包含的子视图中带有滚动属性的View需要设置app:layout_behavior属性。例如，示例中Viewpager设置了此属性。
  * app:layout_behavior="@string/appbar_scrolling_view_behavior"//系统默认属性
  */

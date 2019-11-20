@@ -1,5 +1,7 @@
 package com.modesty.quickdevelop.utils.image.glide;
 
+import android.annotation.SuppressLint;
+
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.annotation.GlideExtension;
 import com.bumptech.glide.annotation.GlideOption;
@@ -35,14 +37,15 @@ public class CustomGlideExtension {
      *
      * @param options
      */
+    @SuppressLint("CheckResult")
     @GlideOption
     public static void miniThumb(RequestOptions options) {
-        options
-                .fitCenter()
+        options.fitCenter()
                 .override(MINI_THUMB_SIZE);
 
     }
 
+    @SuppressLint("CheckResult")
     @GlideType(GifDrawable.class)
     public static void asGIF(RequestBuilder<GifDrawable> requestBuilder) {
         requestBuilder

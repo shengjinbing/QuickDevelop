@@ -84,7 +84,7 @@ public class ImageActivity extends AppCompatActivity {
 
     }
 
-    private void initRequestOptions() {
+    private void initRequestOptions(){
         mOptions = new RequestOptions()
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
