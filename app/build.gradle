@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-aspectjx'
 android {
     compileSdkVersion 27//不会被打包的APK文件中
     defaultConfig {
@@ -20,6 +21,11 @@ android {
         }
         debug {
         }
+    }
+
+    aspectjx {
+//排除所有package路径中包含`android.support`的class文件及库（jar文件）
+        exclude 'android.support'
     }
 
     packagingOptions {//加上这写代码
@@ -126,6 +132,12 @@ dependencies {
     // 若使用annotation需要单独引用,对于tinker的其他库都无需再引用
     //compileOnly("com.tinkerpatch.tinker:tinker-android-anno:1.9.13.3")
     implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.13.3")
+
+    implementation 'org.aspectj:aspectjrt:1.8.+'
+
+    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm-commons:7.1'
+
 }
 configurations.all {
     resolutionStrategy {

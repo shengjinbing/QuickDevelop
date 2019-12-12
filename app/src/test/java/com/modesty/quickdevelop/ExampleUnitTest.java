@@ -1,8 +1,8 @@
 package com.modesty.quickdevelop;
 
-import org.junit.Test;
+import com.modesty.quickdevelop.hook.asm.method.CostTime;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,6 +12,6 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test()
     public void addition_isCorrect() throws Exception {
-        assertEquals(3, 2 + 2);
+        new CostTime().redefinePersonClass();
     }
 }

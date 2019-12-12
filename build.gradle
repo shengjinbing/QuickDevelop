@@ -17,6 +17,9 @@ buildscript {
 
         // TinkerPatch 插件
         classpath "com.tinkerpatch.sdk:tinkerpatch-gradle-plugin:1.2.13.3"
+
+        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.8'
+
     }
 }
 
