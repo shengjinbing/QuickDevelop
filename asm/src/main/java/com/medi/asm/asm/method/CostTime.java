@@ -1,4 +1,4 @@
-package com.modesty.quickdevelop.hook.asm.method;
+package com.medi.asm.asm.method;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 public class CostTime {
 
     public void redefinePersonClass() {
-        String className = "com.modesty.quickdevelop.hook.asm.method.HelloWorld";
+        String className = "com.medi.asm.asm.method.HelloWorld";
 
         try {
             InputStream inputStream = new FileInputStream("/Users/lixiang/Desktop/HelloWorld.class");

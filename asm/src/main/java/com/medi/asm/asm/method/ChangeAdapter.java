@@ -1,4 +1,4 @@
-package com.modesty.quickdevelop.hook.asm.method;
+package com.medi.asm.asm.method;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;

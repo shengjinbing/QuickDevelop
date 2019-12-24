@@ -1,6 +1,6 @@
 package com.modesty.quickdevelop;
 
-import com.modesty.quickdevelop.hook.asm.method.CostTime;
+import com.medi.asm.asm.method.CostTime;
 
 import org.junit.Test;
 

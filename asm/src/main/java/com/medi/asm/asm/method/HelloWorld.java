@@ -1,4 +1,4 @@
-package com.modesty.quickdevelop.hook.asm.method;
+package com.medi.asm.asm.method;
 
 public class HelloWorld {
     public void sayHello() {

@@ -1,4 +1,4 @@
-package com.modesty.quickdevelop.hook.asm.field;
+package com.medi.asm.asm.field;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;

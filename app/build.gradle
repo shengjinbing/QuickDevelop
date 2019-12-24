@@ -135,8 +135,6 @@ dependencies {
 
     implementation 'org.aspectj:aspectjrt:1.8.+'
 
-    implementation 'org.ow2.asm:asm:7.1'
-    implementation 'org.ow2.asm:asm-commons:7.1'
 
 }
 configurations.all {
