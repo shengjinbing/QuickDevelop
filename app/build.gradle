@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-aspectjx'
+//com.sensorsdata.android.properties 的前缀
+apply plugin: 'com.sensorsdata.android'
 android {
     compileSdkVersion 27//不会被打包的APK文件中
     defaultConfig {
