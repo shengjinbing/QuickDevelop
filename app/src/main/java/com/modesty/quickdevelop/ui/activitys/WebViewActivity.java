@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -41,13 +43,21 @@ public class WebViewActivity extends AppCompatActivity {
     private void initView() {
         //加载本地html文件
         mWv.loadUrl("file:///android_asset/JavaAndJavaScriptCall.html");
-        mWv.addJavascriptInterface(new Jsinterface(),"Android");
+        mWv.addJavascriptInterface(new Jsinterface(), "Android");
     }
 
-    class Jsinterface{
+    class Jsinterface {
+        /**
+         * 1.如果混淆了，@JavascriptInterface注解的方法可能就没了，结果是，JS就没办法知己调用对应的方法，
+         * 导致通信失败
+         * 2.4.2以后，WebView会禁止JS调用没有添加@JavascriptInterface方法, 解决了安全漏洞，而且很少
+         * APP兼容到4.2以前，安全问题可以忽略。
+         * 3.JavascriptInterface注入的方法被js调用时，可以看做是一个同步调用，虽然两者位于不同线程，但是应该存在
+         * 一个等待通知的机制来保证，所以Native中被回调的方法里尽量不要处理耗时操作
+         */
         @JavascriptInterface
-        public void showToast(String arg){
-            Toast.makeText(WebViewActivity.this,arg,Toast.LENGTH_SHORT).show();
+        public void showToast(String arg) {
+            Toast.makeText(WebViewActivity.this, arg, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -58,7 +68,7 @@ public class WebViewActivity extends AppCompatActivity {
      */
     public void javacalljs(View view) {
         String content = mEtContent.getText().toString().trim();
-        mWv.loadUrl("javascript:javaCallJs("+"'"+content+"'"+")");
+        mWv.loadUrl("javascript:javaCallJs(" + "'" + content + "'" + ")");
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -146,40 +156,79 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     private void initWebListener() {
-       mWv.setWebViewClient(new WebViewClient(){
-           /**
-            * @param view
-            * @param request
-            * @return true-->不加载，false--->从新加载
-            */
-           @Override
-           public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-               view.getUrl();
-               return super.shouldOverrideUrlLoading(view, request);
-           }
+        mWv.setWebViewClient(new WebViewClient() {
+            /**
+             * @param view
+             * @param request
+             * @return true-->不加载，false--->从新加载
+             */
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                view.getUrl();
+                return super.shouldOverrideUrlLoading(view, request);
+            }
 
-           @Override
-           public void onPageStarted(WebView view, String url, Bitmap favicon) {
-               super.onPageStarted(view, url, favicon);
-           }
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+            }
 
-           @Override
-           public void onPageFinished(WebView view, String url) {
-               super.onPageFinished(view, url);
-           }
-       });
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
 
-       mWv.setWebChromeClient(new WebChromeClient(){
-           /**
-            * @param view
-            * @param newProgress 加载进度
-            */
-           @Override
-           public void onProgressChanged(WebView view, int newProgress) {
-               super.onProgressChanged(view, newProgress);
-           }
+        });
 
-       });
+        /**
+         * 在js调用​window.alert​，​window.confirm​，​window.prompt​时，​会调用WebChromeClient​对应方法，
+         * 可以此为入口，作为消息传递通道，考虑到开发习惯，一般不会选择alert跟confirm，​通常会选promopt作为入口
+         *
+         *
+         *
+         * Native通知Js
+         * webview可以通过loadUrl()的方法直接调用。在4.4以上还可以通过evaluateJavascript()方法获取js方法的返回值。
+         * 4.4以前，如果想获取方法的返回值，就需要通过上面的对webview信息冒泡传递拦截的方式来实现。
+         *
+         */
+        mWv.setWebChromeClient(new WebChromeClient() {
+            /**
+             * @param view
+             * @param newProgress 加载进度
+             */
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+            }
+
+            public boolean onJsAlert(WebView view, String url, String message,
+                                     JsResult result) {
+                return false;
+            }
+
+            public boolean onJsConfirm(WebView view, String url, String message,
+                                       JsResult result) {
+                return false;
+            }
+
+
+            /**
+             *
+             * Prompt提示
+             * 1、在UI线程执行，所以尽量不要做耗时操作，可以借助Handler灵活处理。
+             *
+             * 2、第一步：js线程在执行prompt时被挂起，
+             * 3、第二部 ：UI线程被调度，恰好销毁了Webview，调用了 （webview的detroy），detroy之后，导致 onJsPrompt
+             *   不会被回调，prompt一直等着，js线程就一直阻塞，导致所有webview打不开，一旦出现可能需要杀进程才能解决
+             *
+             * @return
+             */
+            public boolean onJsPrompt(WebView view, String url, String message,
+                                      String defaultValue, JsPromptResult result) {
+                return false;
+            }
+
+        });
     }
 
 
