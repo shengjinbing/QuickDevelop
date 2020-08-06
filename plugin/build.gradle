@@ -20,6 +20,6 @@ uploadArchives{
         //artifactId
         pom.artifactId = 'autotrack.android'
         //插件版本号
-        pom.version = '1.0.0'
+        pom.version = '1.0.1'
     }
 }

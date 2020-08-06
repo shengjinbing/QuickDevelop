@@ -212,5 +212,8 @@ public class BaseApplication extends Application {
         return instance;
     }
 
-
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+    }
 }

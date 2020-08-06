@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-aspectjx'
-//com.sensorsdata.android.properties 的前缀
-apply plugin: 'com.sensorsdata.android'
+apply plugin: 'walle'
+
 android {
     compileSdkVersion 27//不会被打包的APK文件中
     defaultConfig {
@@ -136,6 +136,9 @@ dependencies {
     implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.13.3")
 
     implementation 'org.aspectj:aspectjrt:1.8.+'
+
+    implementation 'com.meituan.android.walle:library:1.1.6'
+
 
 
 }

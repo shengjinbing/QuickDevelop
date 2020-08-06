@@ -77,7 +77,12 @@ public class RxjavaChanageActivity extends RxAppCompatActivity {
     public void normalNet(View view) {
         BaseObjectSubscriber<List<StarListBean>> baseObjectSubscriber = ServiceFactory.newApiService().getSeachList("张立")
                 .compose(RxUtils.rxSchedulerHelper())
+               /* 当使用RxJava订阅并执行耗时任务后，当Activity被finish时，如果耗时任务还未完成，没有及时取消订阅，
+                就会导致Activity无法被回收，从而引发内存泄漏。*/
                 .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                /**
+                 * LifecycleOwner 只要实现这个LifecycleOwner就可以绑定生命周期
+                 */
                 .as(AutoDispose.autoDisposable(
                         AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribeWith(new BaseObjectSubscriber<List<StarListBean>>() {

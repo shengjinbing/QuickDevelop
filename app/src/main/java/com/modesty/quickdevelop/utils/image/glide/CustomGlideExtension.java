@@ -12,6 +12,8 @@ import com.bumptech.glide.request.RequestOptions;
 
 
 /**
+ * 被 @GlideExtension 注解的类应以工具类的思维编写。这种类应该有一个私有的、空的构造方法，应为 final 类型，
+ * 并且仅包含静态方法。被注解的类可以含有静态变量，可以引用其他的类或对象。
  * Created by Administrator on 2018/1/11 0011.
  */
 
@@ -34,6 +36,8 @@ public class CustomGlideExtension {
     /**
      * 1.自己新增的方法的第一个参数必须是RequestOptions options
      * 2.方法必须是静态的
+     * 3.你可以为方法任意添加参数，但要保证第一个参数为 RequestOptions。
+     * 4.这些生成的方法在标准的 Glide 和 RequestOptions 类里不可用，只存在于生成的等效类中。
      *
      * @param options
      */
@@ -45,6 +49,10 @@ public class CustomGlideExtension {
 
     }
 
+    /**
+     * 1.注解的方法允许你添加对新的资源类型的支持，包括指定默认选项。
+     * @param requestBuilder
+     */
     @SuppressLint("CheckResult")
     @GlideType(GifDrawable.class)
     public static void asGIF(RequestBuilder<GifDrawable> requestBuilder) {

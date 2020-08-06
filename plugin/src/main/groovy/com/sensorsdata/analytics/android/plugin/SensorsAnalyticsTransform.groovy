@@ -2,6 +2,7 @@ package com.sensorsdata.analytics.android.plugin
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
+import groovy.io.FileType
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
@@ -66,38 +67,94 @@ class SensorsAnalyticsTransform extends Transform {
         println()
     }
 
+    /**
+     *
+     * @param context
+     * @param inputs 有两种类型，一种目录一种jar包，要分开遍历
+     * @param referencedInputs
+     * @param outputProvider
+     * @param isIncremental
+     * @throws IOException
+     * @throws TransformException
+     * @throws InterruptedException
+     */
     @Override
-    void transform(Context context, Collection<TransformInput> inputs, Collection<TransformInput> referencedInputs, TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException {
+    void transform(Context context,
+                   Collection<TransformInput> inputs,
+                   Collection<TransformInput> referencedInputs,
+                   TransformOutputProvider outputProvider,
+                   boolean isIncremental) throws IOException, TransformException, InterruptedException {
         printCopyRight()
+
+        if (!incremental){
+            outputProvider.deleteAll()
+        }
 
         // Transform 的 inputs 有两种类型，一种是目录，一种是 jar 包，要分开遍历
         inputs.each { TransformInput input ->
             //遍历目录
             input.directoryInputs.each { DirectoryInput directoryInput ->
-                //获取 output 目录
+                //获取 output 目录,当前这个Transform输出目录
                 def dest = outputProvider.getContentLocation(directoryInput.name,
                         directoryInput.contentTypes, directoryInput.scopes,
                         Format.DIRECTORY)
-                // 将 input 的目录复制到 output 指定目录
-                FileUtils.copyDirectory(directoryInput.file, dest)
+                File dir = directoryInput.file
+                if (dir){
+                    HashMap<String,File> modifyMap = new HashMap<>()
+                    /**遍历以某一种扩展名结尾的文件*/
+                    dir.traverse(type: FileType.FILES,nameFilter:~/.*\.class/){
+                        File classFile ->
+                            if (SensorsAnalyticsClaaModifier.isShouldModify(classFile.name)){
+                                //需要修改的文件
+                                File modified = SensorsAnalyticsClaaModifier.modifyClassFile(
+                                        dir,classFile,context.getTemporaryDir())
+                                if (modified != null){
+                                    /**
+                                     * key 为包名+类名，如：/cn/sensorsdata/autotrack/android/app/MainActivity.class
+                                     */
+                                    String ke = classFile.absolutePath.replace(dir.absolutePath,"")
+                                    modifyMap.put(ke,modifyMap)
+                                }
+                            }
+                    }
+
+                    // 将 input 的目录复制到 output 指定目录
+                    FileUtils.copyDirectory(directoryInput.file, dest)
+                    modifyMap.entrySet().each {
+                        Map.Entry<String,File> en ->
+                            File target = New File(dest.absolutePath+en.getKey())
+                            if (target.exists()){
+                                target.delete()
+                            }
+                            FileUtils.copyFile(en.getValue(),target)
+                            en.getValue().delete()
+                    }
+                }
+
+
             }
 
             //遍历 jar
             input.jarInputs.each { JarInput jarInput ->
                 // 重命名输出文件（同目录copyFile会冲突）
-                def jarName = jarInput.name
-                def md5Name = DigestUtils.md5Hex(jarInput.file.getAbsolutePath())
-                if (jarName.endsWith(".jar")) {
-                    jarName = jarName.substring(0, jarName.length() - 4)
+                String destName = jarInput.file.name
+                String hexName = DigestUtils.md5Hex(jarInput.file.getAbsolutePath().substring(0,8))
+
+                if (destName.endsWith(".jar")) {
+                    destName = destName.substring(0, destName.length() - 4)
                 }
 
-                File copyJarFile = jarInput.file
 
                 //生成输出路径
-                def dest = outputProvider.getContentLocation(jarName + md5Name,
+                File dest = outputProvider.getContentLocation(destName + "_"+hexName,
                         jarInput.contentTypes, jarInput.scopes, Format.JAR)
                 // 将 input 的目录复制到 output 指定目录
-                FileUtils.copyFile(copyJarFile, dest)
+                def modifiedJar = SensorsAnalyticsClaaModifier.modifyJar(
+                        jarInput.file,context.getTemporaryDir(),true)
+                if (modifiedJar == null){
+                    modifiedJar = jarInput.file
+                }
+                FileUtils.copyFile(modifiedJar, dest)
             }
         }
     }

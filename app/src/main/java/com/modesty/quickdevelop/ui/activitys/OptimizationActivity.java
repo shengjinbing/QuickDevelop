@@ -136,4 +136,5 @@ public class OptimizationActivity extends AppCompatActivity {
     private void LeakCanarySingleton() {
 
     }
+
 }

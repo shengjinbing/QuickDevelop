@@ -1,2 +1,3 @@
-include ':app', ':analytics', ':logger', ':network', ':socket', ':spi', ':common-ui', ':webview', ':utils', ':apt_processor', ':apt_annotation', ':database', ':asm'
+include ':app', ':analytics', ':logger', ':network', ':socket', ':spi', ':common-ui', ':webview', ':utils', ':apt_processor', ':apt_annotation', ':database', ':asm', ':sdk'
 include ':plugin'
+include ':asmanalytics'

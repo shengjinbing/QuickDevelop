@@ -419,7 +419,8 @@ public class OkHttpActivity extends AppCompatActivity {
     public void PostMulti(View view) {
         OkHttpClient client = new OkHttpClient();
 
-
+        File file = new File("website/static/logo-square.png");
+        RequestBody requestBody = RequestBody.create(MEDIA_TYPE_PNG, file);
         // Use the imgur image upload API as documented at https://api.imgur.com/endpoints/image
         MultipartBody body = new MultipartBody.Builder("AaB03x")
                 .setType(MultipartBody.FORM)
@@ -428,7 +429,9 @@ public class OkHttpActivity extends AppCompatActivity {
                         RequestBody.create(null, "Square Logo"))
                 .addPart(
                         Headers.of("Content-Disposition", "form-data; name=\"image\""),
-                        RequestBody.create(MEDIA_TYPE_PNG, new File("website/static/logo-square.png")))
+                        requestBody)
+                .addFormDataPart("key","abc")
+                .addFormDataPart("file",file.getName(),requestBody)
                 .build();
 
         Request request = new Request.Builder()

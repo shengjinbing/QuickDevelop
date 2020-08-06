@@ -45,12 +45,76 @@ public class ChanageVisitor extends ClassVisitor {
         super(Opcodes.ASM4, classVisitor);
     }
 
+    /**
+     *
+     * 扫描类时第一个调用的方法，可以拿到类的详细信息，然后对满足条件的类进行过滤
+     *
+     * @param version  jdk版本
+     * @param access 类的修饰符，在ASM中是以"ACC_"开头的常量
+     * @param name 类的名称
+     * @param signature 类泛型信息
+     * @param superName 当前类所继承的父类
+     * @param interfaces 表示类所实现的接口列表
+     */
     @Override
-    public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+    public void visit(int version,
+                      int access,
+                      String name,
+                      String signature,
+                      String superName,
+                      String[] interfaces) {
+        super.visit(version, access, name, signature, superName, interfaces);
+    }
+
+    /**
+     *
+     * 访问内部类的信息
+     *
+     * @param name
+     * @param outerName
+     * @param innerName
+     * @param access
+     */
+    @Override
+    public void visitInnerClass(String name,
+                                String outerName,
+                                String innerName,
+                                int access) {
+        super.visitInnerClass(name, outerName, innerName, access);
+    }
+
+    /**
+     *
+     * 扫描到类的方法的时候调用
+     * 拿到需要修改的方法，然后进行修改操作
+     *
+     * @param access 修饰符
+     * @param name 方法名称
+     * @param descriptor 方法签名
+     * @param signature 泛型相关信息
+     * @param exceptions 方法抛出异常
+     * @return
+     */
+    @Override
+    public MethodVisitor visitMethod(int access,
+                                     String name,
+                                     String descriptor,
+                                     String signature,
+                                     String[] exceptions) {
 
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions);
         if (name.equals("<init>")) {
             return methodVisitor;
         }
-        return new ChangeAdapter(Opcodes.ASM4, methodVisitor, access, name, descriptor);    }
+        return new ChangeAdapter(Opcodes.ASM4, methodVisitor, access, name, descriptor);
+    }
+
+
+    /**
+     * 遍历类中的成员信息结束
+     */
+    @Override
+    public void visitEnd() {
+        super.visitEnd();
+    }
 }
