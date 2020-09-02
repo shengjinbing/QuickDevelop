@@ -1,9 +1,11 @@
 package com.modesty.quickdevelop.network.provider;
 
 import com.modesty.quickdevelop.network.NetConfig;
+import com.modesty.quickdevelop.network.dns.HttpDns;
 import com.modesty.quickdevelop.network.interceptor.RequestLogInterceptor;
 import com.modesty.quickdevelop.network.interceptor.ResponseLogInterceptor;
 
+import java.util.BitSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -36,6 +38,7 @@ public final class OkHttpFactory {
                     builder.connectTimeout(NetConfig.instance().getConnectTimeout(), TimeUnit.MILLISECONDS);
                     builder.readTimeout(NetConfig.instance().getReadTimeout(), TimeUnit.MILLISECONDS);
                     builder.writeTimeout(NetConfig.instance().getWriteTimeout(), TimeUnit.MILLISECONDS);
+                    //builder.dns(new HttpDns());
 
                     final Set<Interceptor> interceptors = NetConfig.instance().getInterceptors();
                     for(Interceptor interceptor : interceptors){

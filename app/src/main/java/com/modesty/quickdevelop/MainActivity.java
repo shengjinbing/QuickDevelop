@@ -14,6 +14,7 @@ import com.modesty.quickdevelop.ui.activitys.ButterKnifeActivity;
 import com.modesty.quickdevelop.ui.activitys.CollectionActivity;
 import com.modesty.quickdevelop.ui.activitys.EncryptActivity;
 import com.modesty.quickdevelop.ui.activitys.FragmentActivity;
+import com.modesty.quickdevelop.ui.activitys.FrameActivity;
 import com.modesty.quickdevelop.ui.activitys.HandlerActivity;
 import com.modesty.quickdevelop.ui.activitys.LottieActivity;
 import com.modesty.quickdevelop.ui.activitys.MvpDagger2Activity;
@@ -170,5 +171,9 @@ public class MainActivity extends Activity {
         Log.appenderClose();
         Mars.onDestroy();
 
+    }
+
+    public void frame(View view) {
+        startActivity(new Intent(this, FrameActivity.class));
     }
 }

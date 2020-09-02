@@ -27,5 +27,14 @@
             android:gravity="center"
             android:layout_width="100dp"
             android:layout_height="100dp" />
+
+        <TextView
+            android:id="@+id/tv_view"
+            android:text="你好啊"
+            android:background="@color/colorAccent"
+            android:layout_marginLeft="-20dp"
+            android:gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="50dp" />
     </LinearLayout>
 </ScrollView>

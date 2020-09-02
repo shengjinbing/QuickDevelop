@@ -135,9 +135,15 @@ dependencies {
     //compileOnly("com.tinkerpatch.tinker:tinker-android-anno:1.9.13.3")
     implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.13.3")
 
+    //Hook
     implementation 'org.aspectj:aspectjrt:1.8.+'
 
+    //多渠道打包
     implementation 'com.meituan.android.walle:library:1.1.6'
+
+    //卡顿监听
+    debugCompile 'com.github.markzhai:blockcanary-android:1.5.0'
+    releaseCompile 'com.github.markzhai:blockcanary-no-op:1.5.0'
 
 
 

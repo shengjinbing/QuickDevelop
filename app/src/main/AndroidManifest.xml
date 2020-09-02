@@ -13,6 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.activitys.frame.LeakCanaryActivity"></activity>
+        <activity android:name=".ui.activitys.FrameActivity" />
         <activity
             android:name=".ui.activitys.splash.SplashActivity"
             android:screenOrientation="portrait"
@@ -22,8 +24,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- android:taskAffinity="指定任务栈" -->
+        </activity> <!-- android:taskAffinity="指定任务栈" -->
         <activity
             android:name=".ui.activitys.ViewActivity"
             android:launchMode="standard"
@@ -99,7 +100,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ui.activitys.LottieActivity" />
         <activity android:name=".ui.activitys.NestedScrollingActivity" />
-        <activity android:name=".ui.activitys.Behavior1Activity"></activity>
+        <activity android:name=".ui.activitys.Behavior1Activity" />
     </application>
 
 </manifest>

@@ -132,6 +132,7 @@ public class HandlerActivity extends AppCompatActivity {
 
             }
         });
+        startThread4();
     }
 
     private void initView() {
@@ -208,6 +209,26 @@ public class HandlerActivity extends AppCompatActivity {
 
             }
         }).start();
+    }
+
+    /**
+     * 测试子线程创建Hanhder失败
+     */
+    private void startThread4(){
+        new Thread(){
+            @Override
+            public void run() {
+                Looper.prepare();
+                Handler handler = new Handler(new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(Message msg) {
+
+                        return false;
+                    }
+                });
+                super.run();
+            }
+        }.start();
     }
 
     /*********************HandlerThread相关*******************************/
