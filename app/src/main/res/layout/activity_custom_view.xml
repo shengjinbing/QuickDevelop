@@ -6,7 +6,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.activitys.CustomViewActivity">
+    <com.modesty.quickdevelop.views.custom.DragViewGroup
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        >
 
+        <include layout = "@layout/dragviewone"/>
+        <include layout = "@layout/dragviewtwo"/>
+
+
+    </com.modesty.quickdevelop.views.custom.DragViewGroup>
+    
+    <com.modesty.quickdevelop.views.custom.DragView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#ff0000"/>
     <com.modesty.quickdevelop.views.CircleView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

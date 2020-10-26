@@ -153,6 +153,6 @@ configurations.all {
         force 'com.android.support:appcompat-v7:27.1.1'
     }
 }
-
+//应用tinker的配置文件
 apply from: "tinkerpatch.gradle"
 
