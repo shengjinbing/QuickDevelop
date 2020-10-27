@@ -15,8 +15,10 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.modesty.quickdevelop.R;
+import com.modesty.quickdevelop.anim.CustomAnimationUtils;
 
 import java.security.PrivateKey;
 
@@ -35,6 +37,8 @@ public class AnimationActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_icon)
     ImageView mIvIcon;
+    @BindView(R.id.tv_argb)
+    TextView tvArgb;
     private Animation mAnimation;
 
     @Override
@@ -45,6 +49,7 @@ public class AnimationActivity extends AppCompatActivity {
         //initListener();
         //showAnim();
         showFrameAnimation();
+        CustomAnimationUtils.startArgbAnimator(0xffffff00,0xff0000ff,tvArgb);
     }
 
     private void showAnim() {
