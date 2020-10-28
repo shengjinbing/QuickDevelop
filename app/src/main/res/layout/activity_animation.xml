@@ -18,4 +18,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="属性动画"/>
+    <TextView
+        android:id="@+id/tv_argb"
+        android:text="颜色渐变"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

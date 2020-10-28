@@ -24,6 +24,9 @@
     <com.modesty.quickdevelop.views.CircleView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <com.modesty.quickdevelop.views.RegionView
+        android:layout_width="wrap_content"
+        android:layout_height="300dp" />
     <TextView
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"

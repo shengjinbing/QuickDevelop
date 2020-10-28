@@ -41,7 +41,8 @@ import okio.BufferedSink;
  * 基本的执行流程如下：
  * OKhttpClient->Request->RealCall->Dispatcher->interceptors(RetryAndFollow->Bridge->Cache->Connect->CallServer)
  *
- * 1.新建的连接connection会存放到一个缓存池connectionpool中。网络连接完成后不会立即释放，而是存活一段时间。网络连接存活状态下，如果有相同的目标连接，则复用该连接，用它来进行写入写出流操作。
+ * 1.新建的连接connection会存放到一个缓存池connectionpool中。网络连接完成后不会立即释放，而是存活一段时间。
+ *   网络连接存活状态下，如果有相同的目标连接，则复用该连接，用它来进行写入写出流操作。
  * 2.统计每个connection上发起网络请求的次数，若次数为0，则一段时间后释放该连接。
  * 3.每个网络请求对应一个stream，connection，connectionpool等数据，将它封装为StreamAllocation对象。
  *
