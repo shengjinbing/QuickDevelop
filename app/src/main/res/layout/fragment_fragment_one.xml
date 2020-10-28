@@ -4,10 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.modesty.quickdevelop.ui.fragments.FragmentOne">
 
-   <android.support.v7.widget.RecyclerView
-       android:id="@+id/rv"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-   </android.support.v7.widget.RecyclerView>
+    <TextView
+        android:id="@+id/tv_content"
+        android:text="我是第一"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:layout_gravity="center"/>
 
 </FrameLayout>

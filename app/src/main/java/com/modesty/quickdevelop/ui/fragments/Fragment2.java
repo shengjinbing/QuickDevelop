@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+
 import com.modesty.quickdevelop.Constants;
 import com.modesty.quickdevelop.R;
 import com.modesty.quickdevelop.adapter.CoordinatorAdapter;
@@ -21,20 +23,22 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentThress extends Fragment {
+public class Fragment2 extends Fragment {
 
     private View mView;
-
-    public static FragmentThress newInstance() {
-        FragmentThress fragment = new FragmentThress();
+    private ArrayList<String> objects;
+    private CoordinatorAdapter adapter;
+    public static Fragment2 newInstance() {
+        Fragment2 fragment = new Fragment2();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public FragmentThress() {
+    public Fragment2() {
         // Required empty public constructor
     }
+
     @Override
     public void onAttach(Context context) {
         Log.d(Constants.FRAGMENTTAG,getClass().getName()+"--------------onAttach");
@@ -47,13 +51,12 @@ public class FragmentThress extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.d(Constants.FRAGMENTTAG,getClass().getName()+"--------------onCreateView");
-        mView = inflater.inflate(R.layout.fragment_fragment_thress, container, false);
+        mView = inflater.inflate(R.layout.fragment_fragment_two, container, false);
         return mView;
     }
 
@@ -63,15 +66,22 @@ public class FragmentThress extends Fragment {
         super.onActivityCreated(savedInstanceState);
         initView(mView);
     }
-
+    private void initView(View view) {
+        RecyclerView recyclerView = (RecyclerView) mView.findViewById(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        objects = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            objects.add("我是第"+i+"条目");
+        }
+        adapter = new CoordinatorAdapter(getContext(),objects);
+        recyclerView.setAdapter(adapter);
+    }
     @Override
     public void onStart() {
         Log.d(Constants.FRAGMENTTAG,getClass().getName()+"--------------onStart");
         super.onStart();
     }
-    private void initView(View view) {
 
-    }
     @Override
     public void onResume() {
         Log.d(Constants.FRAGMENTTAG,getClass().getName()+"--------------onResume");
@@ -106,5 +116,11 @@ public class FragmentThress extends Fragment {
     public void onDetach() {
         Log.d(Constants.FRAGMENTTAG,getClass().getName()+"--------------onDetach");
         super.onDetach();
+    }
+
+    public void updateUI(){
+        objects.remove(0);
+
+        adapter.notifyDataSetChanged();
     }
 }

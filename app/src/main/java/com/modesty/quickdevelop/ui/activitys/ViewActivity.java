@@ -73,4 +73,9 @@ public class ViewActivity extends AppCompatActivity {
         startActivity(new Intent(this,Behavior1Activity.class));
 
     }
+
+    public void Viewpager(View view) {
+        startActivity(new Intent(this,ViewPagerActivity.class));
+
+    }
 }

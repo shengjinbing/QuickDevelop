@@ -116,6 +116,14 @@
         android:gravity="center"
         android:onClick="NestedScrolling"
         android:text="NestedScrolling" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="Viewpager"
+            android:text="Viewpager" />
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

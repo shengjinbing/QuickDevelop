@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -18,6 +19,7 @@
             android:gravity="center"
             android:onClick="frame"
             android:text="框架源码分析" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -25,6 +27,7 @@
             android:gravity="center"
             android:onClick="lottie"
             android:text="lottie" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -32,6 +35,7 @@
             android:gravity="center"
             android:onClick="lottie"
             android:text="lottie" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -39,6 +43,7 @@
             android:gravity="center"
             android:onClick="ButterKnife"
             android:text="ButterKnife" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -46,6 +51,7 @@
             android:gravity="center"
             android:onClick="WindowManager"
             android:text="WindowManager" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -53,6 +59,7 @@
             android:gravity="center"
             android:onClick="mvp"
             android:text="mvp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -60,6 +67,7 @@
             android:gravity="center"
             android:onClick="adapter"
             android:text="今日头条等适配方案" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -67,6 +75,7 @@
             android:gravity="center"
             android:onClick="webview"
             android:text="webview" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -74,6 +83,7 @@
             android:gravity="center"
             android:onClick="animation"
             android:text="animation" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -81,6 +91,7 @@
             android:gravity="center"
             android:onClick="encrypt"
             android:text="encrypt" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -88,13 +99,15 @@
             android:gravity="center"
             android:onClick="collection"
             android:text="Collection" />
+
         <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#cf9292"
-        android:gravity="center"
-        android:onClick="viewmain"
-        android:text="viewmain" />
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#cf9292"
+            android:gravity="center"
+            android:onClick="viewmain"
+            android:text="viewmain" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -102,6 +115,7 @@
             android:gravity="center"
             android:onClick="Handler"
             android:text="Handler" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
