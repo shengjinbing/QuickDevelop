@@ -7,6 +7,11 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 
+/**
+ * Gradle Transform是Android官方提供给开发者在项目构建阶段（即由.class到.dex转换期间）
+ * 用来修改.class文件的一套标准API。目前比较经典的应用是字节码插装、代码注入等。
+ * 概括来说就是把输入的.class文件转变成目标字节码文件。
+ */
 class SensorsAnalyticsTransform extends Transform {
     private static Project project
 
@@ -15,6 +20,10 @@ class SensorsAnalyticsTransform extends Transform {
 
     }
 
+    /**
+     * Transform对应的Task的名称
+     * @return
+     */
     @Override
     String getName() {
         return "SensorsAnalyticsAutoTrack"
@@ -22,7 +31,8 @@ class SensorsAnalyticsTransform extends Transform {
 
     /**
      * 需要处理的数据类型，有两种枚举类型
-     * CLASSES 代表处理的 java 的 class 文件，RESOURCES 代表要处理 java 的资源
+     * CLASSES 代表处理的编译后的字节码,可能是jar包也可能是目录
+     * ，RESOURCES 代表要处理 java 的资源
      * @return
      */
     @Override
@@ -46,6 +56,10 @@ class SensorsAnalyticsTransform extends Transform {
         return TransformManager.SCOPE_FULL_PROJECT
     }
 
+    /**
+     * 是否增量构建
+     * @return
+     */
     @Override
     boolean isIncremental() {
         return false

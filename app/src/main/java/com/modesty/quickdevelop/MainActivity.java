@@ -43,11 +43,14 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * provided（compileOnly）
  * 只在编译时有效，不会参与打包
  * 可以在自己的moudle中使用该方式依赖一些比如com.android.support，gson这些使用者常用的库，避免冲突。
- * <p>
  * 总结起来：如果api依赖，一个module发生变化，这条依赖链上所有的module都需要重新编译；而implemention，只有直接依赖这个module需要重新编译。
  * 如果都是本地依赖，implementation相比api，主要优势在于减少build time
- * <p>
  * 全部远程依赖模式下，无论是api还是implemention都起不到依赖隔离的作用
+ *
+ *
+ *
+ * //需要准备的
+ * 1.四大引用在安卓中的使用（深入细节）
  */
 public class MainActivity extends Activity {
     public static final String TAG = "MAIN_LOG";

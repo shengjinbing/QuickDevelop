@@ -20,6 +20,7 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Authenticator;
 import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -33,6 +34,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.Route;
 import okhttp3.internal.Util;
 import okio.BufferedSink;
 
@@ -40,22 +42,22 @@ import okio.BufferedSink;
  * OKhttp框架流程
  * 基本的执行流程如下：
  * OKhttpClient->Request->RealCall->Dispatcher->interceptors(RetryAndFollow->Bridge->Cache->Connect->CallServer)
- *
+ * <p>
  * 1.新建的连接connection会存放到一个缓存池connectionpool中。网络连接完成后不会立即释放，而是存活一段时间。
- *   网络连接存活状态下，如果有相同的目标连接，则复用该连接，用它来进行写入写出流操作。
+ * 网络连接存活状态下，如果有相同的目标连接，则复用该连接，用它来进行写入写出流操作。
  * 2.统计每个connection上发起网络请求的次数，若次数为0，则一段时间后释放该连接。
  * 3.每个网络请求对应一个stream，connection，connectionpool等数据，将它封装为StreamAllocation对象。
- *
+ * <p>
  * 1.支持Http2/SPDY,对一台机器的所有请求共享同一个socket。
  * 2.默认启用长连接，使用连接池管理（内置连接池，支持连接复用，减少延迟 ），支持Cache(目前仅支持GET请求的缓存)。
  * 3.路由节点管理，提升访问速度。
  * 4.透明的Gzip处理，节省网络流量。
  * 5.灵活的拦截器，行为类似Java EE的Filter或者函数编程中的Map。
- *
  */
 public class OkHttpActivity extends AppCompatActivity {
 
     private static final String TAG = "OkHttpActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,9 +91,9 @@ public class OkHttpActivity extends AppCompatActivity {
         }).start();
     }
          /*
-         OkHttpClient构造函数中创建Builder（）
+    OkHttpClient构造函数中创建Builder（） 所有的配置
     public Builder() {
-      dispatcher = new Dispatcher(); //任务分发器
+      dispatcher = new Dispatcher(); //任务分发器,多线程管理
       protocols = DEFAULT_PROTOCOLS;//默认协议 Protocol.HTTP_2, Protocol.HTTP_1_1
       connectionSpecs = DEFAULT_CONNECTION_SPECS;
       eventListenerFactory = EventListener.factory(EventListener.NONE);
@@ -162,7 +164,7 @@ public class OkHttpActivity extends AppCompatActivity {
 }
 
     Request{
-      getResponseWithInterceptorChain //可以查看拦截器的顺序
+      getResponseWithInterceptorChain //可以查看拦截器的顺序 核心（所以网络请求都在里面）
 
       //通过拦截器的添加执行顺序可以得知整个流程
       从上面的请求流程图可以看出，OkHttp的拦截器链可谓是其整个框架的精髓，用户可传入的 interceptor 分为两类：
@@ -173,22 +175,22 @@ public class OkHttpActivity extends AppCompatActivity {
      按照添加顺序来逐个调用，具体可参考 RealCall#getResponseWithInterceptorChain() 方法。
      通过 OkHttpClient.Builder#addNetworkInterceptor(Interceptor) 传入；
 
-      Response getResponseWithInterceptorChain() throws IOException {
+     /* Response getResponseWithInterceptorChain() throws IOException {
     // Build MVPActivityModelImpl full stack of interceptors.
     List<Interceptor> interceptors = new ArrayList<>(); //这是一个List，是有序的
     interceptors.addAll(client.interceptors());//首先添加的是用户添加的全局拦截器
     interceptors.add(retryAndFollowUpInterceptor); //错误、重定向拦截器
-   //桥接拦截器，桥接应用层与网络层，添加必要的头、
+   //桥接拦截器，桥接应用层与网络层，添加必要的头、帮助我们把没有添加的信息填上
     interceptors.add(new BridgeInterceptor(client.cookieJar()));
-    //缓存处理，Last-Modified、ETag、DiskLruCache等
+    //缓存处理，Last-Modified、ETag、DiskLruCache等,如果命中缓存直接返回
     interceptors.add(new CacheInterceptor(client.internalCache()));
-    //连接拦截器
+    //连接拦截器，这里是重点进行Socket连接
     interceptors.add(new ConnectInterceptor(client));
     //从这就知道，通过okHttpClient.Builder#addNetworkInterceptor()传进来的拦截器只对非网页的请求生效
     if (!forWebSocket) {
-      interceptors.addAll(client.networkInterceptors());
+      interceptors.addAll(client.networkInterceptors());//网络调试用
     }
-    //真正访问服务器的拦截器
+    //真正访问服务器的拦截器,返回Response
     interceptors.add(new CallServerInterceptor(forWebSocket));
 
     Interceptor.Chain chain = new RealInterceptorChain(interceptors, null, null, null, 0,
@@ -246,13 +248,6 @@ public class OkHttpActivity extends AppCompatActivity {
         }*/
 
 
-
-
-
-
-
-
-
     /**
      * 异步
      *
@@ -286,7 +281,20 @@ public class OkHttpActivity extends AppCompatActivity {
                 .url("https://api.github.com/markdown/raw")
                 .post(RequestBody.create(mediaType, requestBody))
                 .build();
-        OkHttpClient okHttpClient = new OkHttpClient();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().authenticator(new Authenticator() {
+            /**
+             * 认证失败再次发
+             *
+             * @param route
+             * @param response
+             * @return
+             * @throws IOException
+             */
+            @Override
+            public Request authenticate(Route route, Response response) throws IOException {
+                return null;
+            }
+        }).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -295,7 +303,7 @@ public class OkHttpActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG, response.protocol() + " " +response.code() + " " + response.message());
+                Log.d(TAG, response.protocol() + " " + response.code() + " " + response.message());
                 Headers headers = response.headers();
                 for (int i = 0; i < headers.size(); i++) {
                     Log.d(TAG, headers.name(i) + ":" + headers.value(i));
@@ -333,7 +341,7 @@ public class OkHttpActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG, response.protocol() + " " +response.code() + " " + response.message());
+                Log.d(TAG, response.protocol() + " " + response.code() + " " + response.message());
                 Headers headers = response.headers();
                 for (int i = 0; i < headers.size(); i++) {
                     Log.d(TAG, headers.name(i) + ":" + headers.value(i));
@@ -360,7 +368,7 @@ public class OkHttpActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG, response.protocol() + " " +response.code() + " " + response.message());
+                Log.d(TAG, response.protocol() + " " + response.code() + " " + response.message());
                 Headers headers = response.headers();
                 for (int i = 0; i < headers.size(); i++) {
                     Log.d(TAG, headers.name(i) + ":" + headers.value(i));
@@ -374,13 +382,13 @@ public class OkHttpActivity extends AppCompatActivity {
     /**
      * 提交表单时，使用 RequestBody 的实现类FormBody来描述请求体，它可以携带一些经过编码的 key-value 请求体，
      * 键值对存储在下面两个集合中：
-     private final List<String> encodedNames;
-     private final List<String> encodedValues;
+     * private final List<String> encodedNames;
+     * private final List<String> encodedValues;
      *
      * @param view
      */
     public void PostForm(View view) {
-        OkHttpClient okHttpClient =  OkHttpFactory.getInstance();
+        OkHttpClient okHttpClient = OkHttpFactory.getInstance();
         RequestBody requestBody = new FormBody.Builder()
                 .add("name", "张立")
                 .build();
@@ -397,7 +405,7 @@ public class OkHttpActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG, response.protocol() + " " +response.code() + " " + response.message());
+                Log.d(TAG, response.protocol() + " " + response.code() + " " + response.message());
                 Headers headers = response.headers();
                 for (int i = 0; i < headers.size(); i++) {
                     Log.d(TAG, headers.name(i) + ":" + headers.value(i));
@@ -417,6 +425,7 @@ public class OkHttpActivity extends AppCompatActivity {
      */
     private static final String IMGUR_CLIENT_ID = "...";
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+
     public void PostMulti(View view) {
         OkHttpClient client = new OkHttpClient();
 
@@ -431,8 +440,8 @@ public class OkHttpActivity extends AppCompatActivity {
                 .addPart(
                         Headers.of("Content-Disposition", "form-data; name=\"image\""),
                         requestBody)
-                .addFormDataPart("key","abc")
-                .addFormDataPart("file",file.getName(),requestBody)
+                .addFormDataPart("key", "abc")
+                .addFormDataPart("file", file.getName(), requestBody)
                 .build();
 
         Request request = new Request.Builder()

@@ -5,6 +5,9 @@ import com.modesty.quickdevelop.base.BaseActivity;
 import com.modesty.quickdevelop.mvp.contract.home.MVPActivityContract;
 import com.modesty.quickdevelop.mvp.home.persenter.MVPActivityPersenterImpl;
 
+/**
+ * MVC  activity既充当Controller有充当显示器
+ */
 public class MvpDagger2Activity extends BaseActivity<MVPActivityPersenterImpl>
         implements MVPActivityContract.View {
 

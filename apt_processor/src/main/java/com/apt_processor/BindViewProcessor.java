@@ -43,6 +43,7 @@ public class BindViewProcessor extends AbstractProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> hashSet = new HashSet<>();
+        //获取的是zengqiang.Log4jTest.Innr;getName()获取的是zengqiang.Log4jTest$Innr
         hashSet.add(BindViewC.class.getCanonicalName());
         return hashSet;
     }
@@ -70,8 +71,8 @@ public class BindViewProcessor extends AbstractProcessor {
             VariableElement variableElement = (VariableElement) typeElement;
             //getEnclosingElement 方法返回封装此 Element 的最里层元素
             //如果 Element 直接封装在另一个元素的声明中，则返回该封装元素
-            //此处表示的即 Activity 类对象
-            TypeElement enclosingElement = (TypeElement) variableElement.getEnclosingElement();
+            //此处表示的即 Activity 类对象，获取包含它的对象
+            TypeElement enclosingElement = (TypeElement) variableElement .getEnclosingElement();
             Map<Integer, VariableElement> variableElementMap = typeElementMapMap.get(enclosingElement);
             if (variableElementMap == null) {
                 variableElementMap = new HashMap<>();
@@ -142,7 +143,6 @@ public class BindViewProcessor extends AbstractProcessor {
             String type = element.asType().toString();
             String text = "{0}.{1}=({2})({3}.findViewById({4}));";
             methodBuilder.addCode(MessageFormat.format(text, parameter, name, type, parameter, String.valueOf(viewId)));
-
         }
         return methodBuilder.build();
     }

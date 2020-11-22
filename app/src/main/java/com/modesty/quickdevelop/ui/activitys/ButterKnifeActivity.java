@@ -14,6 +14,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * ButterKnife不是依赖注入，依赖外部创建
+ */
 public class ButterKnifeActivity extends AppCompatActivity {
 
     @BindView(R.id.bk_tv)

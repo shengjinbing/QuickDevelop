@@ -1,14 +1,11 @@
 package com.modesty.quickdevelop.ui.activitys;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.modesty.quickdevelop.R;
@@ -18,7 +15,6 @@ import com.modesty.quickdevelop.adapter.recyclerview.wrapper.EmptyWrapper;
 import com.modesty.quickdevelop.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 import com.modesty.quickdevelop.adapter.recyclerview.wrapper.LoadMoreWrapper;
 import com.modesty.quickdevelop.adapter.rv.DividerItemDecoration;
-import com.yanzhenjie.recyclerview.swipe.widget.DefaultItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,13 +78,6 @@ public class RecyclerViewActivity extends AppCompatActivity {
             }
         };
 
-        initHeaderAndFooter();
-
-        //initEmptyView();
-
-        initLoadMore();
-
-
         mRv.setAdapter(mLoadMoreWrapper);
         mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
@@ -104,7 +93,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
         });
 
         //自定义缓存
-        mRv.setViewCacheExtension(new RecyclerView.ViewCacheExtension(){
+        mRv.setViewCacheExtension(new RecyclerView.ViewCacheExtension() {
 
             @Override
             public View getViewForPositionAndType(RecyclerView.Recycler recycler, int position, int type) {
@@ -124,50 +113,42 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
     }
 
+
+    /*********************** 对于ListView的绘制流程其实我们有了一个大体的了解*******************************/
     /**
-     * 初始化头和尾部
+     *
+     *     1.ActiveView 活跃view
+     *     2.ScrapView  废弃View
      */
-    private void initHeaderAndFooter() {
-        mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
+/*    class RecycleBin {
+        private AbsListView.RecyclerListener mRecyclerListener;
 
-        TextView t1 = new TextView(this);
-        t1.setText("Header 1");
-        TextView t2 = new TextView(this);
-        t2.setText("Header 2");
-        mHeaderAndFooterWrapper.addHeaderView(t1);
-        mHeaderAndFooterWrapper.addHeaderView(t2);
-    }
+        *//**
+     * The position of the first view stored in mActiveViews.
+     *//*
+        private int mFirstActivePosition;
 
-    /**
-     * 加载更多
-     */
-    private void initLoadMore() {
-        mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
-        mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
-        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < 10; i++) {
-                            mDatas.add("Add:" + i);
-                        }
-                        mLoadMoreWrapper.notifyDataSetChanged();
+        *//**
+     * Views that were on screen at the start of layout. This array is populated at the start of
+     * layout, and at the end of layout all view in mActiveViews are moved to mScrapViews.
+     * Views in mActiveViews represent a contiguous range of Views, with position of the first
+     * view store in mFirstActivePosition.
+     *//*
+        private View[] mActiveViews = new View[0];
 
-                    }
-                }, 3000);
-            }
-        });
-    }
+        *//**
+     * Unsorted views that can be used by the adapter as a convert view.
+     *//*
+        private ArrayList<View>[] mScrapViews;
 
-    /**
-     * 初始化添加空布局
-     */
-    private void initEmptyView() {
-        mEmptyWrapper = new EmptyWrapper(mAdapter);
-        mEmptyWrapper.setEmptyView(LayoutInflater.from(this).inflate(R.layout.empty_view, mRv, false));
-    }
+        private int mViewTypeCount;
+
+        private ArrayList<View> mCurrentScrap;
+
+        private ArrayList<View> mSkippedScrap;
+
+        private SparseArray<View> mTransientStateViews;
+        private LongSparseArray<View> mTransientStateViewsById;*/
 
 
     /***********************第一阶段 对于RecyclerView的绘制流程其实我们有了一个大体的了解*******************************/
@@ -201,21 +182,36 @@ public class RecyclerViewActivity extends AppCompatActivity {
     ...
     }
     类的结构也比较清楚，这里可以清楚的看到我们后面讲到的四级缓存机制所用到的类都在这里可以看到
-    * 1.一级缓存：mAttachedScrap
-    * 2.二级缓存：mCacheViews
-    * 3.三级缓存：mViewCacheExtension
-    * 4.四级缓存：mRecyclerPool
-    /*
+     1.一级缓存：mAttachedScrap
+        (Scrap)碎片,废弃，显示在屏幕内的缓存，通过postions获取直接复用不需要走onBindViewHolder，
+        只关心position不关心view type，
+     2.二级缓存：mCacheViews 移除屏幕的缓存，通过postions获取直接复用不需要走onBindViewHolder，
+     3.三级缓存：mViewCacheExtension
+     4.四级缓存：mRecyclerPool 脏数据缓存，只关心view type，都需要重新绑定
  1.mCachedViews 优先级高于 RecyclerViewPool，回收时，最新的 ViewHolder 都是往 mCachedViews 里放，
   如果它满了，那就移出一个扔到 ViewPool 里好空出位置来缓存最新的 ViewHolder。
  2.复用时，也是先到 mCachedViews 里找 ViewHolder，但需要各种匹配条件，概括一下就是只有原来位置的
  卡位可以复用存在 mCachedViews 里的 ViewHolder，如果 mCachedViews 里没有，那么才去 ViewPool 里找。
- 3.在 ViewPool 里的 ViewHolder 都是跟全新的 ViewHolder 一样，只要 type 一样，有找到，就可以拿出来复用，重新绑定下数据即可。
+ 3.在 ViewPool 里的 ViewHolder 都是跟全新的 ViewHolder 一样，只要 type 一样，有找到，就可以拿出来复用，
+   重新绑定下数据即可(走onBindViewHolder)。
 
     1.RecyclerView内部大体可以分为四级缓存：mAttachedScrap,mCacheViews,ViewCacheExtension,RecycledViewPool.
     2.mAttachedScrap,mCacheViews只是对View的复用，并且不区分type，ViewCacheExtension,RecycledViewPool是对于ViewHolde
     r的复用，而且区分type。
     3.如果缓存ViewHolder时发现超过了mCachedView的限制，会将最老的ViewHolder(也就是mCachedView缓存队列的第一个ViewHolder)
     移到RecycledViewPool中
+
+
+    recycView的性能优化？
+    1.在onBindViewHolder里面设置item点击监听
+      可以在onCreateViewHolder里面设置
+    3.mRv.setHasFixedSize(true)
+    4.共用缓存池
+    5.DiffUtilWechatIMG6350.png
+
+
+    itemDecoration的作用有哪些?
+    1.画分割线
+    2.
      */
 }

@@ -29,6 +29,14 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         mItemViewDelegateManager = new ItemViewDelegateManager();
     }
 
+
+
+    @Override
+    public int getItemCount() {
+        int itemCount = mDatas.size();
+        return itemCount;
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (!useItemViewDelegateManager()) {
@@ -47,6 +55,18 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         setListener(parent, holder, viewType);
         return holder;
     }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        convert(holder, mDatas.get(position));
+    }
+
+
+
+
+
+
+
 
     public void onViewHolderCreated(ViewHolder holder,View itemView){
 
@@ -85,17 +105,6 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
                 return false;
             }
         });
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        convert(holder, mDatas.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        int itemCount = mDatas.size();
-        return itemCount;
     }
 
 

@@ -6,6 +6,9 @@ import org.gradle.api.Project
 
 public class SensorsAnalyticsPlugin implements Plugin<Project> {
     void apply(Project project) {
+        /*
+         相当于拿到了build.gradle里面的android{}
+        */
         AppExtension appExtension = project.extensions.findByType(AppExtension.class)
         appExtension.registerTransform(new SensorsAnalyticsTransform(project))
     }

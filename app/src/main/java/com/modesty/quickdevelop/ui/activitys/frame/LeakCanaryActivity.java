@@ -1,7 +1,6 @@
 package com.modesty.quickdevelop.ui.activitys.frame;
 
 import android.app.Activity;
-import android.app.Application;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +11,9 @@ import com.modesty.quickdevelop.R;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 
+/**
+ * 版本升级以后为什么性能提升一倍
+ */
 public class LeakCanaryActivity extends AppCompatActivity {
     public static final String TAG = "LeakCanaryActivity_LOG";
 

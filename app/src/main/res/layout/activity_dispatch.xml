@@ -7,6 +7,15 @@
     android:orientation="vertical"
     tools:context="com.modesty.quickdevelop.ui.activitys.DispatchActivity">
 
+    <TextView
+        android:id="@+id/tv_text"
+        android:text="nihao"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"/>
+    <SurfaceView
+        android:id="@+id/sv"
+        android:layout_width="300dp"
+        android:layout_height="300dp"/>
     <com.modesty.quickdevelop.ui.view.CustomTextView
         android:id="@+id/tv"
         android:layout_width="match_parent"

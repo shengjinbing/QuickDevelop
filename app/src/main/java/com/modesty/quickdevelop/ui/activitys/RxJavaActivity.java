@@ -25,6 +25,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -506,7 +507,7 @@ public class RxJavaActivity extends AppCompatActivity {
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        disposable = d;
                     }
 
                     @Override
@@ -525,4 +526,5 @@ public class RxJavaActivity extends AppCompatActivity {
                     }
                 });
     }
+    Disposable disposable;
 }

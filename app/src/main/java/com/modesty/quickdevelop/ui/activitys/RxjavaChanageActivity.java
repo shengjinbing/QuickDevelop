@@ -103,6 +103,8 @@ public class RxjavaChanageActivity extends RxAppCompatActivity {
      * 将被观察者发送的事件转换为任意的类型事件。
      * 数据类型转换
      *
+     *
+     *
      * @param view
      */
     public void map(View view) {

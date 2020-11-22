@@ -113,6 +113,7 @@ public class EncryptActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.dsa:
+                //用作签名，速度快比RSA
                 break;
             case R.id.ecc:
                 break;
@@ -160,6 +161,17 @@ public class EncryptActivity extends AppCompatActivity {
         mTvDecryptionLength.setText("解密后的长度=" + result.length());
     }
 
+    /**
+     *公钥加密私钥解密，，私钥加密公钥也能解密，，但是公私钥不能对调，根据私钥可以算出公钥。
+     *如何防止伪造？
+     * 数字签名
+     *
+     * 数字签名？
+     * 用私钥签名数据证明这数据是我的。
+     *
+     * @param content  要转为二进制数据
+     * @throws Exception
+     */
     private void rsaEncryptPublicKey(String content) throws Exception {
         KeyPair keyPair = RSAUtil1.generateRSAKeyPair(RSAUtil1.DEFAULT_KEY_SIZE);
         // 公钥
