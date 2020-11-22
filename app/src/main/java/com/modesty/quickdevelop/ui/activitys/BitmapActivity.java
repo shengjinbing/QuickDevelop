@@ -2,6 +2,11 @@ package com.modesty.quickdevelop.ui.activitys;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +47,7 @@ public class BitmapActivity extends AppCompatActivity {
         ImageView image1 = (ImageView) findViewById(R.id.image1);
         TextView tv1 = (TextView) findViewById(R.id.tv);
 
+        loadBitmap(image1);
         TextView tvView = (TextView) findViewById(R.id.tv_view);
         tvView.post(new Runnable() {
             @Override
@@ -50,9 +56,26 @@ public class BitmapActivity extends AppCompatActivity {
             }
         });
     }
-
     public void loadBigImage(View view) {
         startActivity(new Intent(this,BigImageActivity.class));
+    }
+
+    public void loadBitmap(ImageView iv){
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = true;
+        Bitmap output = Bitmap.createBitmap(200,100, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setAntiAlias(true);
+        paint.setTextSize(20);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawText("啊打算大奥",0,100,paint);
+
+        canvas.drawBitmap(bitmap,0,0,paint);
+
+        iv.setImageBitmap(output);
     }
 
     /**

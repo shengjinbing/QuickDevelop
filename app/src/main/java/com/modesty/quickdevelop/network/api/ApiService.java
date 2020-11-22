@@ -60,7 +60,7 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST(Constants.STAR_SEARCH)
-    Flowable<HttpResponse<List<StarListBean>>> getSeachList(@Field("name") String name);
+    Flowable<HttpResponse<List<StarListBean>>>  getSeachList(@Field("name") String name);
 
     @FormUrlEncoded
     @POST(Constants.STAR_SEARCH)

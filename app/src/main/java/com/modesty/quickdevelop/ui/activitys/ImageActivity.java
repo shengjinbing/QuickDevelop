@@ -66,15 +66,30 @@ public class ImageActivity extends AppCompatActivity {
 
     /**
      * glide相关
+     * 1.glide是个通过双重加锁生成的单例（通过构建者模式GlideBuilder.build()第一次初始化的）
+     * 2.glide与picaoss和fress的无缝切换
+     * 3.自定义圆角
+     * 4。进度条封装
+     *
+     * 1.生命周期怎么绑定的？
+     * 2.缓存路径如何配置的？
+     *SupportRequestManagerFragment
+     * RequestBuilder
+     * singleRequest
+     * 1.内存缓存：在Glide中默认是LruResourceCache。当然你也可以自定义；
+     * 2.为何要两级内存缓存（loadFromActiveResources）。个人理解是一级缓存采用LRU算法进行缓存，并不能保证全部能命中，添加二级缓存提高命中率之用；
+     * 3.EngineJob和DecodeJob各自职责：EngineJob充当了管理和调度者，主要负责加载和各类回调通知；DecodeJob是真正干活的劳动者，这个类实现了Runnable接口。
+     *
      */
     private void initGlide() {
+        String url = "http://guolin.tech/book.png";
         GlideApp.with(this)
                 .asBitmap()
-                .load(R.drawable.toolbar_bg)
+                .load(url)
                 .centerCrop()
                 .miniThumb()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(new CustomImageViewTarget(mImageView));
+                .into(mImageView1);
     }
 
     /**
@@ -90,7 +105,7 @@ public class ImageActivity extends AppCompatActivity {
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .priority(Priority.HIGH)
-                .diskCacheStrategy(DiskCacheStrategy.NONE);
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
     }
 
     private void initView() {

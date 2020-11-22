@@ -29,35 +29,37 @@ import java.lang.ref.WeakReference;
  * 2.通过ThreadLocal可以在轻松获取每个线程的Looper
  * 3.UI线程也就是ActivityThread，ActivityThread被创建的时候就会初始化Looper
  * 4.ThreadLocal里面保存的是Looper, 由下面源码可以看出来两次prepare方法调用会抛异常
+ *
  * private static void prepare(boolean quitAllowed) {
- * if (sThreadLocal.get() != null) {
- * throw new RuntimeException("Only one Looper may be created per thread");
+ *    if (sThreadLocal.get() != null) {
+ *        throw new RuntimeException("Only one Looper may be created per thread");
+ *       }
+ *     sThreadLocal.set(new Looper(quitAllowed));
  * }
- * sThreadLocal.set(new Looper(quitAllowed));
- * }
+ *
  * 5.只能在UI线程更新UI，ViewRootImpl对UI进验证，checkThread()方法。
  * 6.为什么不允许在子线程中更新UI？
  * （1）因为子线程更新UI并不是线程安全的。
  * （2）加锁机制会让UI访问变得复杂。
  * （3）加锁会降低UI的访问效率。
- * <p>
- * <p>
+ *
  * **************************Looper*******************************
  * looper的两个退出方法：quit直接退出Looper，而quitSafely会将消息队列中的消息安全的处理完毕后才安全的退出。
- * <p>
- * <p>
- * <p>
- * ***************重要的Looper消息循环和阻塞*********************
- * 1.postDelay()一个1秒钟的MyTask任务、消息进队，MessageQueue开始阻塞，Looper阻塞，mBlocked为true，在enqueueMessage的if中将needWake = mBlocked。
- * <p>
- * 2.然后post一个新的任务、消息进队，判断现在A时间还没到、正在阻塞，把新的任务插入消息队列的头部（MyTask任务的前面），然后此时needWake为true调用nativeWake()方法唤醒线程。
- * <p>
- * 3.MessageQueue.next()方法被唤醒后，重新开始读取消息链表，第一个消息B无延时，直接返回给Looper；
- * <p>
- * 4.Looper处理完这个消息再次调用next()方法，MessageQueue继续读取消息链表，第二个消息A还没到时间，计算一下剩余时间（假如还剩9秒）继续阻塞；
- * <p>
- * 5.直到阻塞时间到或者下一次有Message进队；
  *
+ *
+ *
+ * ***************重要的Looper消息循环和阻塞*********************
+ * 1.postDelay()一个1秒钟的MyTask任务、消息进队，MessageQueue开始阻塞，Looper阻塞，mBlocked为true，
+ *   在enqueueMessage的if中将needWake = mBlocked。
+ *
+ * 2.然后post一个新的任务、消息进队，判断现在A时间还没到、正在阻塞，把新的任务插入消息队列的头部（MyTask任务的前面），
+ *   然后此时needWake为true调用nativeWake()方法唤醒线程。
+ *
+ * 3.MessageQueue.next()方法被唤醒后，重新开始读取消息链表，第一个消息B无延时，直接返回给Looper；
+ *
+ * 4.Looper处理完这个消息再次调用next()方法，MessageQueue继续读取消息链表，第二个消息A还没到时间，计算一下剩余时间（假如还剩9秒）继续阻塞；
+ *
+ * 5.直到阻塞时间到或者下一次有Message进队；
  *
  *
  *  * ***************重要的4中引用消息循环和阻塞*********************
