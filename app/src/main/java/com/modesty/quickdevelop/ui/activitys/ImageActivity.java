@@ -78,6 +78,32 @@ public class ImageActivity extends AppCompatActivity {
      * singleRequest
      * 1.内存缓存：在Glide中默认是LruResourceCache。当然你也可以自定义；
      * 2.为何要两级内存缓存（loadFromActiveResources）。个人理解是一级缓存采用LRU算法进行缓存，并不能保证全部能命中，添加二级缓存提高命中率之用；
+     *   EngineResource<?> cached = loadFromCache(key, isMemoryCacheable);
+     *     if (cached != null) {
+     *       cb.onResourceReady(cached, DataSource.MEMORY_CACHE);
+     *       if (Log.isLoggable(TAG, Log.VERBOSE)) {
+     *         logWithTimeAndKey("Loaded resource from cache", startTime, key);
+     *       }
+     *       return null;
+     *     }
+     *     //这个缓存有什么用处
+     *     EngineResource<?> active = loadFromActiveResources(key, isMemoryCacheable);
+     *     if (active != null) {
+     *       cb.onResourceReady(active, DataSource.MEMORY_CACHE);
+     *       if (Log.isLoggable(TAG, Log.VERBOSE)) {
+     *         logWithTimeAndKey("Loaded resource from active resources", startTime, key);
+     *       }
+     *       return null;
+     *     }
+     *
+     *     EngineJob<?> current = jobs.get(key);
+     *     if (current != null) {
+     *       current.addCallback(cb);
+     *       if (Log.isLoggable(TAG, Log.VERBOSE)) {
+     *         logWithTimeAndKey("Added to existing load", startTime, key);
+     *       }
+     *       return new LoadStatus(cb, current);
+     *     }
      * 3.EngineJob和DecodeJob各自职责：EngineJob充当了管理和调度者，主要负责加载和各类回调通知；DecodeJob是真正干活的劳动者，这个类实现了Runnable接口。
      *
      */

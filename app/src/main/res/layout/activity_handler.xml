@@ -44,5 +44,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="结束线程的消息循环"/>
+    <Button
+        android:onClick="button4"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="测试主线程发送消息"/>
+
+    <Button
+        android:onClick="button5"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="子线程创建dialog"/>
+
+    <Button
+        android:onClick="button6"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="空闲Hnadler"/>
 
 </LinearLayout>

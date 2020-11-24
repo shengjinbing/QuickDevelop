@@ -84,6 +84,8 @@ public class CustomGlideModule extends AppGlideModule {
     @Override
     public void registerComponents(Context context, Glide glide, Registry registry) {
         Log.d("CustomGlide_log","registerComponents");
-        registry.append(GlideUrl.class, InputStream.class,new OkHttpUriLoader.Factory());
+        //registry.append(GlideUrl.class, InputStream.class,new OkHttpUriLoader.Factory());
+        //替换掉之前的网络框架
+        registry.replace(GlideUrl.class, InputStream.class,new OkHttpUriLoader.Factory());
     }
 }
