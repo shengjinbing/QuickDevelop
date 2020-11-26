@@ -1,5 +1,6 @@
 package com.modesty.quickdevelop.ui.activitys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -121,5 +122,9 @@ public class CustomViewActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void canvas(View view) {
+        startActivity(new Intent(this,CanvasActivity.class));
     }
 }
