@@ -16,8 +16,11 @@ import com.bumptech.glide.load.engine.cache.MemorySizeCalculator;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
+import com.modesty.quickdevelop.utils.image.glide.progress.ProgressInterceptor;
 
 import java.io.InputStream;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by Administrator on 2018/1/11 0011.
@@ -86,6 +89,9 @@ public class CustomGlideModule extends AppGlideModule {
         Log.d("CustomGlide_log","registerComponents");
         //registry.append(GlideUrl.class, InputStream.class,new OkHttpUriLoader.Factory());
         //替换掉之前的网络框架
-        registry.replace(GlideUrl.class, InputStream.class,new OkHttpUriLoader.Factory());
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .addInterceptor(new ProgressInterceptor())
+                .build();
+        registry.replace(GlideUrl.class, InputStream.class,new OkHttpUriLoader.Factory(okHttpClient));
     }
 }

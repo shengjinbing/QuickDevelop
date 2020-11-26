@@ -12,7 +12,8 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 
 /**
- * 版本升级以后为什么性能提升一倍
+ * 1.版本升级以后为什么性能提升一倍
+ * 2.GC Root(class对象，静态变量)短生命周期被长生命周期的类引用
  */
 public class LeakCanaryActivity extends AppCompatActivity {
     public static final String TAG = "LeakCanaryActivity_LOG";

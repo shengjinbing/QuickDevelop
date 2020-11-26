@@ -1,5 +1,6 @@
 package com.modesty.quickdevelop.ui.activitys;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,12 +19,18 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.ImageViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.modesty.logger.simplelog.Logger;
 import com.modesty.quickdevelop.R;
 import com.modesty.quickdevelop.utils.image.ImageOperateUtil;
 import com.modesty.quickdevelop.utils.image.glide.GlideApp;
+import com.modesty.quickdevelop.utils.image.glide.progress.ProgressInterceptor;
+import com.modesty.quickdevelop.utils.image.glide.progress.ProgressListener;
+import com.modesty.quickdevelop.utils.image.glide.transform.CircleCrop;
+import com.modesty.quickdevelop.utils.image.glide.transform.GlideRoundTransform;
 
 /**
  * 1.注解(V4新特性)和自定义方法:Glide使用了annotation processor来生成API，
@@ -50,6 +57,8 @@ public class ImageActivity extends AppCompatActivity {
     private ImageView mImageView;
     private ImageView mImageView1;
     private RequestOptions mOptions;
+    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +86,10 @@ public class ImageActivity extends AppCompatActivity {
      * RequestBuilder
      * singleRequest
      * 1.内存缓存：在Glide中默认是LruResourceCache。当然你也可以自定义；
-     * 2.为何要两级内存缓存（loadFromActiveResources）。个人理解是一级缓存采用LRU算法进行缓存，并不能保证全部能命中，添加二级缓存提高命中率之用；
+     * 2.为何要两级内存缓存（loadFromActiveResources）。
+     *   activeResources就是一个弱引用的HashMap，用来缓存正在使用中的图片，我们可以看到，loadFromActiveResources()方法就
+     *   是从activeResources这个HashMap当中取值的。使用activeResources来缓存正在使用中的图片，可以保护这些图片不会被LruCache算法回收掉
+     *
      *   EngineResource<?> cached = loadFromCache(key, isMemoryCacheable);
      *     if (cached != null) {
      *       cb.onResourceReady(cached, DataSource.MEMORY_CACHE);
@@ -108,14 +120,38 @@ public class ImageActivity extends AppCompatActivity {
      *
      */
     private void initGlide() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage("加载中");
         String url = "http://guolin.tech/book.png";
+
+        ProgressInterceptor.addListener(url,new CusProgressListener());
         GlideApp.with(this)
-                .asBitmap()
                 .load(url)
-                .centerCrop()
-                .miniThumb()
+                .transform(new GlideRoundTransform(this,4))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(mImageView1);
+                .into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onLoadStarted(@Nullable Drawable placeholder) {
+                        progressDialog.show();
+
+                    }
+
+                    @Override
+                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                        progressDialog.dismiss();
+                        ProgressInterceptor.removeListener(url);
+                        mImageView1.setImageDrawable(resource);
+                    }
+                });
+    }
+    private class CusProgressListener implements ProgressListener {
+
+        @Override
+        public void onProgress(int progress) {
+            progressDialog.setProgress(progress);
+
+        }
     }
 
     /**

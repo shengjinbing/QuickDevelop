@@ -107,15 +107,10 @@ dependencies {
     //image
     implementation rootProject.ext.dependencies["glide"]
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.2'
-    // Optional, if you use support library fragments:
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.2'
     implementation project(':logger')
     implementation 'com.uber.autodispose:autodispose:0.6.1'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.6.1'
     //implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.github.markzhai:blockcanary-android:1.5.0'
     implementation project(':utils')
 
     //自定义黄牛刀
@@ -145,7 +140,10 @@ dependencies {
     debugCompile 'com.github.markzhai:blockcanary-android:1.5.0'
     releaseCompile 'com.github.markzhai:blockcanary-no-op:1.5.0'
 
-
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.2'
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.2'
 
 }
 configurations.all {

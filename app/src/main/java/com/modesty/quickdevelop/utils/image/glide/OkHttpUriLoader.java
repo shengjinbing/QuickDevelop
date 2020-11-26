@@ -65,6 +65,12 @@ public class OkHttpUriLoader implements ModelLoader<GlideUrl, InputStream> {
         private OkHttpClient client;
         private final ModelCache<GlideUrl, GlideUrl> modelCache = new ModelCache<>(500);
 
+        public Factory(){
+        }
+
+        public Factory(OkHttpClient client){
+            this.client = client;
+        }
         private synchronized OkHttpClient getOkHttpClient() {
             if (client == null) {
                 client = new OkHttpClient();

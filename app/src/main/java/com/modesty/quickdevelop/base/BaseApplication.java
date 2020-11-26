@@ -1,16 +1,10 @@
 package com.modesty.quickdevelop.base;
 
 import android.app.Application;
-import android.content.Context;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Trace;
 import android.util.Log;
 
 import com.github.moduth.blockcanary.BlockCanary;
-import com.github.moduth.blockcanary.BlockCanaryContext;
-import com.github.moduth.blockcanary.internal.BlockInfo;
 import com.modesty.logger.simplelog.LogLevel;
 import com.modesty.logger.simplelog.Logger;
 import com.modesty.quickdevelop.BuildConfig;
@@ -21,20 +15,11 @@ import com.modesty.quickdevelop.di.module.AppModule;
 import com.modesty.quickdevelop.network.NetConfig;
 import com.modesty.quickdevelop.utils.TraceUtil;
 import com.squareup.leakcanary.LeakCanary;
-import com.tencent.mars.BaseEvent;
-import com.tencent.mars.Mars;
-import com.tencent.mars.app.AppLogic;
-import com.tencent.mars.sdt.SdtLogic;
-import com.tencent.mars.stn.StnLogic;
 import com.tencent.mars.xlog.Xlog;
 import com.tencent.mmkv.MMKV;
 import com.tencent.tinker.entry.ApplicationLike;
 import com.tinkerpatch.sdk.TinkerPatch;
 import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
-
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * 启动优化

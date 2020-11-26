@@ -49,7 +49,17 @@ import okhttp3.logging.HttpLoggingInterceptor;
  *
  *
  *
- * //需要准备的
+ *
+ *
+ * //需要准备的框架源码分析
+ * 1.OkHttp、Retrofit、Rxjava2
+ * 2.Gilde
+ * 3.LeakCannary
+ * 4.BolckCannary
+ * 5.ASM、AspectJ
+ * 6.Annotion Processing
+ * 7.HashMap
+ *
  * 1.四大引用在安卓中的使用（深入细节）
  */
 public class MainActivity extends Activity {
