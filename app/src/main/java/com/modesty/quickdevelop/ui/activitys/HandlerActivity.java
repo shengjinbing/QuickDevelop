@@ -90,6 +90,12 @@ import java.lang.ref.WeakReference;
  *  * ***************重要的4中引用消息循环和阻塞*********************
  *  1.软引用可用来实现内存敏感的高速缓存。软引用可以和一个引用队列（ReferenceQueue）联合使用，如果软引用所引用的对象被垃圾回收，
  *    Java虚拟机就会把这个软引用加入到与之关联的引用队列中。
+ *  2.LifecycleRegistry的mLifecycleOwner弱引用。
+ *  3.ThreadLocal
+ *  4.LeakCanary实现原理
+ *  5.glide为什么使用WeakReference而不是SoftReference？
+ *    1.这样可以保护当前使用的资源不会被 LruCache 算法回收，分担lrucache的压力
+ *
  */
 public class HandlerActivity extends AppCompatActivity {
     public static final String TAG = "HANDLER_LOG";

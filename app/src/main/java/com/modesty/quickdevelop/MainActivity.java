@@ -57,8 +57,11 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * 3.LeakCannary
  * 4.BolckCannary
  * 5.ASM、AspectJ
- * 6.Annotion Processing
+ * 6.Annotion Processing（ButterKnife）
  * 7.HashMap
+ * 8.ARouter
+ * 9.EventBus
+ * 10.LiveDataBus
  *
  * 1.四大引用在安卓中的使用（深入细节）
  */

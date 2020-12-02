@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.activitys.CanvasActivity">
-
     <com.modesty.quickdevelop.views.custom.CanvasView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_width="200dp"
+        android:layout_height="200dp"/>
+
 </LinearLayout>

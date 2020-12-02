@@ -47,12 +47,36 @@ import okio.BufferedSink;
  * 网络连接存活状态下，如果有相同的目标连接，则复用该连接，用它来进行写入写出流操作。
  * 2.统计每个connection上发起网络请求的次数，若次数为0，则一段时间后释放该连接。
  * 3.每个网络请求对应一个stream，connection，connectionpool等数据，将它封装为StreamAllocation对象。
- * <p>
+ *
+ * 关于连接池中的源码部分就介绍这么多，下面我们再来总结下连接池中相关问题:
+ * 1.连接池是为了解决频繁的进行建立Sokcet连接（TCP三次握手）和断开Socket（TCP四次分手）。
+ * 2.Okhttp的连接池支持最大5个链路的keep-alive连接，并且默认keep-alive的时间是5分钟。
+ * 3.连接池实现的类是RealConnectionPool，它负责存储与清除的工作，存储是通过ArrayDeque的双端队列存储，删除交给了线程池处理cleanupRunnable的任务。
+ * 4.在每次创建RealConnection或从连接池中拿一次RealConnection会给RealConnection的transmitters集合添加一个若引用的transmitter对象，添加它主要是为了后面判断该连接是否在使用中
+ * 5.在连接池中找连接的时候会对比连接池中相同host的连接。
+ * 6.如果在连接池中找不到连接的话，会创建连接，创建完后会存储到连接池中。
+ * 7.在把连接放入连接池中时，会把清除操作的任务放入到线程池中执行，删除任务中会判断当前连接有没有在使用中，有没有正在使用通
+ *  RealConnection的transmitters集合的size是否为0来判断，如果不在使用中，找出空闲时间最长的连接，如果空闲时间最长的连接超过了keep-alive默认的5分钟或者空闲的连接数超过了最大的keep-alive连接数5个的话，会把存活时间最长的连接从连接池中删除。保证keep-alive的最大空闲时间和最大的连接数。
+ ** 链接：https://juejin.cn/post/6898145227765186567
+ *
+ * 根据源码可知，一共七个拦截器：
+ *
+ * 1.addInterceptor(Interceptor)，这是由开发者设置的，会按照开发者的要求，在所有的拦截器处理之前进行最早的拦截处理，比如一些公共参数，Header都可以在这里添加。
+ * 2.RetryAndFollowUpInterceptor，这里会对连接做一些初始化工作，以及请求失败的充实工作，重定向的后续请求工作。跟他的名字一样，就是做重试工作还有一些连接跟踪工作。
+ * 3.BridgeInterceptor，这里会为用户构建一个能够进行网络访问的请求，同时后续工作将网络请求回来的响应Response转化为用户可用的Response，比如添加文件类型，content-length计算添加，gzip解包。
+ * 4.CacheInterceptor，这里主要是处理cache相关处理，会根据OkHttpClient对象的配置以及缓存策略对请求值进行缓存，而且如果本地有了可⽤的Cache，就可以在没有网络交互的情况下就返回缓存结果。
+ * 5.ConnectInterceptor，这里主要就是负责建立连接了，会建立TCP连接或者TLS连接，以及负责编码解码的HttpCodec
+ * 6.networkInterceptors，这里也是开发者自己设置的，所以本质上和第一个拦截器差不多，但是由于位置不同，所以用处也不同。这个位置添加的拦截器可以看到请求和响应的数据了，所以可以做一些网络调试。
+ * 7.CallServerInterceptor，这里就是进行网络数据的请求和响应了，也就是实际的网络I/O操作，通过socket读写数据。
+ * 链接：https://www.jianshu.com/p/7cb9300c6d71
+ *
+ * 总结：
  * 1.支持Http2/SPDY,对一台机器的所有请求共享同一个socket。
  * 2.默认启用长连接，使用连接池管理（内置连接池，支持连接复用，减少延迟 ），支持Cache(目前仅支持GET请求的缓存)。
  * 3.路由节点管理，提升访问速度。
  * 4.透明的Gzip处理，节省网络流量。
  * 5.灵活的拦截器，行为类似Java EE的Filter或者函数编程中的Map。
+ *
  */
 public class OkHttpActivity extends AppCompatActivity {
 

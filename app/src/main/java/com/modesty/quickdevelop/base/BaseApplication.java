@@ -1,6 +1,12 @@
 package com.modesty.quickdevelop.base;
 
+import android.app.Activity;
 import android.app.Application;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 
@@ -15,6 +21,8 @@ import com.modesty.quickdevelop.di.module.AppModule;
 import com.modesty.quickdevelop.network.NetConfig;
 import com.modesty.quickdevelop.utils.TraceUtil;
 import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
+import com.squareup.leakcanary.internal.ActivityLifecycleCallbacksAdapter;
 import com.tencent.mars.xlog.Xlog;
 import com.tencent.mmkv.MMKV;
 import com.tencent.tinker.entry.ApplicationLike;
@@ -23,18 +31,18 @@ import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
 
 /**
  * 启动优化
- * <p>
+ *
  * 启动过程：
  * 1.预览窗口显示
  * 2.闪屏显示
  * 3.主页显示
  * 4.界面可操作
- * <p>
+ *
  * 启动问题分析：
  * 1.点击图标很久不响应
  * 2.首页显示太慢
  * 3.首页显示后无法操作
- * <p>
+ *
  * 具体优化方式分为：闪屏优化，业务梳理，业务优化，线程优化，GC优化，系统调用优化
  * 1、闪屏优化，可以将预览窗口实现成闪屏的效果，这样在高端手机上效果明显，在低端手机上会把总得闪屏时间变长，
  * 所有可以选择在android6.0，7.0上开启预览闪屏方案。将闪屏页和首页合并可以减少一个Activity会给线上带来
@@ -48,7 +56,7 @@ import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
  * 5，通过systrace的System service类型，我们可以看到启动过程中System service的CPU工作情况。在启动过程中我们尽量不要做系统调用，列如PackageManageService
  * 操作，Binder调用等待。在启动过程中也不要过早的拉起应用的其他进程，System service和新的进程会竞争CPU资源。特别是系统内存不足的时候，
  * 我们拉起一个进程可能会出发low memory killer机制，导致系统杀和拉起（保活）大量进场，从而影响前台进程CPU。
- * <p>
+ *
  * 进阶启动优化
  * 与业务无关
  * 1、i/o优化，启动过程不建议出现网络i/o，但是磁盘i/o需要进行优化，sharedPreference在初始化的时候还是要所有数据全部解析，
@@ -59,8 +67,8 @@ import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
  * 4、资源文件重排
  * 5、类的加载，类加载过程中有个verify class的步骤，它需要校验方法的没一个指令毕竟耗时，可以hook将 classVerifyMode 设为 VERIFY_MODE_NONE
  * Atlas可以实现，但是不支持ART平台。
- * <p>
- * <p>
+ *
+ *
  * Tinker在加载补丁后，应用的启动会降低5%-10%
  * 应用加固对启动速度是灾难性质的
  * <p>
@@ -90,14 +98,7 @@ public class BaseApplication extends Application {
         Logger.init("MODESTY_LOGG", LogLevel.FULL);
         NetConfig.instance().setLoggable(true);
 
-        //配置LeakCanary
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this);
-        // Normal app init code...
+        //initLeakCanary();
 
         //配置BlockCanary
         BlockCanary.install(this, new AppBlockCanaryContext()).start();
@@ -110,6 +111,46 @@ public class BaseApplication extends Application {
 
         TraceUtil.o();
 
+    }
+
+    private void initLeakCanary() {
+        //配置LeakCanary
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        RefWatcher refWatcher = LeakCanary.install(this);
+        // Normal app init code...
+
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacksAdapter() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                super.onActivityCreated(activity, savedInstanceState);
+                FragmentManager fragmentManager = activity.getFragmentManager();
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O){
+                    fragmentManager.unregisterFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+                        @Override
+                        public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
+                            super.onFragmentViewDestroyed(fm, f);
+                            refWatcher.watch(f.getView());
+                        }
+
+                        @Override
+                        public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
+                            super.onFragmentDestroyed(fm, f);
+                            refWatcher.watch(f);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                super.onActivityDestroyed(activity);
+                refWatcher.watch(activity );
+            }
+        });
     }
 
     private void initTinker() {

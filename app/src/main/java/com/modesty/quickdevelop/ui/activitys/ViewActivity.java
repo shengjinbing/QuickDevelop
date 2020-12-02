@@ -73,9 +73,8 @@ public class ViewActivity extends AppCompatActivity {
         startActivity(new Intent(this,Behavior1Activity.class));
 
     }
-
-    public void Viewpager(View view) {
-        startActivity(new Intent(this,ViewPagerActivity.class));
+    public void ConstraintLayout(View view) {
+        startActivity(new Intent(this,ConstraintLayoutActivity.class));
 
     }
 }
