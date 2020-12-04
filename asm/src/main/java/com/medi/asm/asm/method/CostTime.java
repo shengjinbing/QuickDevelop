@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 
 public class CostTime {
 
-    public void redefinePersonClass() {
+/*    public void redefinePersonClass() {
         String className = "com.medi.asm.asm.method.HelloWorld";
 
         try {
@@ -30,6 +30,6 @@ public class CostTime {
             e.printStackTrace();
             System.out.println("Failure");
         }
-    }
+    }*/
 
 }

@@ -6,6 +6,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.os.MessageQueue;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -140,6 +141,8 @@ public class HandlerActivity extends AppCompatActivity {
         public boolean handleMessage(Message msg) {
             int what = msg.what;
             Log.d(TAG,what+msg.toString());
+            SystemClock.sleep(100000);
+            Log.d(TAG,"休息结束");
             return false;
         }
     });
