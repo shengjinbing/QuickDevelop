@@ -71,10 +71,8 @@ import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
  *
  * Tinker在加载补丁后，应用的启动会降低5%-10%
  * 应用加固对启动速度是灾难性质的
- * <p>
- * <p>
- * Created by 李想
- * on 2018/11/26
+ *
+ *
  */
 public class BaseApplication extends Application {
 
@@ -110,6 +108,7 @@ public class BaseApplication extends Application {
         //initMars();
 
         TraceUtil.o();
+        Activity activity = new Activity();
 
     }
 

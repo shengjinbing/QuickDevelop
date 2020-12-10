@@ -29,6 +29,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * https://blog.csdn.net/qq_22771739/article/details/84261165
+ * 字符集
+ *
+ */
 public class EncryptActivity extends AppCompatActivity {
 
 

@@ -70,6 +70,18 @@ import java.lang.ref.WeakReference;
  *  过往 pipe 管道写端写入数据来唤醒主线程工作。这里采用的 epoll 机制，是一种IO多路复用机制，可以同时监控多个描述
  *  符，当某个描述符就绪(读或写就绪)，则立刻通知相应程序进行读或写操作，本质同步I/O，即读写是阻塞的。 所以说，主线程大多数时
  *  候都是处于休眠状态，并不会消耗大量CPU资源。
+ *  https://juejin.cn/post/6893791473121280013#heading-17
+ *  https://mp.weixin.qq.com/s/Qnser4SMoRtgEPd74oDJGQ
+ *  https://www.zhihu.com/question/20122137/answer/14049112
+ *  （重点）
+ * 3.那么新的问题就来了，这里为什么选择Socket而不是选择Binder呢，关于这个问题的解释，笔者找到了一个很好的版本：
+ * Socket可以实现异步的通知，且只需要两个线程参与（Pipe两端各一个），假设系统有N个应用程序，跟输入处理相关的线程数目是 N+1
+ * (1是Input Dispatcher线程）。然而，如果用Binder实现的话，为了实现异步接收，每个应用程序需要两个线程，一个Binder线程，
+ * 一个后台处理线程（不能在Binder线程里处理输入，因为这样太耗时，将会堵塞住发送端的调用线程）。在发送端，同样需要两个线程，
+ * 一个发送线程，一个接收线程来接收应用的完成通知，所以，N个应用程序需要 2（N+1)个线程。相比之下，Socket还是高效多了。
+ *
+ *
+ *
  * 3.Handle同步屏障机制
  *   1.Handler中加入了同步屏障这种机制，来实现[异步消息优先]执行的功能
  * 4.Handler的锁相关问题?
@@ -175,6 +187,9 @@ public class HandlerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 队列空，只有延时消息并且没到时间，同步阻塞时没有异步消息
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void initIdeaHandle() {
         getMainLooper().getQueue().addIdleHandler(new MessageQueue.IdleHandler() {

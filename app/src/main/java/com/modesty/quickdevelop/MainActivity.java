@@ -46,6 +46,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * 总结起来：如果api依赖，一个module发生变化，这条依赖链上所有的module都需要重新编译；而implemention，只有直接依赖这个module需要重新编译。
  * 如果都是本地依赖，implementation相比api，主要优势在于减少build time
  * 全部远程依赖模式下，无论是api还是implemention都起不到依赖隔离的作用
+ * 问题：
+ * 项目 A 依赖 项目B，项目 B 依赖项目 C，项目C又依赖项目 A，这样会有问题吗？
+ * 会导致循环依赖问题
  *
  *
  *

@@ -1,17 +1,41 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <style type="text/css">
+			.container {
+				display: flex;
+				min-height: 100vh;
+				flex-direction: column;
+			}
+ 		</style>
     <script type="text/javascript">
 
     function javaCallJs(arg){
-         document.getElementById("content").innerHTML =
-             ("欢迎："+arg );
+          alert("Android调用了JS的callJS方法");
+
     }
+
+     function callAndroid(){
+            /*约定的url协议为：js://webview?arg1=111&arg2=222*/
+            document.location = "js://webview?arg1=111&arg2=222";
+         }
+
+     function clickprompt(){
+    // 调用prompt（）
+    var result=prompt("js://demo?arg1=111&arg2=222");
+    alert("demo " + result);
+      }
 
     </script>
 </head>
 <body>
-<div id="content"> 请在上方输入您的用户名</div>
-<input type="button" value="点击Android被调用" onclick="window.Android.showToast('JS中传来的参数')"/>
+<div class="container">
+    <div id="content"> 请在上方输入您的用户名</div>
+    <button type="button"  onclick="window.Android.showToast('JS中传来的参数')">点击Android被调用addJavascriptInterface</button>
+    <button type="button"  onclick="callAndroid()">点击Android被调用shouldOverrideUrlLoading</button>
+    <button type="button"  onclick="clickprompt()">onJsPrompt</button>
+</div>
+
+
 </body>
 </html>
