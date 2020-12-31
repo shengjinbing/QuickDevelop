@@ -131,7 +131,7 @@ dependencies {
     implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.13.3")
 
     //Hook
-    implementation 'org.aspectj:aspectjrt:1.8.+'
+    implementation 'org.aspectj:aspectjrt:1.8.14'
 
     //多渠道打包
     implementation 'com.meituan.android.walle:library:1.1.6'

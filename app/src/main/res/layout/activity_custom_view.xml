@@ -10,61 +10,81 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <Button
-            android:text="canvas与图层"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="canvas"/>
+            android:onClick="canvas"
+            android:text="canvas与图层" />
     </LinearLayout>
-    <com.modesty.quickdevelop.views.CircleView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+    <com.modesty.quickdevelop.views.CustomViewGroup
+        android:id="@+id/cvg"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="#000000">
+
+        <com.modesty.quickdevelop.views.CustomViewGroup1
+            android:id="@+id/cvg1"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="#fff"
+            >
+            <com.modesty.quickdevelop.views.CircleView
+                android:id="@+id/circleView"
+                android:layout_width="100dp"
+                android:layout_height="10dp" />
+        </com.modesty.quickdevelop.views.CustomViewGroup1>
+
+    </com.modesty.quickdevelop.views.CustomViewGroup>
+
+
     <com.modesty.quickdevelop.views.RegionView
         android:layout_width="wrap_content"
         android:layout_height="100dp" />
+
     <TextView
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:text="世界第三鲁大师"/>
+        android:layout_marginTop="20dp"
+        android:text="世界第三鲁大师" />
+
     <com.modesty.quickdevelop.views.MaterialEditText
         android:id="@+id/me"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:paddingLeft="0dp"
+        android:layout_marginRight="20dp"
         android:hint="请输入邮箱验证码"
-        android:maxLines="1"
         android:maxLength="13"
-        android:textColorHint="#ccc"
+        android:maxLines="1"
+        android:paddingLeft="0dp"
         android:textColor="#333"
+        android:textColorHint="#ccc"
         android:textSize="16dp"
-        app:met_underlineColor="#333"
         app:met_clearButton="true"
-        app:met_iconClearButton="@drawable/delete"
-        app:met_underline_height="0.5dp"
         app:met_clearButton_padding="4dp"
-        />
+        app:met_iconClearButton="@drawable/delete"
+        app:met_underlineColor="#333"
+        app:met_underline_height="0.5dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
+        android:hint="请输入邮箱验证码"
         android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:hint="请输入邮箱验证码"/>
+        android:paddingRight="0dp" />
 
     <ViewFlipper
         android:id="@+id/fl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inAnimation="@anim/anim_in"
-        android:outAnimation="@anim/anim_out"/>
+        android:outAnimation="@anim/anim_out" />
 
 </LinearLayout>

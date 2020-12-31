@@ -8,15 +8,22 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.modesty.quickdevelop.R;
+import com.modesty.quickdevelop.views.CircleView;
+import com.modesty.quickdevelop.views.CustomViewGroup;
+import com.modesty.quickdevelop.views.CustomViewGroup1;
 import com.modesty.quickdevelop.views.MaterialEditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ *
+ */
 public class CustomViewActivity extends AppCompatActivity {
 
     @BindView(R.id.me)
@@ -52,7 +59,6 @@ public class CustomViewActivity extends AppCompatActivity {
      * 但经过测试实际距离是 -576 像素，当距离为 -10 的时候，实际距离为 -720 像素。
      */
     private void initView() {
-
         for (int i = 0; i < 1; i++) {
             TextView textView = new TextView(this);
             textView.setText("hahah"+i);
@@ -73,6 +79,36 @@ public class CustomViewActivity extends AppCompatActivity {
     }
 
     private void initListener() {
+        CustomViewGroup cvg = (CustomViewGroup) findViewById(R.id.cvg);
+        CustomViewGroup1 cvg1 = (CustomViewGroup1) findViewById(R.id.cvg1);
+        CircleView circleView = (CircleView) findViewById(R.id.circleView);
+        cvg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cvg.invalidate();
+                // cvg.requestLayout();
+                //circleView.invalidate();
+                //circleView.requestLayout();
+            }
+        });
+        cvg1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cvg1.invalidate();
+                // cvg.requestLayout();
+                //circleView.invalidate();
+                //circleView.requestLayout();
+            }
+        });
+        circleView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                circleView.invalidate();
+               // cvg.requestLayout();
+                //circleView.invalidate();
+                //circleView.requestLayout();
+            }
+        });
 
         me.addTextChangedListener(new TextWatcher() {
             @Override

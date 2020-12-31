@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.modesty.quickdevelop.ui.view.HorizontalScrollViewEx xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,4 +7,29 @@
     android:layout_height="match_parent"
     tools:context="com.modesty.quickdevelop.ui.activitys.ScrollActivity">
 
-</com.modesty.quickdevelop.ui.view.HorizontalScrollViewEx>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:text="我是第一个"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:background="@color/colorAccent"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:text="我是第一个"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:background="@color/colorPrimaryDark"/>
+    </LinearLayout>
+
+
+</ScrollView>

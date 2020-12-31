@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.modesty.quickdevelop.R;
@@ -32,6 +33,7 @@ public class CircleView extends View {
         mColor = a.getColor(R.styleable.CircleView_circle_color, Color.RED);
         a.recycle();
         init();
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     private void init() {
@@ -48,6 +50,7 @@ public class CircleView extends View {
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.d("ViewGroup_log","onMeasureView");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -64,7 +67,14 @@ public class CircleView extends View {
     }
 
     @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        Log.d("ViewGroup_log","onLayoutView");
+        super.onLayout(changed, left, top, right, bottom);
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
+        Log.d("ViewGroup_log","onDrawView");
         super.onDraw(canvas);
         final int paddingLeft = getPaddingLeft();
         final int paddingRight = getPaddingRight();

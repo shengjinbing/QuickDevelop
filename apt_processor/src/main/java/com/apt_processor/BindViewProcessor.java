@@ -25,10 +25,41 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 
-@AutoService(Processor.class)
+import jdk.internal.org.objectweb.asm.util.Printer;
+import sun.rmi.runtime.Log;
+
+/**
+ *
+ * process方法处理的核心是Element对象
+ * public interface Element extends AnnotatedConstruct {
+ *     TypeMirror asType();//返回此元素定义的类型
+ *     ElementKind getKind();//返回此元素的种类：包、类、接口、方法、字段等
+ *     Set<Modifier> getModifiers();//返回此元素的修饰符
+ *     Name getSimpleName();//返回此元素的简单名称，如类名
+ *     Element getEnclosingElement();//返回封装此元素的最里层元素
+ *     List<? extends Element> getEnclosedElements();
+ *     boolean equals(Object var1);
+ *     int hashCode();
+ *     List<? extends AnnotationMirror> getAnnotationMirrors();
+ *     返回此元素针对指定类型的注解。注解可以是继承的，也可以是直接存在此元素上的。
+ *     Element有5个直接子类，他们分别代表一种特定类型的元素。5个子类各有各的用处，并且各有各的独有的方法，在使用的时候可以强制
+ *     将Element对象转换成他们中的任意一种，但是必须满足转换条件，不然会抛出异常。
+ *     TypeElement一个类或接口程序元素(核心)
+ *     VariableElement一个字段，enum常量、方法或者构造方法参数，局部变量或异常参数。(核心)
+ *     ExecutableElement某个类或接口的方法、构造方法或初始化程序（静态或实例），包括注解类型元素。
+ *     PackageElement一个包程序元素
+ *     TypeParameterElement一般类、接口、方法或构造方法元素的泛型参数。
+ *     <A extends Annotation> A getAnnotation(Class<A> var1);
+ *     <R, P> R accept(ElementVisitor<R, P> var1, P var2);
+ * }
+ */
+@AutoService(Processor.class)//表明当前类是一个注解处理器,如果不使用这个注解进行标注就需要在resources里面进行声明
 public class BindViewProcessor extends AbstractProcessor {
     private Elements elementUtils;
 
+    /**
+     * @param processingEnv 提供很多有用的工具类，如Elements、Types和Filer
+     */
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
@@ -36,7 +67,8 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * 用于指定该 AbstractProcessor 的目标注解对象
+     * 指定这个注解处理器是注册给哪个注解的.
+     * 也可以通过给BindViewProcessor添加@SupportedAnnotationTypes注解标记.
      *
      * @return
      */
@@ -48,6 +80,10 @@ public class BindViewProcessor extends AbstractProcessor {
         return hashSet;
     }
 
+    /**
+     * 指定使用的java版本
+     * 也可以通过给BindViewProcessor添加@SupportedSourceVersion注解标记.
+     */
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
@@ -103,6 +139,7 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
+     * 生成java代码
      * @param typeElement        注解对象上层元素对象，即 Activity 对象
      * @param variableElementMap 包含的注解对象以及注解的目标对象
      * @return
@@ -120,7 +157,6 @@ public class BindViewProcessor extends AbstractProcessor {
 
     /**
      * 生成方法
-     *
      * @param typeElement        注解对象上层元素对象，即 Activity 对象
      * @param variableElementMap Activity 包含的注解对象以及注解的目标对象
      * @return
