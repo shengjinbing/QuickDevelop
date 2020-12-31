@@ -25,9 +25,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 
-import jdk.internal.org.objectweb.asm.util.Printer;
-import sun.rmi.runtime.Log;
-
 /**
  *
  * process方法处理的核心是Element对象
