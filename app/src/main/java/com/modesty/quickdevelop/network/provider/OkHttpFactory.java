@@ -2,6 +2,8 @@ package com.modesty.quickdevelop.network.provider;
 
 import com.modesty.quickdevelop.network.NetConfig;
 import com.modesty.quickdevelop.network.dns.HttpDns;
+import com.modesty.quickdevelop.network.interceptor.AppInterceptor;
+import com.modesty.quickdevelop.network.interceptor.NetworkInterceptor;
 import com.modesty.quickdevelop.network.interceptor.RequestLogInterceptor;
 import com.modesty.quickdevelop.network.interceptor.ResponseLogInterceptor;
 
@@ -32,6 +34,8 @@ public final class OkHttpFactory {
             synchronized (OkHttpClient.class) {
                 if (sInstance == null) {
                     final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                    builder.addInterceptor(new AppInterceptor());
+                    builder.addNetworkInterceptor(new NetworkInterceptor());
                     builder.addInterceptor(new RequestLogInterceptor());
                     builder.addInterceptor(new ResponseLogInterceptor());
                     builder.hostnameVerifier(NetConfig.instance().getHostnameVerifier());

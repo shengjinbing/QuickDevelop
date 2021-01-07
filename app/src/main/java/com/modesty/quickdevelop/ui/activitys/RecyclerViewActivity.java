@@ -23,14 +23,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ * 字节4轮面试，3轮都问了RecyclerView 链接：https://www.jianshu.com/p/b2d504fa53ce
+ *
  * 1.首先没有见过特别详细的RecyclerView的源码分析系列，所有关于RecyclerView都是停留在使用或者少数进阶使用的博客
- * <p>
  * 2.RecyclerView，LayoutManager，Adapter，ViewHolder，ItemDecoration这些和RecycleView使用息息相关的类到底是什么关系
- * <p>
  * 3.RecyclerView作为列表，绘制流程到底什么样的
- * <p>
  * 4.RecyclerView有什么不常用的进阶使用方式，但是却很适合RecyclerView作为很“重”的组件的优化，像setRecyclerPool用处到底是什么
- * <p>
  * 5.大家都只要要使用RecyclerView替代ListView和GridView，好用，都在用，但是都没有追究到底这背后的原因到底是什么，
  * RecyclerView到底比ListView好在哪里，到底该不该替换，性能到底提升多少。
  */

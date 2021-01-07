@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.modesty.quickdevelop.R;
 
+
 public class CanvasActivity extends AppCompatActivity {
 
     @Override

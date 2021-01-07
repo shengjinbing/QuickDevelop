@@ -67,6 +67,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * 10.LiveDataBus
  *
  * 1.四大引用在安卓中的使用（深入细节）
+ * 2.Framework：Android 系统架构
+ * https://blog.csdn.net/huaxun66/article/details/78135556
  */
 public class MainActivity extends Activity {
     public static final String TAG = "MAIN_LOG";
@@ -161,6 +163,22 @@ public class MainActivity extends Activity {
      * attach方法中Activity还会完成Window的创建并建立自己和Window的关联。这样当Window接收到外部输入事件后就可以将事件传递给Activity。
      * 5.调用Activity的onCreate()方法，mInstrumentation.callActivityOnCreate(activity, r.state, r.persistentState)，由于
      * Activity的onCreate()方法已经被调用，这就意味着Activity已经完成了整个启动过程
+     *
+     *Application启动流程。
+     * ①AMS是如何确认Application启动完成的？关键条件是什么（zygote返给AMS的pid；应用的ActivityThread#main方法中会向AMS上报Application的binder对象）？
+     * ②Application#constructor、Application#onCreate、Application#attach他们的执行顺序（132）。Activity和Service呢？
+     * startActivity的具体过程。
+     *
+     *
+     * Activity#setContentView的具体过程。
+     * ①PhoneWindow是何时创建的，它的作用是什么？
+     * ②setContentView中传递的资源文件是如何变成View对象的？
+     * ③布局文件对应的View对象是添加到哪里的？
+     * ④Activity的布局是何时显示出来的？
+     * ⑤ViewRootImpl是何时初始化的？它的作用是什么？
+     * ⑥Choreography了解么？作用是什么？
+     * 复制代码
+     *
      */
     public void adapter(View view) {
         startActivity(new Intent(this, AdapterActivity.class));

@@ -28,6 +28,15 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 
 /**
+ * 从GcRoot角度来分析Handler 内存泄漏
+ * https://blog.csdn.net/weixin_40334045/article/details/106762338
+ * handler的内存泄漏原因：
+ * 1.当直接在activity中声明handler时，由于后面的匿名内部类，使handler持有了activity的引用。
+ * 2.当任务未执行完，即message未被执行完时，message持有了messageQueue的引用。
+ * 3.messageQueue持有了mLooper的引用。
+ * 4.mLooper持有sThreadLocal 的引用。
+ * 5.sThreadLocal 是一个静态变量，无法被回收，最终导致了activity无法被回收，造成了内存泄漏。
+ *
  * 一.Handler的源码和常见问题的解答
  * 1.一个线程中最多有多少个Handler，Looper，MessageQueue？
  *   1个
@@ -97,6 +106,14 @@ import java.lang.ref.WeakReference;
  * IntentService
  * 如何打造一个不崩溃的APP
  * Glide中的运用
+ *
+ *
+ * ①应用层，消息的发送、接收、获取和处理；消息是如何存储的？延时消息一定准时么？是如何保证延时时间的？Handler#dispatchMessage细节，如何使用？
+ * ②Handler的Framework层。Looper#loop方法为何不会导致ANR？nativePollOnce细节。eventfd和epoll机制了解么？
+ * ③IdleHandler了解么？合适调用？如何使用？靠谱么？
+ * ④handler里面消息有几种？普通消息、同步消息、消息屏障。如何使用？如何区分普通消息和异步消息？
+ * ⑤如何实现给Handler发送一个Runnable，又不通过Handler#post(Runnable run)这个API？（Message#obj属性，或者通过反射设置Message#callback属性）
+ * ⑥Message#obtain实现细节了解么？为何要池化？最大限制容量是多少？
  *
  *
  *
@@ -185,6 +202,12 @@ public class HandlerActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             initIdeaHandle();
         }
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
     }
 
     /**

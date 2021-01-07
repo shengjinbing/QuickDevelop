@@ -1,6 +1,8 @@
 package com.modesty.quickdevelop.network.interceptor;
 
 
+import android.util.Log;
+
 import com.modesty.logger.simplelog.Logger;
 import com.modesty.quickdevelop.network.NetConfig;
 

@@ -102,7 +102,18 @@ public class OkHttpActivity extends AppCompatActivity {
                 .url(url)
                 .build();
         Call call = okHttpClient.newCall(request);
-        new Thread(new Runnable() {
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -112,7 +123,7 @@ public class OkHttpActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        }).start();*/
     }
          /*
     OkHttpClient构造函数中创建Builder（） 所有的配置

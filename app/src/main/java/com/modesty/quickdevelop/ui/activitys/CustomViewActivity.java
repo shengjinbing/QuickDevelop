@@ -22,7 +22,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- *
+ *①onMeasure、onLayout、onDraw
+ * ②MeasureSpec为何如此设计？
+ * ③子View的LayoutParams来源。ViewGroup#addView(view)这种添加view的方式，没有给子View设置LayoutParams，那么LayoutParams是谁设置的？
+ * ④onMeasure和onLayout为何会执行两次或多次？
+ * ⑤View#draw方法细节。
+ * ⑥View绘制这一块遇到过什么问题么？如何解决的。
  */
 public class CustomViewActivity extends AppCompatActivity {
 
