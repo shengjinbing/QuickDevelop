@@ -61,13 +61,20 @@ import okio.BufferedSink;
  *
  * 根据源码可知，一共七个拦截器：
  *
- * 1.addInterceptor(Interceptor)，这是由开发者设置的，会按照开发者的要求，在所有的拦截器处理之前进行最早的拦截处理，比如一些公共参数，Header都可以在这里添加。
- * 2.RetryAndFollowUpInterceptor，这里会对连接做一些初始化工作，以及请求失败的充实工作，重定向的后续请求工作。跟他的名字一样，就是做重试工作还有一些连接跟踪工作。
- * 3.BridgeInterceptor，这里会为用户构建一个能够进行网络访问的请求，同时后续工作将网络请求回来的响应Response转化为用户可用的Response，比如添加文件类型，content-length计算添加，gzip解包。
- * 4.CacheInterceptor，这里主要是处理cache相关处理，会根据OkHttpClient对象的配置以及缓存策略对请求值进行缓存，而且如果本地有了可⽤的Cache，就可以在没有网络交互的情况下就返回缓存结果。
- * 5.ConnectInterceptor，这里主要就是负责建立连接了，会建立TCP连接或者TLS连接，以及负责编码解码的HttpCodec
+ * 1.addInterceptor(Interceptor)，
+ * 这是由开发者设置的，会按照开发者的要求，在所有的拦截器处理之前进行最早的拦截处理，比如一些公共参数，Header都可以在这里添加。
+ * 2.RetryAndFollowUpInterceptor，https://www.jianshu.com/p/40636d32cb67
+ *  这里会对连接做一些初始化工作，以及请求失败的充实工作，重定向的后续请求工作。跟他的名字一样，就是做重试工作还有一些连接跟踪工作。
+ * 3.BridgeInterceptor，https://www.jianshu.com/p/fab2d74de900
+ * 这里会为用户构建一个能够进行网络访问的请求，同时后续工作将网络请求回来的响应Response转化为用户可用的Response，比如添加文件类型，content-length计算添加，gzip解包。
+ * 4.CacheInterceptor，https://www.jianshu.com/p/44fad764c0ae
+ * POST没有缓存
+ * 这里主要是处理cache相关处理，会根据OkHttpClient对象的配置以及缓存策略对请求值进行缓存，而且如果本地有了可⽤的Cache，就可以在没有网络交互的情况下就返回缓存结果。
+ * 5.ConnectInterceptor，https://www.jianshu.com/p/a3a774fdff4f
+ * 这里主要就是负责建立连接了，会建立TCP连接或者TLS连接，以及负责编码解码的HttpCodec
  * 6.networkInterceptors，这里也是开发者自己设置的，所以本质上和第一个拦截器差不多，但是由于位置不同，所以用处也不同。这个位置添加的拦截器可以看到请求和响应的数据了，所以可以做一些网络调试。
- * 7.CallServerInterceptor，这里就是进行网络数据的请求和响应了，也就是实际的网络I/O操作，通过socket读写数据。
+ * 7.CallServerInterceptor，https://www.jianshu.com/p/aa77af6251ff
+ * 这里就是进行网络数据的请求和响应了，也就是实际的网络I/O操作，通过socket读写数据。
  * 链接：https://www.jianshu.com/p/7cb9300c6d71
  *
  * 总结：

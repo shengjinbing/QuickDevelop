@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
 import com.modesty.quickdevelop.R;
+import com.modesty.quickdevelop.adapter.DemoAdapter;
 import com.modesty.quickdevelop.adapter.recyclerview.CommonAdapter;
 import com.modesty.quickdevelop.adapter.recyclerview.base.ViewHolder;
 import com.modesty.quickdevelop.adapter.recyclerview.wrapper.EmptyWrapper;
@@ -24,6 +26,15 @@ import butterknife.ButterKnife;
 
 /**
  * 字节4轮面试，3轮都问了RecyclerView 链接：https://www.jianshu.com/p/b2d504fa53ce
+ * Android深入理解RecyclerView的缓存机制 https://blog.csdn.net/Listron/article/details/107952703
+ * 你是从哪些方面优化RecyclerView的？
+ * 我总结了几点，主要可以从以下几个方面对RecyclerView进行优化：
+ * 1.尽量将复杂的数据处理操作放到异步中完成。RecyclerView需要展示的数据经常是从远端服务器上请求获取，但是在网络请求拿到数据之后，需要将数据做扁平化操作，尽量将最优质的数据格式返回给UI线程。
+ * 2.优化RecyclerView的布局，避免将其与ConstraintLayout使用
+ * 3.针对快速滑动事件，可以使用addOnScrollListener添加对快速滑动的监听，当用户快速滑动时，停止加载数据操作。
+ * 4.如果ItemView的高度固定，可以使用setHasFixSize(true)。这样RecyclerView在onMeasure阶段可以直接计算出高度，不
+ *   需要多次计算子ItemView的高度，这种情况对于垂直RecyclerView中嵌套横向RecyclerView效果非常显著。
+ * 5.当UI是Tab feed流时，可以考虑使用RecycledViewPool来实现多个RecyclerView的缓存共享。
  *
  * 1.首先没有见过特别详细的RecyclerView的源码分析系列，所有关于RecyclerView都是停留在使用或者少数进阶使用的博客
  * 2.RecyclerView，LayoutManager，Adapter，ViewHolder，ItemDecoration这些和RecycleView使用息息相关的类到底是什么关系
@@ -31,6 +42,27 @@ import butterknife.ButterKnife;
  * 4.RecyclerView有什么不常用的进阶使用方式，但是却很适合RecyclerView作为很“重”的组件的优化，像setRecyclerPool用处到底是什么
  * 5.大家都只要要使用RecyclerView替代ListView和GridView，好用，都在用，但是都没有追究到底这背后的原因到底是什么，
  * RecyclerView到底比ListView好在哪里，到底该不该替换，性能到底提升多少。
+ *
+ *
+ * RecyclerView 动画原理 | 换个姿势看源码（pre-layout）https://juejin.cn/post/6890288761783975950
+ * 1.RecyclerView第一次layout时，会发生预布局pre-layout吗？
+ * 答：第一次布局时，并不会触发pre-layout。pre-layout只会在每次notify change时才会被触发，目的是通过saveOldPosition方法将屏幕中各位置上的ViewHolder
+ * 的坐标记录下来，并在重新布局之后，通过对比实现Item的动画效果
+ * 2.如果自定义LayoutManager需要注意什么？（重点）
+ * 重点这个supportsPredictiveItemAnimations方法的复写，主要是pre-layoyt；
+ * 例如：​ 比如下图中点击item2将其删除，调用notifyItemRemoved后，在pre-layout之前item5并没有被添加到RecyclerView中，
+ * 而经过pre-layout之后，item5经过布局会被填充到RecyclerView中当item移出屏幕之后，item5会随同item3和item4一起向上移动
+ * 如果自定义LayoutManager并没有实现pre-layout，或者实现不合理，则当item2移出屏幕时，只会将item3和item4进行平滑移动，而item5只是单纯的appear到屏幕中
+ * 3.ViewHolder何时被缓存到RecycledViewPool中？
+ * 主要有以下2种情况：
+ * (1)当ItemView被滑动出屏幕时，并且CachedView已满，则ViewHolder会被缓存到RecycledViewPool中
+ * (2)当数据发生变动时，执行完disappearrance的ViewHolder会被缓存到RecycledViewPool中
+ *
+ *1.RecyclerView为了实现表项动画，进行了 2 次布局，第一次预布局，第二次正真的布局，在源码上表现为LayoutManager.onLayoutChildren()被调用 2 次
+ *2. mState.mInPreLayout的值标记了预布局的生命周期。预布局的过程始于RecyclerView.dispatchLayoutStep1()，终于RecyclerView.dispatchLayoutStep2()。
+ * 两次调用LayoutManager.onLayoutChildren()会因为这个标记位的不同而执行不同的逻辑分支。
+ *3.在预布局阶段，循环填充表项时，若遇到被移除的表项，则会忽略它占用的空间，多余空间被用来加载额外的表项，这些表项在屏幕之外，本来不会被加载。
+ *
  */
 public class RecyclerViewActivity extends AppCompatActivity {
 
@@ -38,10 +70,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
     RecyclerView mRv;
 
     private List<String> mDatas = new ArrayList<>();
-    private CommonAdapter<String> mAdapter;
-    private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
-    private EmptyWrapper mEmptyWrapper;
-    private LoadMoreWrapper mLoadMoreWrapper;
+    private DemoAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,47 +93,31 @@ public class RecyclerViewActivity extends AppCompatActivity {
      */
     private void initView() {
 //      mRv.setHasFixedSize(true);
-//        mRv.setLayoutManager(new LinearLayoutManager(this));
-        mRv.setLayoutManager(new GridLayoutManager(this, 2));
+        mRv.setLayoutManager(new LinearLayoutManager(this));
+//        mRv.setLayoutManager(new GridLayoutManager(this, 2));
 //      mRv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        mRv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+//        mRv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        mAdapter = new DemoAdapter();
+        mRv.setAdapter(mAdapter);
 
-        mAdapter = new CommonAdapter<String>(this, R.layout.item_list, mDatas) {
-            @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-                holder.setText(R.id.id_item_list_title, s + " : " + holder.getAdapterPosition() + " , " + holder.getLayoutPosition());
-            }
-        };
-
-        mRv.setAdapter(mLoadMoreWrapper);
-        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Toast.makeText(RecyclerViewActivity.this, "pos = " + position, Toast.LENGTH_SHORT).show();
-                mAdapter.notifyItemRemoved(position);
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
-
-        //自定义缓存
+        //viewType类型为TYPE_SPECIAL时，设置四级缓存池RecyclerPool不存储对应类型的数据(因为对于类型的缓存数值z最大w为0) 因为需要开发者自行缓存
+        mRv.getRecycledViewPool().setMaxRecycledViews(DemoAdapter.TYPE_SPECIAL, 0);
+        //自定义缓存，ViewCacheExtension适用场景：ViewHolder位置固定、内容固定、数量有限时使用
+        //ViewCacheExtension使用举例：
+        //比如在position=0时展示的是一个广告，位置不变，内容不变，来看看如何实现：
         mRv.setViewCacheExtension(new RecyclerView.ViewCacheExtension() {
 
             @Override
-            public View getViewForPositionAndType(RecyclerView.Recycler recycler, int position, int type) {
-                return null;
+            public View getViewForPositionAndType(RecyclerView.Recycler recycler, int position, int viewType) {
+                //如果viewType为TYPE_SPECIAL,使用自己缓存的View去构建ViewHolder
+                // 否则返回null，会使用系统RecyclerPool缓存或者从新通过onCreateViewHolder构建View及ViewHolder
+                return viewType == DemoAdapter.TYPE_SPECIAL ? mAdapter.caches.get(position) : null;
             }
         });
     }
 
 
     private void initData() {
-        for (int i = 'A'; i <= 'z'; i++) {
-            mDatas.add((char) i + "");
-        }
     }
 
     private void initListener() {
@@ -119,24 +132,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
      *     2.ScrapView  废弃View
      */
 /*    class RecycleBin {
-        private AbsListView.RecyclerListener mRecyclerListener;
-
-        *//**
-     * The position of the first view stored in mActiveViews.
-     *//*
-        private int mFirstActivePosition;
-
-        *//**
-     * Views that were on screen at the start of layout. This array is populated at the start of
-     * layout, and at the end of layout all view in mActiveViews are moved to mScrapViews.
-     * Views in mActiveViews represent a contiguous range of Views, with position of the first
-     * view store in mFirstActivePosition.
-     *//*
         private View[] mActiveViews = new View[0];
 
-        *//**
-     * Unsorted views that can be used by the adapter as a convert view.
-     *//*
         private ArrayList<View>[] mScrapViews;
 
         private int mViewTypeCount;
@@ -164,7 +161,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         final ArrayList<ViewHolder> mAttachedScrap = new ArrayList<>();
         ArrayList<ViewHolder> mChangedScrap = null;
 
-        final ArrayList<ViewHolder> mCachedViews = new ArrayList<ViewHolder>();
+缓存到CachedView中的ViewHolder并不会清理相关信息(比如position、state等)，因此刚移出屏幕的ViewHolder，再次被移回屏幕时，只要从CachedView中查找并显示即可，不需要重新绑定(bindViewHolder)。
+        final ArrayList<ViewHolder> mCachedViews = new ArrayList<ViewHolder>();默认大小2
 
         private final List<ViewHolder>
                 mUnmodifiableAttachedScrap = Collections.unmodifiableList(mAttachedScrap);
@@ -172,7 +170,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         private int mRequestedCacheMax = DEFAULT_CACHE_SIZE;
         int mViewCacheMax = DEFAULT_CACHE_SIZE;
 
-        RecycledViewPool mRecyclerPool;
+而缓存到RecycledViewPool中的ViewHolder会被清理状态和位置信息，因此从RecycledViewPool查找到ViewHolder，需要重新调用bindViewHolder绑定数据。
+        RecycledViewPool mRecyclerPool;默认大小是5
 
         private ViewCacheExtension mViewCacheExtension;
 
@@ -182,10 +181,14 @@ public class RecyclerViewActivity extends AppCompatActivity {
     类的结构也比较清楚，这里可以清楚的看到我们后面讲到的四级缓存机制所用到的类都在这里可以看到
      1.一级缓存：mAttachedScrap
         (Scrap)碎片,废弃，显示在屏幕内的缓存，通过postions获取直接复用不需要走onBindViewHolder，
-        只关心position不关心view type，
+        只关心position不关心view type，用于notify***等方法
      2.二级缓存：mCacheViews 移除屏幕的缓存，通过postions获取直接复用不需要走onBindViewHolder，
      3.三级缓存：mViewCacheExtension
-     4.四级缓存：mRecyclerPool 脏数据缓存，只关心view type，都需要重新绑定
+     来看看Recycler中的其他缓存，其中mAttachedScrap用来处理可见屏幕的缓存；mCachedViews里存储的数据虽然是根据position来缓存，但是里面的数据随时可能会被替换的；
+     再来看mRecyclerPool，mRecyclerPool里按viewType去存储ArrayList< ViewHolder>，所以mRecyclerPool并不能按position去存储ViewHolder，而且从mRecyclerPool取出
+     的View每次都要去走Adapter#onBindViewHolder去重新绑定数据。假如我现在需要在一个特定的位置(比如position=0位置)一直展示某个View，且里面的内容是不变的，那么最好的情况就是在特定
+     位置时，既不需要每次重新创建View，也不需要每次都去重新绑定数据，上面的几种缓存显然都是不适用的，这种情况该怎么办呢？可以通过自定义缓存ViewCacheExtension实现上述需求。
+     4.四级缓存：mRecyclerPool 脏数据缓存，只关心view type，都需要重新绑定，使用的是SparseArray，存储key为viewType，value是ArrayList<ViewHolder>,默认每个ArrayList最多放5个元素
  1.mCachedViews 优先级高于 RecyclerViewPool，回收时，最新的 ViewHolder 都是往 mCachedViews 里放，
   如果它满了，那就移出一个扔到 ViewPool 里好空出位置来缓存最新的 ViewHolder。
  2.复用时，也是先到 mCachedViews 里找 ViewHolder，但需要各种匹配条件，概括一下就是只有原来位置的
@@ -212,4 +215,14 @@ public class RecyclerViewActivity extends AppCompatActivity {
     1.画分割线
     2.
      */
+
+
+   /* Recylerview的item是 ImageView 和  TextView构成，当数据改变时，我们会调用 notifyDataSetChanged，这个时候列表会刷新，为了使 url 没变的 ImageView 不重新加载
+    （图片会一闪），我们可以用
+    setHasStableIds(true);
+    使用这个，相当于给ImageView加了一个tag，tag不变的话，不用重新加载图片。但是加了这句话，会使得 列表的 数据项 重复！！ 我们需要在我们的Adapter里面重写 getItemId就好了。
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }*/
 }

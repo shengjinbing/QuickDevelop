@@ -28,6 +28,10 @@ import butterknife.ButterKnife;
  * ④onMeasure和onLayout为何会执行两次或多次？
  * ⑤View#draw方法细节。
  * ⑥View绘制这一块遇到过什么问题么？如何解决的。
+ *
+ * 自定义View有哪几种方式？注意事项。你对自定义属性如何理解？
+ *
+ * 事件分发。滑动冲突如何解决，具体在哪个方法里面解决？如何判断滑动方向？
  */
 public class CustomViewActivity extends AppCompatActivity {
 
