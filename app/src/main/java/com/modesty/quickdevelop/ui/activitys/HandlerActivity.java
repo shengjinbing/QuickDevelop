@@ -79,10 +79,11 @@ import java.lang.ref.WeakReference;
  *  过往 pipe 管道写端写入数据来唤醒主线程工作。这里采用的 epoll 机制，是一种IO多路复用机制，可以同时监控多个描述
  *  符，当某个描述符就绪(读或写就绪)，则立刻通知相应程序进行读或写操作，本质同步I/O，即读写是阻塞的。 所以说，主线程大多数时
  *  候都是处于休眠状态，并不会消耗大量CPU资源。
- *  https://juejin.cn/post/6893791473121280013#heading-17
- *  https://mp.weixin.qq.com/s/Qnser4SMoRtgEPd74oDJGQ
+ *  Handler的初级、中级、高级问法，你都掌握了吗？https://juejin.cn/post/6893791473121280013#heading-17
+ *  深入探索ANR机制的设计与实现 https://mp.weixin.qq.com/s/Qnser4SMoRtgEPd74oDJGQ
  *  https://www.zhihu.com/question/20122137/answer/14049112
- *  （重点）
+ *  介绍一下 Android Handler 中的 epoll 机制？https://mp.weixin.qq.com/s/ClTE15s9qUaNsInIIwX57w（重点）
+ *  “终于懂了” 系列：Android屏幕刷新机制—VSync、Choreographer 全面理解！https://juejin.cn/post/6863756420380196877#heading-16
  * 3.那么新的问题就来了，这里为什么选择Socket而不是选择Binder呢，关于这个问题的解释，笔者找到了一个很好的版本：
  * Socket可以实现异步的通知，且只需要两个线程参与（Pipe两端各一个），假设系统有N个应用程序，跟输入处理相关的线程数目是 N+1
  * (1是Input Dispatcher线程）。然而，如果用Binder实现的话，为了实现异步接收，每个应用程序需要两个线程，一个Binder线程，

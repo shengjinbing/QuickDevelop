@@ -105,7 +105,7 @@ public class BaseApplication extends Application {
         initComponent();
 
         //配置Mars
-        //initMars();
+        //initMars()
 
         TraceUtil.o();
         Activity activity = new Activity();

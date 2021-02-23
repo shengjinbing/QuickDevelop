@@ -15,7 +15,8 @@ import android.view.WindowManager;
 import java.math.BigDecimal;
 
 /**
- *
+ * 今日头条屏幕适配方案终极版正式发布!
+ *https://juejin.cn/post/6844903697000972295
  */
 public class DisplayUtils {
 

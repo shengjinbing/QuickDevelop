@@ -3,6 +3,7 @@ package com.modesty.quickdevelop.ui.activitys;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 
 import com.modesty.quickdevelop.R;
 import com.squareup.leakcanary.LeakCanary;
@@ -119,6 +120,24 @@ public class OptimizationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_optimization);
         LeakCanaryStatic();
         LeakCanarySingleton();
+        initLayoutInflater();
+    }
+
+    /**
+     * 获取 LayoutInflater 对象的方法
+     * 1. View.inflate(...)
+     * 2. Activity#getLayoutInflater()
+     * 3. PhoneWindow#getLayoutInflater()
+     * 4. LayoutInflater#from(Context)
+     *
+     * 1、获取 LayoutInflater 对象只有通过LayoutInflater.from(context)，内部委派给Context#getSystemService(...)，线程安全；
+     * 2、使用同一个 Context 对象，获得的 LayoutInflater 是单例；
+     * 3、LayoutInflater 的实现类是 PhoneLayoutInflater。
+     */
+    private void initLayoutInflater() {
+        LayoutInflater from = LayoutInflater.from(this);
+        from.inflate()
+
     }
 
     /**

@@ -71,7 +71,27 @@ public class CollectionActivity extends AppCompatActivity {
      * 1.数据量不大，最好在千级以内
      * 2.key必须为int类型，这中情况下的HashMap能够用SparseArray取代
      * 3.会使用二分查找法和之前的key比較当前我们加入的元素的key的大小
-     * 4.SparseArray是android.util包中提供的类，用于建立整数对对象的映射，比HashMap性能更佳，因为它避免了自动装箱并且内部数据结构不依赖额外实体对象。
+     * 4.以int作为Key。避免了HashMap的装箱拆箱操作,性能更高且int的存储开销远远小于Integer;
+     *
+     * DELETED ，static final 的一个静态Object实例，当一个键值对被remove后，会在对应key的value下放置该对象，标记该元素已经被删除（延迟删除，等下具体介绍）；
+     * mGarbage  , 当值为true，标志数据结构中有元素被删除，可以触发gc对无效数据进行回收（真正删除）
+     * 初始化容量10
+     * mSize的大小等于数组中mValues的值等于非DELETED的元素个数
+     *
+     * 总结
+     *
+     * SparseArray采用了延迟删除的机制，通过将删除KEY的Value设置DELETED，方便之后对该下标的存储进行复用；
+     * 使用二分查找，时间复杂度为O(LogN)，如果没有查找到，那么取反返回左边界，再取反后，左边界即为应该插入的数组下标；
+     * 如果无法直接插入，则根据mGarbage标识（是否有潜在延迟删除的无效数据），进行数据清除，再通过System.arraycopy进行数组后移，将目标元素插入二分查找左边界对应的下标；
+     * mSize 小于等于keys.length，小于的部分为空数据或者是gc后前移的数据的原数据（也是无效数据），因此二分查找的右边界以mSize为准；mSize包含了延迟删除后的元素个数；
+     * 如果遇到频繁删除，不会触发gc机制，导致mSize 远大于有效数组长度,造成性能损耗;
+     * 根据源码,可能触发gc操作的方法有(1、put；2、与index有关的所有操作，setValueAt()等；3、size()方法；)
+     * mGarbage为true不一定有无效元素，因为可能被删除的元素恰好被新添加的元素覆盖；
+     * 根据SparseArray的这些特点。我们能分析出其使用场景：
+     *
+     * key为整型；
+     * 不需要频繁的删除；
+     * 元素个数相对较少；
      */
     private void sparseArray() {
         SparseBooleanArray sparseBooleanArray = new SparseBooleanArray();
@@ -136,12 +156,34 @@ public class CollectionActivity extends AppCompatActivity {
      * ArrayMap用的是copy数据，所以效率相对要高。
      * ArrayMap提供了数组收缩的功能，在clear或remove后，会重新收缩数组，释放空间
      * ArrayMap采用二分法查找；
+     * 存储结构，两个数组存储，一个存key的hash，一个存key和value（设计是最棒的）
+     * 数组缓存设计（那2个大魔头弄懂就行）
+     * 删除元素时的数组容量及时收缩
+     * 删除元素时的下界控制，防止抖动
+     *
+     * ArrayMap优点：
+     * 在数据量少时，内存利用率高，及时的空间压缩机制
+     * 迭代效率高，可以使用索引来迭代（keyAt()方法以及valueAt() 方法），相比于HashMap迭代使用迭代器模式，效率要高很多
+     * ArrayMap缺点：
+     * 存取复杂度高，花费大
+     * 二分查找的O(log n )时间复杂度远远小于HashMap
+     * ArrayMap没有实现Serializable，不利于在Android中借助Bundle传输。
      */
+    final ArrayMap<String, Boolean> mBlackFirstFrame = new ArrayMap<>();
     private void arraymap() {
         Map<String, String> map = new ArrayMap<>();
+        map.put("a","s");
+        Log.d("BBBBB",map.get("a"));
+        mBlackFirstFrame.put("1",false);
+        boolean flag = getFlag("1");
+        Log.d("BBBBB",flag+"");
+
 
     }
 
+    public boolean getFlag(String key) {
+        return mBlackFirstFrame.get(key);
+    }
 
     /**
      * 1.EventBus双重枷锁的单列模式

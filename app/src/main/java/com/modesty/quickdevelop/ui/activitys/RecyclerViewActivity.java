@@ -1,12 +1,16 @@
 package com.modesty.quickdevelop.ui.activitys;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.recyclerview.extensions.AsyncListDiffer;
+import android.support.v7.util.AdapterListUpdateCallback;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.modesty.quickdevelop.R;
@@ -17,6 +21,7 @@ import com.modesty.quickdevelop.adapter.recyclerview.wrapper.EmptyWrapper;
 import com.modesty.quickdevelop.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 import com.modesty.quickdevelop.adapter.recyclerview.wrapper.LoadMoreWrapper;
 import com.modesty.quickdevelop.adapter.rv.DividerItemDecoration;
+import com.modesty.quickdevelop.bean.RvTestBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +68,9 @@ import butterknife.ButterKnife;
  * 两次调用LayoutManager.onLayoutChildren()会因为这个标记位的不同而执行不同的逻辑分支。
  *3.在预布局阶段，循环填充表项时，若遇到被移除的表项，则会忽略它占用的空间，多余空间被用来加载额外的表项，这些表项在屏幕之外，本来不会被加载。
  *
+ * RecyclerView性能问题
+ * 1.每次数据变化都全量刷新整个列表是很奢侈的，不仅整个列表会闪烁一下，而且所有可见表项都会重新执行一遍onBindViewHolder()并重绘列表（即便它并不需要刷新）。若表项视图复杂，会显著影响列表性能。
+ * 2.onCreateViewHolder和onBindViewHolder对时间非常敏感
  */
 public class RecyclerViewActivity extends AppCompatActivity {
 
@@ -99,7 +107,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
 //        mRv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         mAdapter = new DemoAdapter();
         mRv.setAdapter(mAdapter);
-
+        mAdapter.notifyItemChanged(1);
         //viewType类型为TYPE_SPECIAL时，设置四级缓存池RecyclerPool不存储对应类型的数据(因为对于类型的缓存数值z最大w为0) 因为需要开发者自行缓存
         mRv.getRecycledViewPool().setMaxRecycledViews(DemoAdapter.TYPE_SPECIAL, 0);
         //自定义缓存，ViewCacheExtension适用场景：ViewHolder位置固定、内容固定、数量有限时使用
@@ -118,10 +126,69 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
 
     private void initData() {
+        //https://mp.weixin.qq.com/s/ZvII9kkWD7jFONB-w9Ob2g
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new callback());
+        diffResult.dispatchUpdatesTo(mAdapter);
+        //AsyncListDiffer<RvTestBean> rvTestBeanAsyncListDiffer = new AsyncListDiffer<RvTestBean>(new AdapterListUpdateCallback(mAdapter),new callback());
     }
 
     private void initListener() {
 
+    }
+
+
+    class callback extends DiffUtil.Callback{
+        private List<RvTestBean> oldList = new ArrayList<>();
+        private List<RvTestBean> newList = new ArrayList<>();
+
+
+        @Override
+        public int getOldListSize() {
+            return oldList.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newList.size();
+        }
+
+        /**
+         * 是否是同一个数据
+         * @return
+         */
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            // 分别获取新老列表中对应位置的元素
+            RvTestBean oldItem = oldList.get(oldItemPosition);
+            RvTestBean newItem = newList.get(oldItemPosition);
+            // 定义什么情况下新老元素是同一个对象（通常是业务id）
+            return oldItem.getId() == newItem.getId();
+        }
+
+        /**
+         * 当areItemsTheSame()返回true时才会被调用
+         * @return
+         */
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            RvTestBean oldItem = oldList.get(oldItemPosition);
+            RvTestBean newItem = newList.get(oldItemPosition);
+            // 定义什么情况下同一对象内容是否相同 (由业务逻辑决定)
+            return oldItem.getAge() == newItem.getAge();
+        }
+
+        /**
+         * 若同一数据的具体内容不同，则找出不同点：对应getChangePayload()（当areContentsTheSame()返回false时才会被调用）
+         * @return
+         */
+        @Nullable
+        @Override
+        public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+            RvTestBean oldItem = oldList.get(oldItemPosition);
+            RvTestBean newItem = newList.get(oldItemPosition);
+            // 具体定义同一对象内容是如何地不同 (返回值会作为payloads传入onBindViewHoder())
+            return super.getChangePayload(oldItemPosition, newItemPosition);
+        }
     }
 
 

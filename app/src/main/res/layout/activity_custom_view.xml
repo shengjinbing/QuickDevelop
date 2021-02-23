@@ -8,6 +8,7 @@
     tools:context=".ui.activitys.CustomViewActivity">
 
     <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -44,41 +45,20 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:text="世界第三鲁大师" />
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryDark">
+        <com.modesty.quickdevelop.views.custom.VerticalTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="我是描边的TextView" />
+    </LinearLayout>
 
-    <com.modesty.quickdevelop.views.MaterialEditText
-        android:id="@+id/me"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="请输入邮箱验证码"
-        android:maxLength="13"
-        android:maxLines="1"
-        android:paddingLeft="0dp"
-        android:textColor="#333"
-        android:textColorHint="#ccc"
-        android:textSize="16dp"
-        app:met_clearButton="true"
-        app:met_clearButton_padding="4dp"
-        app:met_iconClearButton="@drawable/delete"
-        app:met_underlineColor="#333"
-        app:met_underline_height="0.5dp" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="请输入邮箱验证码"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp" />
 
     <ViewFlipper
         android:id="@+id/fl"

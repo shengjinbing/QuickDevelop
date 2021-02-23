@@ -18,4 +18,7 @@
     <string name="behavior_sample_title">com.modesty.quickdevelop.ui.view.behaviors.SampleTitleBehavior</string>
     <string name="behavior_sample_header">com.modesty.quickdevelop.ui.view.behaviors.SampleHeaderBehavior</string>
     <string name="behavior_recyclerview">com.modesty.quickdevelop.ui.view.behaviors.RecyclerViewBehavior</string>
+
+    <color name="border_text" >#ffffff</color>
+
 </resources>

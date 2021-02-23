@@ -4,11 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -16,7 +12,6 @@ import com.modesty.quickdevelop.R;
 import com.modesty.quickdevelop.views.CircleView;
 import com.modesty.quickdevelop.views.CustomViewGroup;
 import com.modesty.quickdevelop.views.CustomViewGroup1;
-import com.modesty.quickdevelop.views.MaterialEditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,17 +25,19 @@ import butterknife.ButterKnife;
  * ⑥View绘制这一块遇到过什么问题么？如何解决的。
  *
  * 自定义View有哪几种方式？注意事项。你对自定义属性如何理解？
- *
  * 事件分发。滑动冲突如何解决，具体在哪个方法里面解决？如何判断滑动方向？
+ *
+ * 1.竖向的TextView如何实现。TextView文字描边效果如何实现?
+ * 原生：android:ems=”1” 设置每行只显示1个字符，数字和字母支持不友好（一行显示多个）
+ * 描边就是再创建一个TextView
+ * 2.View绘制流程。onMeasure、onLayout、onDraw。
+ * 3.事件分发。冲突解决。
+ * 4.MeasureSpec讲一下
+ *
  */
 public class CustomViewActivity extends AppCompatActivity {
-
-    @BindView(R.id.me)
-    MaterialEditText me;
-
     @BindView(R.id.fl)
     ViewFlipper fl;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +46,7 @@ public class CustomViewActivity extends AppCompatActivity {
         initView();
         initData();
         initListener();
+
     }
 
     /**
@@ -58,7 +56,6 @@ public class CustomViewActivity extends AppCompatActivity {
      * 3.更加灵活，画布操作是对Matrix的封装，Matrix作为更接近底层的东西，必然要比画布操作更加灵活。
      * 4.封装很好，Matrix本身对各个方法就做了很好的封装，让开发者可以很方便的操作Matrix
      * 5.难以深入理解，很难理解中各个数值的意义，以及操作规律，如果不了解矩阵，也很难理解前乘，后乘
-     * <p>
      * Camera
      * 我们的手机屏幕是一个2D的平面，所以也没办法直接显示3D的信息，因此我们看到的所有3D效果都是3D在2D平面的投影而已，
      * 而本文中的Camera主要作用就是这个，将3D信息转换为2D平面上的投影，实际上这个类更像是一个操作Matrix的工具类，
@@ -68,7 +65,7 @@ public class CustomViewActivity extends AppCompatActivity {
      * 但经过测试实际距离是 -576 像素，当距离为 -10 的时候，实际距离为 -720 像素。
      */
     private void initView() {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             TextView textView = new TextView(this);
             textView.setText("hahah"+i);
             fl.addView(textView);
@@ -119,54 +116,6 @@ public class CustomViewActivity extends AppCompatActivity {
             }
         });
 
-        me.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                Log.d("BBBBB","start=="+start+"before=="+before+"count=="+count);
-                if (charSequence == null || charSequence.length() == 0) {
-                    return;
-                }
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < charSequence.length(); i++) {
-                    if (i != 3 && i != 8 && charSequence.charAt(i) == ' ') {
-                        continue;
-                    } else {
-                        sb.append(charSequence.charAt(i));
-                        if ((sb.length() == 4 || sb.length() == 9) && sb.charAt(sb.length() - 1) != ' ') {
-                            sb.insert(sb.length() - 1, ' ');
-                        }
-                    }
-                }
-                if (!sb.toString().equals(charSequence.toString())) {
-                    int index = start + 1;
-                    if (sb.charAt(start) == ' ') {
-                        if (before == 0) {
-                            index++;
-                        } else {
-                            index--;
-                        }
-                    } else {
-                        if (before == 1) {
-                            index--;
-                        }
-                    }
-                    me.setText(sb.toString());
-                    me.setSelection(index);
-                }
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     public void canvas(View view) {

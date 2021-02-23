@@ -13,6 +13,7 @@ import android.arch.lifecycle.OnLifecycleEvent;
 public interface BaseContract {
 
     interface BaseView {
+        int a= 2;
 
         /**
          * 请求出错
