@@ -72,7 +72,6 @@ public class ImageActivity extends AppCompatActivity {
         initPicasso();
     }
 
-
     /**
      * glide相关
      * 1.glide是个通过双重加锁生成的单例（通过构建者模式GlideBuilder.build()第一次初始化的）
@@ -82,7 +81,7 @@ public class ImageActivity extends AppCompatActivity {
      *
      * 1.生命周期怎么绑定的？
      * 2.缓存路径如何配置的？
-     *SupportRequestManagerFragment
+     * SupportRequestManagerFragment
      * RequestBuilder
      * singleRequest
      * 1.内存缓存：在Glide中默认是LruResourceCache。当然你也可以自定义；

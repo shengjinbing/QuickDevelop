@@ -32,9 +32,7 @@ import okhttp3.OkHttpClient;
  * 3.createGlide()方法中创建任何对象的时候都做了一个空检查，只有在对象为空的时候才会去创建它的实例。也就是说，
  * 如果我们可以在applyOptions()方法中提前就给这些对象初始化并赋值，那么在createGlide()方法中就不会再去重新创建它们的实例了，从而也就实现了更改Glide配置的功能
  *
- *
  */
-
 @GlideModule
 public class CustomGlideModule extends AppGlideModule {
     /**

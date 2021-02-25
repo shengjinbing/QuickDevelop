@@ -55,8 +55,21 @@ import java.lang.ref.WeakReference;
  *   1.可以看到Handler.Callback 有优先处理消息的权利 ，当一条消息被 Callback 处理并拦截（返回 true），那么 Handler
  *   的 handleMessage(msg) 方法就不会被调用了；如果 Callback 处理了消息，但是并没有拦截，那么就意味着一个消息可以同时被
  *   Callback 以及 Handler 处理。我们可以利用CallBack这个拦截来拦截Handler的消息。
- *   2.场景：Hook ActivityThread.mH ， 在 ActivityThread 中有个成员变量 mH ，它是个 Handler，又是个极其重要的类，几乎所有的插件化框架都使用了这个方法。
- *
+ *   2.场景：Hook ActivityThread.mH ， 在 ActivityThread 中有个成员变量 mH ，它是个 Handler，又是个极其重要的类，
+ *   几乎所有的插件化框架都使用了这个方法。
+ *   3.几个callback回调的步骤（Handler中）：
+ *   public void dispatchMessage(Message msg) {
+ *         if (msg.callback != null) {
+ *             handleCallback(msg);
+ *         } else {
+ *             if (mCallback != null) {
+ *                 if (mCallback.handleMessage(msg)) {
+ *                     return;
+ *                 }
+ *             }
+ *             handleMessage(msg);
+ *         }
+ *     }
  * 7.主线程的Looper何时退出？能否手动退出？
  *   在App退出时，ActivityThread中的mH（Handler）收到消息后，执行退出。手动退出会异常主线程不允许结束
  * 8.如何判断当前线程是安卓主线程？
@@ -72,7 +85,8 @@ import java.lang.ref.WeakReference;
  *
  * 二.Handler深层次问题解答
  * 1.ThreadLocal?
- *   1.ThreadLocal.ThreadLocalMap threadLocals = null;是存在线程中的。所以ThreadLocal的get方法，其实就是拿到每个线程独有的ThreadLocalMap。
+ *   1.ThreadLocal.ThreadLocalMap threadLocals = null;是存在线程中的。所以ThreadLocal的get方法，
+ *   其实就是拿到每个线程独有的ThreadLocalMap。
  * 2.epoll机制?
  *  其实不然，这里就涉及到 Linux  pipe/epoll机制，简单说就是在主线程的 MessageQueue 没有消息时，便阻塞在 loop 的
  *  queue.next() 中的 nativePollOnce() 方法里，此时主线程会释放 CPU 资源进入休眠状态，直到下个消息到达或者有事务发生，通
@@ -130,8 +144,6 @@ import java.lang.ref.WeakReference;
  */
 public class HandlerActivity extends AppCompatActivity {
     public static final String TAG = "HANDLER_LOG";
-
-
 
     //在Activity关闭的地方将线程停止以及把Handler的消息队列的所有消息对象移除
     //Handler改为静态类
@@ -213,6 +225,38 @@ public class HandlerActivity extends AppCompatActivity {
 
     /**
      * 队列空，只有延时消息并且没到时间，同步阻塞时没有异步消息
+     * MessageQueue 是一个基于消息触发时间的优先级队列，所以队列出现空闲存在两种场景。
+     * 1.这两个场景，都会尝试执行 IdleHandler。
+     *   1.MessageQueue 为空，没有消息；
+     *   2.MessageQueue 中最近需要处理的消息，是一个延迟消息（when>currentTime），需要滞后执行；
+     *
+     * 2.IdleHandler，页面启动优化神器 https://juejin.cn/post/6844903713006419975
+     *   1.在performResumeActivity 中进行了onResume的回调，在wm.addView（这是原因） 中进行了绘制，因此onResume的方法是在绘制之前，在onResume中做一些耗时操作都会影响启动时间。
+     *   2IdleHandler即在looper里面的message处理完了的时候去调用，这不就是我们onResume调用完了以后的时机么。
+     *   3.由这个思路我把自己负责的页面中的一些界面的绘制逻辑挪到了IdleHandler中，由于有LoadingView时间，我把Adapter的绑定也挪出去了
+     *
+     * 3.一些面试问题    链接：https://www.jianshu.com/p/a561e43f1a38
+     * 到这里我们就讲清楚 IdleHandler 干什么？怎么用？有什么问题？以及使用中一些原理的讲解。
+     * 下面准备一些基本的问题，供大家理解。
+     * 1.：IdleHandler 有什么用？
+     * IdleHandler 是 Handler 提供的一种在消息队列空闲时，执行任务的时机；
+     * 当 MessageQueue 当前没有立即需要处理的消息时，会执行 IdleHandler；
+     *
+     * 2.：MessageQueue 提供了 add/remove IdleHandler 的方法，是否需要成对使用？
+     * 不是必须；
+     * IdleHandler.queueIdle() 的返回值，可以移除加入 MessageQueue 的 IdleHandler；
+     *
+     * 3.：当 mIdleHanders 一直不为空时，为什么不会进入死循环？
+     * 只有在 pendingIdleHandlerCount 为 -1 时，才会尝试执行 mIdleHander；
+     * pendingIdlehanderCount 在 next() 中初始时为 -1，执行一遍后被置为 0，所以不会重复执行；
+     *
+     * 4.：是否可以将一些不重要的启动服务，搬移到 IdleHandler 中去处理？
+     * 不建议；
+     * IdleHandler 的处理时机不可控，如果 MessageQueue 一直有待处理的消息，那么 IdleHander 的执行时机会很靠后；
+     *
+     * 5.：IdleHandler 的 queueIdle() 运行在那个线程？
+     * 这是陷进问题，queueIdle() 运行的线程，只和当前 MessageQueue 的 Looper 所在的线程有关；
+     * 子线程一样可以构造 Looper，并添加 IdleHandler；
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void initIdeaHandle() {
@@ -220,6 +264,7 @@ public class HandlerActivity extends AppCompatActivity {
             @Override
             public boolean queueIdle() {
                 //Log.d(TAG,"MessageQueue空闲了");
+                //同时返回值为 true 表示是一个持久的 IdleHandler 会重复使用，返回 false 表示是一个一次性的 IdleHandler。
                 return true;
             }
         });

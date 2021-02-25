@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
 /**
+ * AOP面向切面编程，通过AOP可以再编译期间对代码进行动态管理，以达到统一维护的目的。
  * 1、无侵入性
  * 2、修改方便
  *
@@ -29,6 +30,11 @@ import org.aspectj.lang.annotation.Before;
  * Around和Before、After的最大区别:
  *
  * ProceedingPoint不同于JoinPoint，其提供了proceed方法执行目标方法。
+ *
+ * 缺点：
+ * 1.无法组织第三方库
+ * 2.由于定义的切点依赖编程语言，目前该方案无法兼容Lambda语法
+ * 3.会有一个兼容性问题，比如：D8、Gradle4.x
  */
 @Aspect
 public class MainActivityPoint {

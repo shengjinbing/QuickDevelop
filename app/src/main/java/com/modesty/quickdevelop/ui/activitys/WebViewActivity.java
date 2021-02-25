@@ -122,13 +122,15 @@ public class WebViewActivity extends AppCompatActivity {
      * 1.通过WebView的addJavascriptInterface（）进行对象映射
      * 使用简单，但是存在严重漏洞
      * 漏洞产生原因是：当JS拿到Android这个对象后，就可以调用这个Android对象中所有的方法，包括系统类（java.lang.Runtime 类），从而进行任意代码执行
-     * 2.通过 WebViewClient 的shouldOverrideUrlLoading ()方法回调拦截 url
+     * 2.通过 WebViewClient 的shouldUrlLoOverrideading ()方法回调拦截 url
      * 优点：不存在方式1的漏洞；
      * 缺点：JS获取Android方法的返回值复杂。
      * 如果JS想要得到Android方法的返回值，只能通过 WebView 的 loadUrl （）去执行 JS 方法把返回值传递回去
      * 3.通过 WebChromeClient 的onJsAlert()、onJsConfirm()、onJsPrompt（）方法回调拦截JS对话框alert()、confirm()、prompt（） 消息
      * 常用的拦截是：拦截 JS的输入框（即prompt（）方法）
-     * 因为只有prompt（）可以返回任意类型的值，操作最全面方便、更加灵活；而alert（）对话框没有返回值；confirm（）对话框只能返回两种状态（确定 / 取消）两个值
+     * 因为只有prompt（）可以返回任意类型的值，操作最全面方便、更加灵活；
+     * 而alert（）对话框没有返回值；
+     * confirm（）对话框只能返回两种状态（确定 / 取消）两个值
      */
     public void jsCallAndroid() {
         mWv.addJavascriptInterface(new Jsinterface(), "Android");
@@ -138,9 +140,7 @@ public class WebViewActivity extends AppCompatActivity {
      * java调用js,2中方式
      * 1.通过WebView的loadUrl（）
      * 2.通过WebView的evaluateJavascript（）
-     * 因为该方法的执行不会使页面刷新，而第一种方法（loadUrl ）的执行则会。
-     * Android 4.4 后才可使用
-     * <p>
+     * 因为该方法的执行不会使页面刷新，而第一种方法（loadUrl ）的执行则会。Android 4.4 后才可使用
      * 特别注意：
      * JS代码调用一定要在 onPageFinished（） 回调之后才能调用，否则不会调用。
      * onPageFinished()属于WebViewClient类的方法，主要在页面加载结束时调用
@@ -151,6 +151,7 @@ public class WebViewActivity extends AppCompatActivity {
     public void javacalljs(View view) {
         String content = mEtContent.getText().toString().trim();
         mWv.post(() -> {
+            //第一种调用js方法
             //mWv.loadUrl("javascript:javaCallJs(" + "'" + content + "'" + ")");
             mWv.evaluateJavascript("javascript:javaCallJs(" + "'" + content + "'" + ")", new ValueCallback<String>() {
                 @Override
@@ -547,8 +548,11 @@ public class WebViewActivity extends AppCompatActivity {
             ViewParent parent = mWv.getParent();
             if (parent != null){
                 /**
-                 * 原文里说的webview引起的内存泄漏主要是因为org.chromium.android_webview.AwContents 类中注册了component callbacks，但是未正常反注册而导致的。
-                 * org.chromium.android_webview.AwContents 类中有这两个方法 onAttachedToWindow 和 onDetachedFromWindow；系统会在attach和detach处进行注册和反注册component callback；
+                 * 原文里说的webview引起的内存泄漏主要是因为org.chromium.android_webview.AwContents 类中注册
+                 * 了component callbacks，但是未正常反注册而导致的。
+                 *
+                 * org.chromium.android_webview.AwContents 类中有这两个方法 onAttachedToWindow 和
+                 * onDetachedFromWindow；系统会在attach和detach处进行注册和反注册component callback；
                  * 在onDetachedFromWindow() 方法的第一行中：
                  * if (isDestroyed()) return;，
                  * 如果 isDestroyed() 返回 true 的话，那么后续的逻辑就不能正常走到，所以就不会执行unregister的操作；

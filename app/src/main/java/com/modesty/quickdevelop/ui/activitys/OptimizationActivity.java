@@ -136,8 +136,6 @@ public class OptimizationActivity extends AppCompatActivity {
      */
     private void initLayoutInflater() {
         LayoutInflater from = LayoutInflater.from(this);
-        from.inflate()
-
     }
 
     /**

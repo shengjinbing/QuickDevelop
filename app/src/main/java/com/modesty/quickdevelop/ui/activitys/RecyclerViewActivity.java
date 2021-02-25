@@ -253,7 +253,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
      3.三级缓存：mViewCacheExtension
      来看看Recycler中的其他缓存，其中mAttachedScrap用来处理可见屏幕的缓存；mCachedViews里存储的数据虽然是根据position来缓存，但是里面的数据随时可能会被替换的；
      再来看mRecyclerPool，mRecyclerPool里按viewType去存储ArrayList< ViewHolder>，所以mRecyclerPool并不能按position去存储ViewHolder，而且从mRecyclerPool取出
-     的View每次都要去走Adapter#onBindViewHolder去重新绑定数据。假如我现在需要在一个特定的位置(比如position=0位置)一直展示某个View，且里面的内容是不变的，那么最好的情况就是在特定
+     的View每次都要去走Adapter#onBindViewHolder去重新绑定数据。
+     三级缓存使用的场景：假如我现在需要在一个特定的位置(比如position=0位置)一直展示某个View，且里面的内容是不变的，那么最好的情况就是在特定
      位置时，既不需要每次重新创建View，也不需要每次都去重新绑定数据，上面的几种缓存显然都是不适用的，这种情况该怎么办呢？可以通过自定义缓存ViewCacheExtension实现上述需求。
      4.四级缓存：mRecyclerPool 脏数据缓存，只关心view type，都需要重新绑定，使用的是SparseArray，存储key为viewType，value是ArrayList<ViewHolder>,默认每个ArrayList最多放5个元素
  1.mCachedViews 优先级高于 RecyclerViewPool，回收时，最新的 ViewHolder 都是往 mCachedViews 里放，

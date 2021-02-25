@@ -65,6 +65,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * 8.ARouter
  * 9.EventBus
  * 10.LiveDataBus
+ * jetpack
+ *
+ * 性能优化中的所有
  *
  * 1.四大引用在安卓中的使用（深入细节）
  * 2.Framework：Android 系统架构
