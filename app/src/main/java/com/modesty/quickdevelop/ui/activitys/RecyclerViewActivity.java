@@ -108,7 +108,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         mAdapter = new DemoAdapter();
         mRv.setAdapter(mAdapter);
         mAdapter.notifyItemChanged(1);
-        //viewType类型为TYPE_SPECIAL时，设置四级缓存池RecyclerPool不存储对应类型的数据(因为对于类型的缓存数值z最大w为0) 因为需要开发者自行缓存
+        //viewType类型为TYPE_SPECIAL时，设置四级缓存池RecyclerPool不存储对应类型的数据(因为对于类型的缓存数值最大为0相当于不缓存)
+        // 因为需要开发者自行缓存
         mRv.getRecycledViewPool().setMaxRecycledViews(DemoAdapter.TYPE_SPECIAL, 0);
         //自定义缓存，ViewCacheExtension适用场景：ViewHolder位置固定、内容固定、数量有限时使用
         //ViewCacheExtension使用举例：
@@ -228,7 +229,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         final ArrayList<ViewHolder> mAttachedScrap = new ArrayList<>();
         ArrayList<ViewHolder> mChangedScrap = null;
 
-缓存到CachedView中的ViewHolder并不会清理相关信息(比如position、state等)，因此刚移出屏幕的ViewHolder，再次被移回屏幕时，只要从CachedView中查找并显示即可，不需要重新绑定(bindViewHolder)。
+缓存到CachedView中的ViewHolder并不会清理相关信息(比如position、state等)，因此刚移出屏幕的ViewHolder，再次被移回屏幕时，
+只要从CachedView中查找并显示即可，不需要重新绑定(bindViewHolder)。
         final ArrayList<ViewHolder> mCachedViews = new ArrayList<ViewHolder>();默认大小2
 
         private final List<ViewHolder>
@@ -237,7 +239,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         private int mRequestedCacheMax = DEFAULT_CACHE_SIZE;
         int mViewCacheMax = DEFAULT_CACHE_SIZE;
 
-而缓存到RecycledViewPool中的ViewHolder会被清理状态和位置信息，因此从RecycledViewPool查找到ViewHolder，需要重新调用bindViewHolder绑定数据。
+而缓存到RecycledViewPool中的ViewHolder会被清理状态和位置信息，因此从RecycledViewPool查找到ViewHolder，
+需要重新调用bindViewHolder绑定数据。
         RecycledViewPool mRecyclerPool;默认大小是5
 
         private ViewCacheExtension mViewCacheExtension;
@@ -251,12 +254,16 @@ public class RecyclerViewActivity extends AppCompatActivity {
         只关心position不关心view type，用于notify***等方法
      2.二级缓存：mCacheViews 移除屏幕的缓存，通过postions获取直接复用不需要走onBindViewHolder，
      3.三级缓存：mViewCacheExtension
-     来看看Recycler中的其他缓存，其中mAttachedScrap用来处理可见屏幕的缓存；mCachedViews里存储的数据虽然是根据position来缓存，但是里面的数据随时可能会被替换的；
-     再来看mRecyclerPool，mRecyclerPool里按viewType去存储ArrayList< ViewHolder>，所以mRecyclerPool并不能按position去存储ViewHolder，而且从mRecyclerPool取出
-     的View每次都要去走Adapter#onBindViewHolder去重新绑定数据。
+          1.来看看Recycler中的其他缓存，其中mAttachedScrap用来处理可见屏幕的缓存；
+          2.mCachedViews里存储的数据虽然是根据position来缓存，但是里面的数据随时可能会被替换的；
+          3.再来看mRecyclerPool，mRecyclerPool里按viewType去存储ArrayList< ViewHolder>，所以mRecyclerPool并
+            不能按position去存储ViewHolder，而且从mRecyclerPool取出的View每次都要去走Adapter#onBindViewHolder去重新绑定数据。
+
      三级缓存使用的场景：假如我现在需要在一个特定的位置(比如position=0位置)一直展示某个View，且里面的内容是不变的，那么最好的情况就是在特定
-     位置时，既不需要每次重新创建View，也不需要每次都去重新绑定数据，上面的几种缓存显然都是不适用的，这种情况该怎么办呢？可以通过自定义缓存ViewCacheExtension实现上述需求。
-     4.四级缓存：mRecyclerPool 脏数据缓存，只关心view type，都需要重新绑定，使用的是SparseArray，存储key为viewType，value是ArrayList<ViewHolder>,默认每个ArrayList最多放5个元素
+     位置时，既不需要每次重新创建View，也不需要每次都去重新绑定数据，上面的几种缓存显然都是不适用的，这种情况该怎么办呢？
+     可以通过自定义缓存ViewCacheExtension实现上述需求。
+     4.四级缓存：mRecyclerPool 脏数据缓存，只关心view type，都需要重新绑定，使用的是SparseArray，存储key为viewType，
+     value是ArrayList<ViewHolder>,默认每个ArrayList最多放5个元素
  1.mCachedViews 优先级高于 RecyclerViewPool，回收时，最新的 ViewHolder 都是往 mCachedViews 里放，
   如果它满了，那就移出一个扔到 ViewPool 里好空出位置来缓存最新的 ViewHolder。
  2.复用时，也是先到 mCachedViews 里找 ViewHolder，但需要各种匹配条件，概括一下就是只有原来位置的
@@ -270,7 +277,6 @@ public class RecyclerViewActivity extends AppCompatActivity {
     3.如果缓存ViewHolder时发现超过了mCachedView的限制，会将最老的ViewHolder(也就是mCachedView缓存队列的第一个ViewHolder)
     移到RecycledViewPool中
 
-
     recycView的性能优化？
     1.在onBindViewHolder里面设置item点击监听
       可以在onCreateViewHolder里面设置
@@ -281,14 +287,10 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
     itemDecoration的作用有哪些?
     1.画分割线
-    2.
-     */
-
-
-   /* Recylerview的item是 ImageView 和  TextView构成，当数据改变时，我们会调用 notifyDataSetChanged，这个时候列表会刷新，为了使 url 没变的 ImageView 不重新加载
-    （图片会一闪），我们可以用
-    setHasStableIds(true);
-    使用这个，相当于给ImageView加了一个tag，tag不变的话，不用重新加载图片。但是加了这句话，会使得 列表的 数据项 重复！！ 我们需要在我们的Adapter里面重写 getItemId就好了。
+    2. Recylerview的item是 ImageView 和  TextView构成，当数据改变时，我们会调用 notifyDataSetChanged，这个时候
+       列表会刷新，为了使 url 没变的 ImageView 不重新加载（图片会一闪），我们可以用setHasStableIds(true);
+    使用这个，相当于给ImageView加了一个tag，tag不变的话，不用重新加载图片。但是加了这句话，会使得 列表的 数据项 重复！！
+    我们需要在我们的Adapter里面重写 getItemId就好了。
     @Override
     public long getItemId(int position) {
         return position;

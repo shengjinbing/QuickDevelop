@@ -151,12 +151,12 @@ public class WebViewActivity extends AppCompatActivity {
     public void javacalljs(View view) {
         String content = mEtContent.getText().toString().trim();
         mWv.post(() -> {
-            //第一种调用js方法
+            //第一种调用js方法,无法拿到结果
             //mWv.loadUrl("javascript:javaCallJs(" + "'" + content + "'" + ")");
             mWv.evaluateJavascript("javascript:javaCallJs(" + "'" + content + "'" + ")", new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String value) {
-                    //js的返回结果
+                    //js的返回结果value
                 }
             });
         });

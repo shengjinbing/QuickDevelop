@@ -73,7 +73,8 @@ public class CollectionActivity extends AppCompatActivity {
      * 3.会使用二分查找法和之前的key比較当前我们加入的元素的key的大小
      * 4.以int作为Key。避免了HashMap的装箱拆箱操作,性能更高且int的存储开销远远小于Integer;
      *
-     * DELETED ，static final 的一个静态Object实例，当一个键值对被remove后，会在对应key的value下放置该对象，标记该元素已经被删除（延迟删除，等下具体介绍）；
+     * DELETED ，static final 的一个静态Object实例，当一个键值对被remove后，会在对应key的value下放置该对象，标记该
+     * 元素已经被删除（延迟删除，等下具体介绍）；
      * mGarbage  , 当值为true，标志数据结构中有元素被删除，可以触发gc对无效数据进行回收（真正删除）
      * 初始化容量10
      * mSize的大小等于数组中mValues的值等于非DELETED的元素个数
@@ -82,8 +83,10 @@ public class CollectionActivity extends AppCompatActivity {
      *
      * SparseArray采用了延迟删除的机制，通过将删除KEY的Value设置DELETED，方便之后对该下标的存储进行复用；
      * 使用二分查找，时间复杂度为O(LogN)，如果没有查找到，那么取反返回左边界，再取反后，左边界即为应该插入的数组下标；
-     * 如果无法直接插入，则根据mGarbage标识（是否有潜在延迟删除的无效数据），进行数据清除，再通过System.arraycopy进行数组后移，将目标元素插入二分查找左边界对应的下标；
-     * mSize 小于等于keys.length，小于的部分为空数据或者是gc后前移的数据的原数据（也是无效数据），因此二分查找的右边界以mSize为准；mSize包含了延迟删除后的元素个数；
+     * 如果无法直接插入，则根据mGarbage标识（是否有潜在延迟删除的无效数据），进行数据清除，再通过System.arraycopy进行数组后移，
+     * 将目标元素插入二分查找左边界对应的下标；
+     * mSize 小于等于keys.length，小于的部分为空数据或者是gc后前移的数据的原数据（也是无效数据），因此二分查找的右边界以
+     * mSize为准；mSize包含了延迟删除后的元素个数；
      * 如果遇到频繁删除，不会触发gc机制，导致mSize 远大于有效数组长度,造成性能损耗;
      * 根据源码,可能触发gc操作的方法有(1、put；2、与index有关的所有操作，setValueAt()等；3、size()方法；)
      * mGarbage为true不一定有无效元素，因为可能被删除的元素恰好被新添加的元素覆盖；
@@ -106,9 +109,10 @@ public class CollectionActivity extends AppCompatActivity {
     }
 
     /**
-     * 1.内存占有问题:很明显，两个数组同时驻扎在内存中，如果实际应用中，数据比较多，而且比较大的情况下，占用内存会比较大，针对这个其实可以用ConcurrentHashMap来代替。
-     *
-     * 2.数据一致性:CopyOnWrite容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的的数据，马上能读到，请不要使用CopyOnWrite容器
+     * 1.内存占有问题:很明显，两个数组同时驻扎在内存中，如果实际应用中，数据比较多，而且比较大的情况下，占用内存会比较大，
+     * 针对这个其实可以用ConcurrentHashMap来代替。
+     * 2.数据一致性:CopyOnWrite容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的的数据，
+     * 马上能读到，请不要使用CopyOnWrite容器
      */
     private void copyOnWriteArrayList() {
         CopyOnWriteArrayList copyOnWriteArrayList = new CopyOnWriteArrayList();
@@ -171,7 +175,7 @@ public class CollectionActivity extends AppCompatActivity {
      */
     final ArrayMap<String, Boolean> mBlackFirstFrame = new ArrayMap<>();
     private void arraymap() {
-        Map<String, String> map = new ArrayMap<>();
+        ArrayMap<String, String> map = new ArrayMap<>();
         map.put("a","s");
         Log.d("BBBBB",map.get("a"));
         mBlackFirstFrame.put("1",false);

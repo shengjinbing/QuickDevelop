@@ -10,16 +10,14 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
 /**
- * AOP面向切面编程，通过AOP可以再编译期间对代码进行动态管理，以达到统一维护的目的。
+ * AOP面向切面编程，通过AOP可以再编译期间对代码进行动态管理，以达到统一维护的目的。核心就是ajc编译器。
  * 1、无侵入性
  * 2、修改方便
  *
  * JoinPoint一般定位在如下位置
- *
  * 1、函数调用
  * 2、获取、设置变量
  * 3、类初始化
- *
  * 1、Before：PointCut之前执行
  * 2、After：PointCut之后执行
  * 3、Around：PointCut之前、之后分别执行
@@ -28,7 +26,6 @@ import org.aspectj.lang.annotation.Before;
  * 当Action为Around时，方法入参为ProceedingPoint。
  *
  * Around和Before、After的最大区别:
- *
  * ProceedingPoint不同于JoinPoint，其提供了proceed方法执行目标方法。
  *
  * 缺点：

@@ -90,8 +90,8 @@ import java.lang.ref.WeakReference;
  * 2.epoll机制?
  *  其实不然，这里就涉及到 Linux  pipe/epoll机制，简单说就是在主线程的 MessageQueue 没有消息时，便阻塞在 loop 的
  *  queue.next() 中的 nativePollOnce() 方法里，此时主线程会释放 CPU 资源进入休眠状态，直到下个消息到达或者有事务发生，通
- *  过往 pipe 管道写端写入数据来唤醒主线程工作。这里采用的 epoll 机制，是一种IO多路复用机制，可以同时监控多个描述
- *  符，当某个描述符就绪(读或写就绪)，则立刻通知相应程序进行读或写操作，本质同步I/O，即读写是阻塞的。 所以说，主线程大多数时
+ *  过往pipe管道写端写入数据来唤醒主线程工作。这里采用的 epoll 机制，是一种IO多路复用机制，可以同时监控多个描述
+ *  符，当某个描述符就绪(读或写就绪)，则立刻通知相应程序进行读或写操作，本质同步I/O，即读写是阻塞的。所以说，主线程大多数时
  *  候都是处于休眠状态，并不会消耗大量CPU资源。
  *  Handler的初级、中级、高级问法，你都掌握了吗？https://juejin.cn/post/6893791473121280013#heading-17
  *  深入探索ANR机制的设计与实现 https://mp.weixin.qq.com/s/Qnser4SMoRtgEPd74oDJGQ
