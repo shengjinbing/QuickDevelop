@@ -119,7 +119,8 @@ public class SqliteHelper {
     /**
      * 修改数据
      */
-    public void modify(UserBean bean) {
+    public void
+    modify(UserBean bean) {
         // 创建一个DatabaseHelper对象
         // 将数据库的版本升级为2
         // 传入版本号为2，大于旧版本（1），所以会调用onUpgrade()升级数据库
@@ -209,4 +210,39 @@ public class SqliteHelper {
         //删除名为test.db数据库
         SQLiteDatabase.deleteDatabase(name);
     }
+
+   /*
+   微信WCDB进化之路 - 开源与开始
+   https://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&mid=2649286603&idx=1&sn=d243dd27f2c6614631241cd00570e853&chksm=8334c349b4434a5fd81809d656bfad6072f075d098cb5663a85823e94fc2363edd28758ab882&mpshare=1&scene=1&srcid=0609GLAeaGGmI4zCHTc2U9ZX#rd
+   微信ANDROID客户端-会话速度提升70%的背后
+https://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&mid=207548094&idx=1&sn=1a277620bc28349368b68ed98fbefebe&scene=21#wechat_redirect
+
+
+
+   Cursor 实现优化
+
+    Android 框架查询数据库使用的是 Cursor 接口，调用 SQLiteDatabase.query(...) 会返回一个Cursor 对象，之后就可以
+    使用 Cursor 遍历结果集了。Android SDK SQLite Cursor 的实现是分配一个固定 2MB 大小的缓冲区，称作 Cursor Window，
+    用于存放查询结果集。
+
+    查询时，先分配Cursor Window，然后执行 SQL 获取结果集填充之，直到 Cursor Window 放满或者遍历完结果集，之后将 Cursor
+    返回给调用者。
+
+    假如 Cursor 遍历到缓冲区以外的行，Cursor 会丢弃之前缓冲区的所有内容，重新查询，跳过前面的行，重新选定一个开始位置填充
+    Cursor Window 直到缓冲区再次填满或遍历完结果集。
+
+    这样的实现能保证大部分情况正常工作，在很多情况下却不是最优实现。微信对 DB 操作最多的场景是获取 Cursor 直接遍历获取数据
+    后关闭，获取到的数据，一般是生成对应的实体对象（通过 ORM 或者自行从 Cursor 转换）后放到 List 或 Map 等容器里返回，
+    或用于显示，或用于其他逻辑。
+
+    在这种场景下，先将数据保存到 Cursor Window 后再取出，中间要经历两次内存拷贝和转换（SQLite → CursorWindow → Java），
+    这是完全没有必要的。另外，由于 Cursor Window 是定长的，对于较小的结果集，需要无故分配 2MB 内存，对于大结果集，如果 2MB
+    不足以放下，遍历到途中还会引发 Cursor 重查询，这个消耗就相当大了。
+
+    Cursor Window，其实也是在 JNI 层通过 SQLite 库的 Statement 填充的，Statement 这里可以理解为一个轻量但只能往前
+    遍历，没有缓存的 Cursor。这个不就跟我们的场景一致吗？何不直接使用底层的 Statement 呢？我们对 Statement 做了简单
+    的封装，暴露了 Cursor 接口， SQLiteDirectCursor 就诞生了，它直接操作底层 SQLite 获取数据，只能执行往前迭代的操作，
+    但这完全满足需要。
+
+    图片这样，在大部分不需要将 Cursor 传递出去的场景，能很好的解决 Cursor 的额外消耗，特别是结果集大于 2MB 的场合。*/
 }

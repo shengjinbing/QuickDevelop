@@ -1,15 +1,29 @@
 package com.modesty.quickdevelop.network.provider;
 
+import android.app.Application;
+
+import com.modesty.quickdevelop.base.BaseApplication;
 import com.modesty.quickdevelop.network.NetConfig;
+import com.modesty.quickdevelop.network.ca.SslHelper;
 import com.modesty.quickdevelop.network.dns.HttpDns;
 import com.modesty.quickdevelop.network.interceptor.AppInterceptor;
 import com.modesty.quickdevelop.network.interceptor.NetworkInterceptor;
 import com.modesty.quickdevelop.network.interceptor.RequestLogInterceptor;
 import com.modesty.quickdevelop.network.interceptor.ResponseLogInterceptor;
 
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.BitSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -45,14 +59,19 @@ public final class OkHttpFactory {
                     //builder.dns(new HttpDns());
 
                     final Set<Interceptor> interceptors = NetConfig.instance().getInterceptors();
-                    for(Interceptor interceptor : interceptors){
+                    for (Interceptor interceptor : interceptors) {
                         builder.addInterceptor(interceptor);
                     }
 
                     final Set<Interceptor> networkInterceptors = NetConfig.instance().getNetworkInterceptors();
-                    for(Interceptor networkInterceptor : networkInterceptors){
+                    for (Interceptor networkInterceptor : networkInterceptors) {
                         builder.addNetworkInterceptor(networkInterceptor);
                     }
+                    builder.sslSocketFactory(SslHelper.getSSLSocketFactory(BaseApplication.context),
+                            SslHelper.getSystemDefaultTrustManager());
+                    //如果你生成证书时包含的域名或者ip地址和你服务器的域名或者ip不匹配时，默认是会报错的，需要使用
+                    // hostnameVerifier来放弃验证域名。
+                    builder.hostnameVerifier((hostname, session) -> true);
 
                     sInstance = builder.build();
                 }

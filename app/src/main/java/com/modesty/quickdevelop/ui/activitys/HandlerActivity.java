@@ -206,6 +206,21 @@ public class HandlerActivity extends AppCompatActivity {
         //initHandlerThread();
         initThreadLocal();
         //设置消息打印的日志
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        },100);
+        //这里也会创建Message,并且设置callback回调优先级最高(message.callback > handle.callback > handle.handleMessage)
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        //这里的消息回调会到Handler的handleMessage里面处理
+        handler.sendMessage(Message.obtain());
         getMainLooper().setMessageLogging(new Printer() {
             @Override
             public void println(String x) {
@@ -216,6 +231,12 @@ public class HandlerActivity extends AppCompatActivity {
             initIdeaHandle();
         }
         mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        text.post(new Runnable() {
             @Override
             public void run() {
 

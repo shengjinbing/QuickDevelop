@@ -62,6 +62,9 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     //param:factory
     //version:当前数据库的版本，值必须是整数并且是递增的状态
 
+    /**
+     * 表个数增加会严重拖慢初始化速度(重点)
+     */
     public MySQLiteOpenHelper(Context context, String name, int version) {
         this(context, name, null, version);
     }
